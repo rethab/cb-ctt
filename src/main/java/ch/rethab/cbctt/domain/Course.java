@@ -46,7 +46,28 @@ public class Course {
         return Objects.hash(id, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Course{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", teacher='").append(teacher).append('\'');
+        sb.append(", nLectures=").append(nLectures);
+        sb.append(", nWorkingDays=").append(nWorkingDays);
+        sb.append(", nStudents=").append(nStudents);
+        sb.append(", doubleLectures=").append(doubleLectures);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public String getId() {
         return id;
+    }
+
+    public int getNumberOfLectures() {
+        return nLectures;
+    }
+
+    public String getTeacher() {
+        return teacher;
     }
 }

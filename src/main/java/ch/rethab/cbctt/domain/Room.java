@@ -34,6 +34,16 @@ public class Room {
         return Objects.hash(id, capacity, site);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Room{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", capacity=").append(capacity);
+        sb.append(", site=").append(site);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public String getId() {
         return id;
     }

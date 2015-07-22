@@ -1,14 +1,13 @@
 package ch.rethab.cbctt.domain;
 
-import ch.rethab.cbctt.domain.constraint.RoomConstraint;
-import ch.rethab.cbctt.domain.constraint.UnavailabilityConstraint;
-
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class ECTT {
+public class Specification {
 
     private final String name;
 
@@ -26,13 +25,13 @@ public class ECTT {
 
     private final List<Curriculum> curricula;
 
-    private final List<UnavailabilityConstraint> unavailabilityConstraints;
+    private final UnavailabilityConstraints unavailabilityConstraints;
 
-    private final List<RoomConstraint> roomConstraints;
+    private final RoomConstraints roomConstraints;
 
-    public ECTT(String name, int numberOfDaysPerWeek, int periodsPerDay, int minLectures, int maxLectures,
-                List<Course> courses, List<Room> rooms, List<Curriculum> curricula,
-                List<UnavailabilityConstraint> unavailabilityConstraints, List<RoomConstraint> roomConstraints) {
+    public Specification(String name, int numberOfDaysPerWeek, int periodsPerDay, int minLectures, int maxLectures,
+                         List<Course> courses, List<Room> rooms, List<Curriculum> curricula,
+                         UnavailabilityConstraints unavailabilityConstraints, RoomConstraints roomConstraints) {
         this.name = name;
         this.numberOfDaysPerWeek = numberOfDaysPerWeek;
         this.periodsPerDay = periodsPerDay;
@@ -45,11 +44,11 @@ public class ECTT {
         this.roomConstraints = roomConstraints;
     }
 
-    public List<UnavailabilityConstraint> getUnavailabilityConstraints() {
+    public UnavailabilityConstraints getUnavailabilityConstraints() {
         return unavailabilityConstraints;
     }
 
-    public List<RoomConstraint> getRoomConstraints() {
+    public RoomConstraints getRoomConstraints() {
         return roomConstraints;
     }
 
@@ -83,6 +82,10 @@ public class ECTT {
 
     public int getMaxLectures() {
         return maxLectures;
+    }
+
+    public Set<String> getTeachers() {
+        return courses.stream().map(c -> c.getTeacher()).collect(Collectors.toSet());
     }
 }
 

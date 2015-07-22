@@ -30,4 +30,17 @@ public class Curriculum {
     public int hashCode() {
         return Objects.hash(id, courses);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Curriculum{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", courses=").append(courses);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
 }

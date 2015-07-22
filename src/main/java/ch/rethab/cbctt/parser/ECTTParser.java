@@ -1,8 +1,8 @@
 package ch.rethab.cbctt.parser;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.domain.constraint.RoomConstraint;
-import ch.rethab.cbctt.domain.constraint.UnavailabilityConstraint;
+import ch.rethab.cbctt.domain.RoomConstraints;
+import ch.rethab.cbctt.domain.UnavailabilityConstraints;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public final class ECTTParser {
         this.reader = reader;
     }
 
-    public ECTT parse() throws IOException {
+    public Specification parse() throws IOException {
 
         Matcher matcher;
 
@@ -45,8 +45,6 @@ public final class ECTTParser {
         List<Course> courses = new LinkedList<>();
         List<Room> rooms = new LinkedList<>();
         List<Curriculum> curricula = new LinkedList<>();
-        List<UnavailabilityConstraint> unavailabilityConstraints = new LinkedList<>();
-        List<RoomConstraint> roomConstraints = new LinkedList<>();
 
         matcher = stringValue.matcher(reader.readLine());
         if (matcher.matches()) { name = matcher.group(1); }
@@ -99,17 +97,17 @@ public final class ECTTParser {
 
         reader.readLine(); // empty line
         reader.readLine(); // UNAVAILABILITY_CONSTRAINTS:
-        parseUnavailabilityConstraints(nunavailabilityConstraints, unavailabilityConstraints, courses);
+        UnavailabilityConstraints unavailabilityConstraints = parseUnavailabilityConstraints(nunavailabilityConstraints, courses, daysPerWeek, periodsPerDay);
 
         reader.readLine(); // empty line
         reader.readLine(); // ROOM_CONSTRAINTS:
-        parseRoomConstraints(nroomConstraints, roomConstraints, courses, rooms);
+        RoomConstraints roomConstraints = parseRoomConstraints(nroomConstraints, courses, rooms);
 
-        return new ECTT(name, daysPerWeek, periodsPerDay, minLectures, maxLectures, courses, rooms, curricula, unavailabilityConstraints, roomConstraints);
+        return new Specification(name, daysPerWeek, periodsPerDay, minLectures, maxLectures, courses, rooms, curricula, unavailabilityConstraints, roomConstraints);
+    }
 
-        }
-
-    private void parseRoomConstraints(int nroomConstraints, List<RoomConstraint> roomConstraints, List<Course> courses, List<Room> rooms) throws IOException {
+    private RoomConstraints parseRoomConstraints(int nroomConstraints, List<Course> courses, List<Room> rooms) throws IOException {
+        RoomConstraints roomConstraints = new RoomConstraints();
         for (int i = 0; i < nroomConstraints; i++) {
             Matcher matcher = roomConstraint.matcher(reader.readLine());
             if (matcher.matches()) {
@@ -117,29 +115,29 @@ public final class ECTTParser {
                 String roomID = matcher.group(2);
                 Course course = getCourse(courseID, courses);
                 Room room = getRoom(roomID, rooms);
-                roomConstraints.add(new RoomConstraint(course, room));
+                roomConstraints.addRoomConstraint(course, room);
             } else {
                 throw new IOException("Expected room constraint");
             }
         }
+        return roomConstraints;
     }
 
-    private void parseUnavailabilityConstraints(int nunavailabilityConstraints, List<UnavailabilityConstraint> unavailabilityConstraints, List<Course> courses) throws IOException {
+    private UnavailabilityConstraints parseUnavailabilityConstraints(int nunavailabilityConstraints, List<Course> courses, int daysPerWeek, int periodsPerDay) throws IOException {
+        UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(daysPerWeek, periodsPerDay);
         for (int i = 0; i < nunavailabilityConstraints; i++) {
             Matcher matcher = unavailabilityConstraint.matcher(reader.readLine());
             if (matcher.matches()) {
                 String courseID = matcher.group(1);
                 int day = Integer.parseInt(matcher.group(2));
                 int period = Integer.parseInt(matcher.group(3));
-                List<Course> course = getCourses(courseID, courses);
-                if (course.size() != 1) {
-                    throw new IOException("Expected 1 course but got " + course.size());
-                }
-                unavailabilityConstraints.add(new UnavailabilityConstraint(course.get(0), day, period));
+                Course course = getCourse(courseID, courses);
+                unavailabilityConstraints.addUnavailability(course, day, period);
             } else {
                 throw new IOException("Expected unavailability constraint");
             }
         }
+        return unavailabilityConstraints;
     }
 
     private void parseCurricula(int ncourses, int ncurricula, List<Course> courses, List<Curriculum> curricula) throws IOException {
