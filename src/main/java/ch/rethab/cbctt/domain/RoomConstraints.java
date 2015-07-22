@@ -18,7 +18,7 @@ public class RoomConstraints {
         rooms.add(r);
     }
 
-    public boolean checkRoomConstraint(Course c, Room r) {
+    public boolean isUnsuitable(Course c, Room r) {
         List<Room> rooms = constraints.get(c);
         if (rooms == null) {
             return false;

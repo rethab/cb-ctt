@@ -4,8 +4,6 @@ import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.domain.Room;
-import ch.rethab.cbctt.domain.RoomConstraints;
-import ch.rethab.cbctt.domain.UnavailabilityConstraints;
 import org.junit.Test;
 
 import java.io.*;
@@ -13,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -54,18 +53,18 @@ public class ECTTParserTest {
         );
         assertEqualsList(curricula, specification.getCurricula());
 
-        specification.getUnavailabilityConstraints().checkAvailability(tecCos, 2, 0);
-        specification.getUnavailabilityConstraints().checkAvailability(tecCos, 2, 1);
-        specification.getUnavailabilityConstraints().checkAvailability(tecCos, 3, 2);
-        specification.getUnavailabilityConstraints().checkAvailability(tecCos, 3, 3);
-        specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 0);
-        specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 1);
-        specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 2);
-        specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 3);
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(tecCos, 2, 0));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(tecCos, 2, 1));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(tecCos, 3, 2));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(tecCos, 3, 3));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 0));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 1));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 2));
+        assertFalse(specification.getUnavailabilityConstraints().checkAvailability(arcTec, 4, 3));
 
-        specification.getRoomConstraints().checkRoomConstraint(sceCosc, rA);
-        specification.getRoomConstraints().checkRoomConstraint(geotec, rB);
-        specification.getRoomConstraints().checkRoomConstraint(tecCos, rC);
+        assertTrue(specification.getRoomConstraints().isUnsuitable(sceCosc, rA));
+        assertTrue(specification.getRoomConstraints().isUnsuitable(geotec, rB));
+        assertTrue(specification.getRoomConstraints().isUnsuitable(tecCos, rC));
     }
 
     private void assertEqualsList(List<?> expected, List<?> actual) {
