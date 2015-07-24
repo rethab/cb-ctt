@@ -24,9 +24,10 @@ public class UD1Validator implements Validator {
     }
 
     @Override
-    public boolean satisfiesHardConstraints(Timetable t) {
+    public boolean isFeasible(Timetable t) {
         for (Constraint constraint : hardConstraints) {
             if (!constraint.satisfies(t)) {
+                System.out.println("Constraint fails: " + constraint.getClass().getName());
                 return false;
             }
         }

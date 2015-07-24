@@ -34,6 +34,7 @@ public class ConflictsConstraint implements Constraint {
             for (Meeting meeting : meetings) {
                 boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                 if (occupied) {
+                    System.out.printf("Teacher already scheduled at [%d][%d]\n", meeting.getDay(), meeting.getPeriod());
                     return false;
                 } else {
                     occupieds[meeting.getDay()][meeting.getPeriod()] = true;
@@ -52,6 +53,7 @@ public class ConflictsConstraint implements Constraint {
                 for (Meeting meeting : meetings) {
                     boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                     if (occupied) {
+                        System.out.printf("Lecture of Curriculum already scheduled at [%d][%d]\n", meeting.getDay(), meeting.getPeriod());
                         return false;
                     } else {
                         occupieds[meeting.getDay()][meeting.getPeriod()] = true;

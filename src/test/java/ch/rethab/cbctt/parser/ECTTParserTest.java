@@ -20,6 +20,18 @@ import static org.junit.Assert.assertTrue;
 public class ECTTParserTest {
 
     @Test
+    public void shouldProduceFeasibleTimetablesForCompTests() throws IOException {
+        for (int i = 1; i <= 21; i++) {
+            String filename = String.format("comp%02d.ectt", i);
+            System.out.println(filename);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            ECTTParser parser = new ECTTParser(br);
+            parser.parse();
+        }
+    }
+
+    @Test
     public void shouldSetTheAttributes() throws IOException {
         InputStream is = ECTTParserTest.class.getClassLoader().getResourceAsStream("toy.ectt");
         if (is == null) {

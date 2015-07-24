@@ -34,4 +34,22 @@ public class UnavailabilityConstraints {
             return !unavailability[day][period];
         }
     }
+
+    public int countByTeacher(String teacher) {
+        int counter = 0;
+        for (Map.Entry<Course, boolean[][]> courseEntry : unavailabilities.entrySet()) {
+            Course c = courseEntry.getKey();
+            if (teacher.equals(c.getTeacher())) {
+                boolean[][] unavailabilities = courseEntry.getValue();
+                for (int day = 0; day < unavailabilities.length; day++) {
+                    for (int period = 0; period < unavailabilities[day].length; period++) {
+                        if (unavailabilities[day][period]) {
+                            counter++;
+                        }
+                    }
+                }
+            }
+        }
+        return counter;
+    }
 }

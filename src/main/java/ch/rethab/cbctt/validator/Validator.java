@@ -7,5 +7,8 @@ import ch.rethab.cbctt.ea.Timetable;
  */
 public interface Validator {
 
-    boolean satisfiesHardConstraints(Timetable t);
+    /**
+     * Feasible means all hard constraints are satisfied
+     */
+    boolean isFeasible(Timetable t);
 }

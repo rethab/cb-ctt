@@ -23,11 +23,11 @@ public final class ECTTParser {
     private final Pattern stringValue = Pattern.compile("[^\\s]+: ([^\\s]+)");
     private final Pattern intValue = Pattern.compile("[^\\s]+: (\\d+)");
     private final Pattern twoIntValues = Pattern.compile("[^\\s]+: (\\d+) (\\d+)");
-    private final Pattern course = Pattern.compile("(\\w+) (\\w+) (\\d+) (\\d+) (\\d+) (\\d+)");
-    private final Pattern room = Pattern.compile("(\\w+) (\\d+) (\\d+)");
-    private final Pattern curriculum = Pattern.compile("(\\w+) (\\d+) (.+)");
-    private final Pattern unavailabilityConstraint = Pattern.compile("(\\w+) (\\d+) (\\d+)");
-    private final Pattern roomConstraint = Pattern.compile("(\\w+) (\\w+)");
+    private final Pattern course = Pattern.compile("([\\w\\-]+) ([\\w\\-]+) (\\d+) (\\d+) (\\d+) (\\d+)");
+    private final Pattern room = Pattern.compile("([\\w\\-]+) (\\d+) (\\d+)");
+    private final Pattern curriculum = Pattern.compile("([\\w\\-]+) (\\d+) (.+)");
+    private final Pattern unavailabilityConstraint = Pattern.compile("([\\w\\-]+) (\\d+) (\\d+).*");
+    private final Pattern roomConstraint = Pattern.compile("([\\w\\-]+) ([\\w\\-]+)");
 
     private BufferedReader reader;
 
@@ -126,7 +126,8 @@ public final class ECTTParser {
     private UnavailabilityConstraints parseUnavailabilityConstraints(int nunavailabilityConstraints, List<Course> courses, int daysPerWeek, int periodsPerDay) throws IOException {
         UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(daysPerWeek, periodsPerDay);
         for (int i = 0; i < nunavailabilityConstraints; i++) {
-            Matcher matcher = unavailabilityConstraint.matcher(reader.readLine());
+            String line = reader.readLine();
+            Matcher matcher = unavailabilityConstraint.matcher(line);
             if (matcher.matches()) {
                 String courseID = matcher.group(1);
                 int day = Integer.parseInt(matcher.group(2));
@@ -134,7 +135,7 @@ public final class ECTTParser {
                 Course course = getCourse(courseID, courses);
                 unavailabilityConstraints.addUnavailability(course, day, period);
             } else {
-                throw new IOException("Expected unavailability constraint");
+                throw new IOException("Expected unavailability constraint, but got '" + line + "'");
             }
         }
         return unavailabilityConstraints;
@@ -175,7 +176,8 @@ public final class ECTTParser {
 
     private void parseCourses(int ncourses, List<Course> courses) throws IOException {
         for (int i = 0; i < ncourses; i++) {
-            Matcher matcher = course.matcher(reader.readLine());
+            String line = reader.readLine();
+            Matcher matcher = course.matcher(line);
             if (matcher.matches()) {
                 String id = matcher.group(1);
                 String teacher = matcher.group(2);
@@ -186,7 +188,7 @@ public final class ECTTParser {
 
                 courses.add(new Course(id, teacher, nLectures, minWorkingDays, nStudents, doubleLectures));
             } else {
-                throw new IOException("Expected course");
+                throw new IOException("Expected course but got '"+line+"'");
             }
         }
     }

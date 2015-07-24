@@ -1,39 +1,60 @@
-package ch.rethab.cbctt.parser;
+package ch.rethab.cbctt.parser.initializer;
 
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Timetable;
-import ch.rethab.cbctt.ea.initializer.GreedyInitializer;
+import ch.rethab.cbctt.ea.initializer.Initializer;
+import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
+import ch.rethab.cbctt.parser.ECTTParser;
 import ch.rethab.cbctt.validator.UD1Validator;
 import ch.rethab.cbctt.validator.Validator;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class GreedyTest {
+public class TeacherGreedyTest {
 
-    GreedyInitializer greedy = new GreedyInitializer();
+    Initializer teacherGreedyInitializer = new TeacherGreedyInitializer();
 
     @Test
-    public void shouldProduceValidTimetable() {
+    public void shouldProduceValidToyTimetable() {
         Specification toySpec = testData();
         Validator v = new UD1Validator(toySpec);
 
-        for (Timetable t : greedy.initialize(toySpec, 20)) {
-            assertTrue(v.satisfiesHardConstraints(t));
+        for (Timetable t : teacherGreedyInitializer.initialize(toySpec, 20)) {
+            System.out.println("Toy Attempt");
+            assertTrue(v.isFeasible(t));
+        }
+    }
+
+    @Test
+    public void shouldProduceFeasibleTimetablesForCompTests() throws IOException {
+        for (int i = 1; i <= 21; i++) {
+            String filename = String.format("comp%02d.ectt", i);
+            System.out.println(filename);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            ECTTParser parser = new ECTTParser(br);
+            Specification spec = parser.parse();
+            Validator v = new UD1Validator(spec);
+            Timetable t = teacherGreedyInitializer.initialize(spec, 1).get(0);
+            assertTrue(v.isFeasible(t));
         }
     }
 
     @Test
     public void shouldProduceCorrectAmount() {
-        assertEquals(1,  greedy.initialize(testData(),  1).size());
-        assertEquals(10, greedy.initialize(testData(), 10).size());
+        assertEquals(1, teacherGreedyInitializer.initialize(testData(), 1).size());
+        assertEquals(10, teacherGreedyInitializer.initialize(testData(), 10).size());
     }
 
     private Specification testData() {

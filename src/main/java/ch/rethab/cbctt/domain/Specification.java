@@ -87,6 +87,10 @@ public class Specification {
     public Set<String> getTeachers() {
         return courses.stream().map(c -> c.getTeacher()).collect(Collectors.toSet());
     }
+
+    public Set<Curriculum> getByCourse(Course course) {
+        return curricula.stream().filter(c -> c.getCourses().contains(course)).collect(Collectors.toSet());
+    }
 }
 
 

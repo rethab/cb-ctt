@@ -28,6 +28,7 @@ public class LecturesConstraint implements Constraint {
 
             // all lectures scheduled
             if (meetings.size() != c.getNumberOfLectures()) {
+                System.out.printf("Not all lectures scheduled scheduled=%d vs amount=%d\n", meetings.size(), c.getNumberOfLectures());
                 return false;
             }
 
