@@ -1,9 +1,7 @@
-package ch.rethab.cbctt.parser.initializer;
+package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Timetable;
-import ch.rethab.cbctt.ea.initializer.Initializer;
-import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.parser.ECTTParser;
 import ch.rethab.cbctt.validator.UD1Validator;
 import ch.rethab.cbctt.validator.Validator;
@@ -31,7 +29,6 @@ public class TeacherGreedyTest {
         Validator v = new UD1Validator(toySpec);
 
         for (Timetable t : teacherGreedyInitializer.initialize(toySpec, 20)) {
-            System.out.println("Toy Attempt");
             assertTrue(v.isFeasible(t));
         }
     }
@@ -40,7 +37,6 @@ public class TeacherGreedyTest {
     public void shouldProduceFeasibleTimetablesForCompTests() throws IOException {
         for (int i = 1; i <= 21; i++) {
             String filename = String.format("comp%02d.ectt", i);
-            System.out.println(filename);
             InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             ECTTParser parser = new ECTTParser(br);
@@ -90,6 +86,30 @@ public class TeacherGreedyTest {
         roomConstraints.addRoomConstraint(tecCos, rC);
 
         return new Specification("Toy", 5, 4, 2, 3, courses, rooms, curricula, unavailabilityConstraints, roomConstraints);
+    }
+
+    @Test
+    public void shouldReachAllIndicesWithFlatTimetable() {
+        int ndays = 7;
+        int nperiods = 10;
+        TeacherGreedyInitializer.FlatTimetable t;
+        boolean reachedPeriods[];
+        for (int days = 2; days <= ndays-1; days++) {
+            for (int periods = 2; periods <= nperiods-1; periods++) {
+                t = new TeacherGreedyInitializer.FlatTimetable(days, periods);
+                reachedPeriods = new boolean[ndays*nperiods];
+
+                for (int i = 0; i < ndays * nperiods; i++) {
+                    int x = t.getX();
+                    reachedPeriods[x] = true;
+                    t.advancePeriod();
+                }
+
+                for (int i = 0; i < days * periods; i++) {
+                    assertTrue("Period "+i+" not reached", reachedPeriods[i]);
+                }
+            }
+        }
     }
 
 }

@@ -23,7 +23,6 @@ public class ECTTParserTest {
     public void shouldProduceFeasibleTimetablesForCompTests() throws IOException {
         for (int i = 1; i <= 21; i++) {
             String filename = String.format("comp%02d.ectt", i);
-            System.out.println(filename);
             InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             ECTTParser parser = new ECTTParser(br);

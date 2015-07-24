@@ -27,7 +27,6 @@ public class UD1Validator implements Validator {
     public boolean isFeasible(Timetable t) {
         for (Constraint constraint : hardConstraints) {
             if (!constraint.satisfies(t)) {
-                System.out.println("Constraint fails: " + constraint.getClass().getName());
                 return false;
             }
         }
