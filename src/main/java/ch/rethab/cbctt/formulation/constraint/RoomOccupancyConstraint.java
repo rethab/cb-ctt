@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
@@ -22,7 +22,8 @@ public class RoomOccupancyConstraint implements Constraint {
     }
 
     @Override
-    public boolean satisfies(Timetable t) {
+    public int violations(Timetable t) {
+        int count = 0;
         Map<Room, boolean[][]> occupies = new HashMap<>();
         for (Meeting meeting : t.getMeetings()) {
             boolean[][] roomOccupancy = occupies.get(meeting.getRoom());
@@ -32,11 +33,11 @@ public class RoomOccupancyConstraint implements Constraint {
             }
             boolean occupied = roomOccupancy[meeting.getDay()][meeting.getPeriod()];
             if (occupied) {
-                return false;
+                count++;
             } else {
                 roomOccupancy[meeting.getDay()][meeting.getPeriod()] = true;
             }
         }
-        return true;
+        return count;
     }
 }

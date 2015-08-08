@@ -3,6 +3,7 @@ package ch.rethab.cbctt.validator.constraint;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.formulation.constraint.ConflictsConstraint;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class ConflictsConstraintTest {
         // c4 has same teacher
         t.addMeeting(new Meeting(c2, r1, 0, 1));
         t.addMeeting(new Meeting(c4, r2, 1, 1));
-        assertFalse(conflictsConstraint.satisfies(t));
+        assertTrue(conflictsConstraint.violations(t) > 0);
     }
 
     @Test
@@ -52,7 +53,7 @@ public class ConflictsConstraintTest {
         t.addMeeting(new Meeting(c2, r1, 0, 2));
         t.addMeeting(new Meeting(c3, r2, 2, 1));
         t.addMeeting(new Meeting(c4, r2, 1, 1));
-        assertTrue(conflictsConstraint.satisfies(t));
+        assertEquals(0, conflictsConstraint.violations(t));
 
     }
 

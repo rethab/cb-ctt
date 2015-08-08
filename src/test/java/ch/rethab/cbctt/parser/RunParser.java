@@ -4,8 +4,9 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
-import ch.rethab.cbctt.validator.UD1Validator;
-import ch.rethab.cbctt.validator.Validator;
+import ch.rethab.cbctt.formulation.Formulation;
+import ch.rethab.cbctt.formulation.UD1Formulation;
+import ch.rethab.cbctt.formulation.constraint.Constraint;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,10 +30,18 @@ public class RunParser {
         ECTTParser parser = new ECTTParser(br);
         Specification spec = parser.parse();
         System.out.println("Parsed");
-        Validator v = new UD1Validator(spec);
+        Formulation v = new UD1Formulation(spec);
         Initializer initializer = new TeacherGreedyInitializer();
         List<Timetable> ts = initializer.initialize(spec, 1);
-        ts.forEach(t -> System.out.printf("Valid? %s", v.isFeasible(t)));
+        ts.forEach(t -> {
+            boolean feasible = true;
+            for (Constraint c : v.getConstraints()) {
+                if (c.violations(t) != 0) {
+                    feasible = false;
+                }
+            }
+            System.out.printf("Valid? %s", feasible);
+        });
     }
 
 }

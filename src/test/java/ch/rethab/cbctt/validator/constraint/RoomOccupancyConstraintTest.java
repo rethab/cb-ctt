@@ -3,6 +3,7 @@ package ch.rethab.cbctt.validator.constraint;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.formulation.constraint.RoomOccupancyConstraint;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class RoomOccupancyConstraintTest {
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r1, 0, 1));
-        assertFalse(roomOccupancyConstraint.satisfies(t));
+        assertTrue(roomOccupancyConstraint.violations(t) > 0);
     }
 
     @Test
@@ -46,7 +47,7 @@ public class RoomOccupancyConstraintTest {
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r3, 0, 1));
-        assertTrue(roomOccupancyConstraint.satisfies(t));
+        assertEquals(0, roomOccupancyConstraint.violations(t));
     }
 
 }

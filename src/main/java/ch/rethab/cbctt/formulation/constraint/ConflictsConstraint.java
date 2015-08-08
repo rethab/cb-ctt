@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
@@ -21,11 +21,12 @@ public class ConflictsConstraint implements Constraint {
     }
 
     @Override
-    public boolean satisfies(Timetable t) {
-        return satisfiesLecturesByCurricula(t) && satisfiesTeachers(t);
+    public int violations(Timetable t) {
+        return lecturesByCurriculaViolations(t) + teacherViolations(t);
     }
 
-    private boolean satisfiesTeachers(Timetable t) {
+    private int teacherViolations(Timetable t) {
+        int count = 0;
         for (String teacher : spec.getTeachers()) {
             // occupied day/periods by teacher
             boolean occupieds[][] = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
@@ -34,16 +35,17 @@ public class ConflictsConstraint implements Constraint {
             for (Meeting meeting : meetings) {
                 boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                 if (occupied) {
-                    return false;
+                    count++;
                 } else {
                     occupieds[meeting.getDay()][meeting.getPeriod()] = true;
                 }
             }
         }
-        return true;
+        return count;
     }
 
-    private boolean satisfiesLecturesByCurricula(Timetable t) {
+    private int lecturesByCurriculaViolations(Timetable t) {
+        int count = 0;
         for (Curriculum curriculum : spec.getCurricula()) {
             // no two lectures within curriculum on same day
             boolean occupieds[][] = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
@@ -52,7 +54,7 @@ public class ConflictsConstraint implements Constraint {
                 for (Meeting meeting : meetings) {
                     boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                     if (occupied) {
-                        return false;
+                        count++;
                     } else {
                         occupieds[meeting.getDay()][meeting.getPeriod()] = true;
                     }
@@ -60,6 +62,6 @@ public class ConflictsConstraint implements Constraint {
 
             }
         }
-        return true;
+        return count;
     }
 }

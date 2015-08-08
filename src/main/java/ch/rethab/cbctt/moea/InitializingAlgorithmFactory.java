@@ -1,0 +1,56 @@
+package ch.rethab.cbctt.moea;
+
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation;
+import org.moeaframework.core.*;
+import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
+
+import java.util.Properties;
+
+
+/**
+ * @author Reto Habluetzel, 2015
+ */
+public class InitializingAlgorithmFactory extends AlgorithmFactory {
+
+    @Override
+    public synchronized Algorithm getAlgorithm(String name, Properties properties, Problem problem) {
+        TypedProperties typedProps = new TypedProperties(properties);
+        if (name.equals("NSGAIII"))  {
+            return newNSGAIII(typedProps, problem);
+        } else {
+            throw new IllegalArgumentException("Unhandled Algorithm: " + name);
+        }
+    }
+
+    private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
+        int populationSize = (int)properties.getDouble("populationSize", 100.0D);
+
+        ReferencePointNondominatedSortingPopulation population = null;
+        int selection;
+        if(properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
+            selection = (int)properties.getDouble("divisionsOuter", 4.0D);
+            int variation = (int)properties.getDouble("divisionsInner", 0.0D);
+            population = new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), selection, variation);
+        } else {
+            selection = (int)properties.getDouble("divisions", 4.0D);
+            population = new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), selection);
+        }
+
+        Initialization initialization;
+        if (problem instanceof TimetablingProblem) {
+            initialization = ((TimetablingProblem)problem).getInitialization(populationSize);
+        } else {
+            initialization = new RandomInitialization(problem, populationSize);
+        }
+
+        TournamentSelection selection1 = new TournamentSelection(2, new ParetoDominanceComparator());
+        Variation variation1 = OperatorFactory.getInstance().getVariation(null, properties, problem);
+        return new NSGAII(problem, population, null, selection1, variation1, initialization);
+    }
+}

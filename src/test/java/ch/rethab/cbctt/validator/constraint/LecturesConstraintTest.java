@@ -3,6 +3,7 @@ package ch.rethab.cbctt.validator.constraint;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.formulation.constraint.LecturesConstraint;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class LecturesConstraintTest {
         // two lectures of same course at same period
         t.addMeeting(new Meeting(c2, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
-        assertFalse(lecturesConstraint.satisfies(t));
+        assertTrue(lecturesConstraint.violations(t) > 0);
     }
 
     @Test
@@ -45,7 +46,7 @@ public class LecturesConstraintTest {
 
         t.addMeeting(new Meeting(c2, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 1, 1));
-        assertTrue(lecturesConstraint.satisfies(t));
+        assertEquals(0, lecturesConstraint.violations(t));
     }
 
     @Test
@@ -55,7 +56,7 @@ public class LecturesConstraintTest {
 
         // course 2 consists of 2 lectures
         t.addMeeting(new Meeting(c2, r1, 0, 1));
-        assertFalse(lecturesConstraint.satisfies(t));
+        assertTrue(lecturesConstraint.violations(t) > 0);
     }
 
 

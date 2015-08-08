@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.ea.Timetable;
 
@@ -7,5 +7,5 @@ import ch.rethab.cbctt.ea.Timetable;
  */
 public interface Constraint {
 
-    boolean satisfies(Timetable t);
+    int violations(Timetable t);
 }

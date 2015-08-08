@@ -3,6 +3,7 @@ package ch.rethab.cbctt.validator.constraint;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.formulation.constraint.TeacherAvailabilityConstraint;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +45,7 @@ public class RoomAvailabilityTest {
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r1, 0, 1));
-        assertFalse(teacherAvailabilityConstraint.satisfies(t));
+        assertTrue(teacherAvailabilityConstraint.violations(t) > 0);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class RoomAvailabilityTest {
         t.addMeeting(new Meeting(c1, r1, 1, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r3, 0, 1));
-        assertTrue(teacherAvailabilityConstraint.satisfies(t));
+        assertEquals(0, teacherAvailabilityConstraint.violations(t));
     }
 
 }

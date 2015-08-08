@@ -2,9 +2,10 @@ package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.formulation.Formulation;
+import ch.rethab.cbctt.formulation.UD1Formulation;
+import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.parser.ECTTParser;
-import ch.rethab.cbctt.validator.UD1Validator;
-import ch.rethab.cbctt.validator.Validator;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -26,10 +27,12 @@ public class TeacherGreedyTest {
     @Test
     public void shouldProduceValidToyTimetable() {
         Specification toySpec = testData();
-        Validator v = new UD1Validator(toySpec);
+        Formulation v = new UD1Formulation(toySpec);
 
         for (Timetable t : teacherGreedyInitializer.initialize(toySpec, 20)) {
-            assertTrue(v.isFeasible(t));
+            for (Constraint c : v.getConstraints()) {
+                assertEquals(0, c.violations(t));
+            }
         }
     }
 
@@ -41,9 +44,11 @@ public class TeacherGreedyTest {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             ECTTParser parser = new ECTTParser(br);
             Specification spec = parser.parse();
-            Validator v = new UD1Validator(spec);
+            Formulation v = new UD1Formulation(spec);
             Timetable t = teacherGreedyInitializer.initialize(spec, 1).get(0);
-            assertTrue(v.isFeasible(t));
+            for (Constraint c : v.getConstraints()) {
+                assertEquals(0, c.violations(t));
+            }
         }
     }
 

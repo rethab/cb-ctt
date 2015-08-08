@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.domain.UnavailabilityConstraints;
@@ -17,13 +17,14 @@ public class TeacherAvailabilityConstraint implements Constraint {
     }
 
     @Override
-    public boolean satisfies(Timetable t) {
+    public int violations(Timetable t) {
+        int count = 0;
         UnavailabilityConstraints unav = spec.getUnavailabilityConstraints();
         for (Meeting m : t.getMeetings()) {
             if (!unav.checkAvailability(m.getCourse(), m.getDay(), m.getPeriod())) {
-                return false;
+                count++;
             }
         }
-        return true;
+        return count;
     }
 }

@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 
 import ch.rethab.cbctt.domain.Course;
@@ -22,13 +22,14 @@ public class LecturesConstraint implements Constraint {
     }
 
     @Override
-    public boolean satisfies(Timetable t) {
+    public int violations(Timetable t) {
+        int count = 0;
         for (Course c : spec.getCourses()) {
             List<Meeting> meetings = t.getMeetingsByCourse(c);
 
             // all lectures scheduled
             if (meetings.size() != c.getNumberOfLectures()) {
-                return false;
+                count++;
             }
 
             // no two meetings at the same time
@@ -36,12 +37,12 @@ public class LecturesConstraint implements Constraint {
             for (Meeting m : meetings) {
                 boolean occupied = occupieds[m.getDay()][m.getPeriod()];
                 if (occupied) {
-                    return false;
+                    count++;
                 } else {
                     occupieds[m.getDay()][m.getPeriod()] = true;
                 }
             }
         }
-        return true;
+        return count;
     }
 }
