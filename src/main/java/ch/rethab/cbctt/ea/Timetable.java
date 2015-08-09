@@ -3,6 +3,7 @@ package ch.rethab.cbctt.ea;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Room;
+import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,20 +62,24 @@ public class Timetable {
         return copy;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-
-        curriculumTimetables.forEach((cid, timetable) -> {
-            sb.append("Curriculum: ").append(cid).append("\n");
-            sb.append(timetable.toString());
-            sb.append("\n");
-        });
-
-        return sb.toString();
+    public Map<String, CurriculumTimetable> getCurriculumTimetables() {
+        return Collections.unmodifiableMap(curriculumTimetables);
     }
 
-    private final class CurriculumTimetable {
+    @Override
+    public String toString() {
+        return new PrettyTextPrinter().print(this);
+    }
+
+    public int getPeriodsPerDay() {
+        return periodsPerDay;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public final class CurriculumTimetable {
 
         // Array of Meeting (array elements are timeslots)
         private final Meeting[] meetings;
@@ -103,6 +108,10 @@ public class Timetable {
             meetings[slotIdx] = meeting;
             occupancy[slotIdx] = true;
         }
+        
+        public Meeting get(int slotIdx) {
+            return meetings[slotIdx];
+        }
 
         public Set<Meeting> getMeetingsByCourse(Course c) {
             return Arrays.stream(meetings).filter(m -> m != null && m.getCourse().getId().equals(c.getId())).collect(Collectors.toSet());
@@ -114,67 +123,6 @@ public class Timetable {
 
         public Stream<Meeting> getAll() {
             return Arrays.stream(meetings).filter(m -> m != null);
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-
-            int cellLen = 10;
-            int days = meetings.length / periodsPerDay;
-            int lineLen = cellLen * (days + 1);
-
-            // headline
-            sb.append(padLeft("", cellLen));
-            IntStream.range(0, days).forEach(day ->
-                    sb.append(padLeft(String.format("Day %2d", day), cellLen))
-            );
-            sb.append("\n");
-
-            for (int period = 0; period < periodsPerDay; period++) {
-
-                sb.append(repeat("-", lineLen)).append("\n");
-
-                // course
-                sb.append(padLeft(String.format("Slot %2d | ", period), cellLen));
-                for (int day = 0; day < days; day++) {
-                    int slotIdx = day * periodsPerDay + period;
-                    Meeting m = meetings[slotIdx];
-                    sb.append(padLeft(m != null ? m.getCourse().getId() : "", cellLen));
-                }
-                sb.append("\n");
-
-                // room
-                sb.append(padLeft("| ", cellLen));
-                for (int day = 0; day < days; day++) {
-                    int slotIdx = day * periodsPerDay + period;
-                    Meeting m = meetings[slotIdx];
-                    sb.append(padLeft(m != null ? m.getRoom().getId() : "", cellLen));
-                }
-                sb.append("\n");
-
-                // teacher
-                sb.append(padLeft("| ", cellLen));
-                for (int day = 0; day < days; day++) {
-                    int slotIdx = day * periodsPerDay + period;
-                    Meeting m = meetings[slotIdx];
-                    sb.append(padLeft(m != null ? m.getCourse().getTeacher() : "", cellLen));
-                }
-
-                sb.append("\n");
-            }
-
-            return sb.toString();
-        }
-
-        // source: http://stackoverflow.com/questions/388461/how-can-i-pad-a-string-in-java/391978#391978
-        private String padLeft(String s, int n) {
-            return String.format("%1$" + n + "s", s);
-        }
-
-        // source: http://stackoverflow.com/a/4903603
-        private String repeat(String s, int n) {
-            return new String(new char[n]).replace("\0", s);
         }
     }
 

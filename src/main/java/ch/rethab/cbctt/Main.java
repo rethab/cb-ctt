@@ -4,6 +4,7 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.DummyVariation;
+import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
@@ -41,7 +42,6 @@ public class Main {
                 .withMaxEvaluations(100)
                 .run();
 
-        System.out.println(result.size());
-        System.out.println(solutionConverter.fromSolution(result.get(0)));
+        System.out.println(new PrettyTextPrinter().print(solutionConverter.fromSolution(result.get(0))));
     }
 }
