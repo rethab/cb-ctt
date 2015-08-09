@@ -4,7 +4,8 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.DummyVariation;
-import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
+import ch.rethab.cbctt.ea.printer.Printer;
+import ch.rethab.cbctt.ea.printer.UdinePrinter;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
@@ -14,7 +15,10 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.operator.CompoundVariation;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -42,6 +46,7 @@ public class Main {
                 .withMaxEvaluations(100)
                 .run();
 
-        System.out.println(new PrettyTextPrinter().print(solutionConverter.fromSolution(result.get(0))));
+        Printer p = new UdinePrinter();
+        System.out.println(p.print(solutionConverter.fromSolution(result.get(0))));
     }
 }

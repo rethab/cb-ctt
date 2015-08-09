@@ -3,7 +3,6 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
-import ch.rethab.cbctt.ea.op.DummyVariation;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.InitializerAdapter;

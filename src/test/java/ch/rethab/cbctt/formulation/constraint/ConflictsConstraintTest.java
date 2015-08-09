@@ -3,7 +3,6 @@ package ch.rethab.cbctt.formulation.constraint;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
-import ch.rethab.cbctt.formulation.constraint.ConflictsConstraint;
 import org.junit.Test;
 
 import java.util.Arrays;
