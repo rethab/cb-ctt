@@ -9,7 +9,15 @@ import ch.rethab.cbctt.ea.Timetable;
 import java.util.List;
 
 /**
- * Lectures of same curriculum or same teacher must be in different periods
+ * From 'Benchmarking Curriculum-Based Course Timetabling:
+ *       Formulations, Data Formats, Instances, Validation, and
+ *       Results' (De Cesco et al):
+ *
+ * Conflicts: Lectures of courses in the same curriculum or taught by the same teacher
+ * must be all scheduled in different periods. Two conflicting lectures in the same
+ * period represent one violation. Three conflicting lectures count as 3 violations: one
+ * for each pair.
+ *
  * @author Reto Habluetzel, 2015
  */
 public class ConflictsConstraint implements Constraint {

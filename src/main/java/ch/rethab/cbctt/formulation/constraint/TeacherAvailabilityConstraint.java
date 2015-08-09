@@ -6,6 +6,14 @@ import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 
 /**
+ * From 'Benchmarking Curriculum-Based Course Timetabling:
+ *       Formulations, Data Formats, Instances, Validation, and
+ *       Results' (De Cesco et al):
+ *
+ * Availability: If the teacher of the course is not available to teach that course at a given
+ * period, then no lecture of the course can be scheduled at that period. Each lecture
+ * in a period unavailable for that course is one violation.
+ *
  * @author Reto Habluetzel, 2015
  */
 public class TeacherAvailabilityConstraint implements Constraint {

@@ -2,17 +2,15 @@ package ch.rethab.cbctt.parser;
 
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
-import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.domain.Room;
+import ch.rethab.cbctt.domain.Specification;
 import org.junit.Test;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Reto Habluetzel, 2015

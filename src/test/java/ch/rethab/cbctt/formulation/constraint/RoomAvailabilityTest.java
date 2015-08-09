@@ -1,9 +1,9 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
-import ch.rethab.cbctt.formulation.constraint.RoomOccupancyConstraint;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 /**
  * @author Reto Habluetzel, 2015
  */
-public class RoomOccupancyConstraintTest {
+public class RoomAvailabilityTest {
 
     Course c1 = new Course("c1", "t1", 1, 1, 40, true);
     Course c2 = new Course("c2", "t2", 1, 1, 15, true);
@@ -30,24 +30,30 @@ public class RoomOccupancyConstraintTest {
     RoomConstraints roomConstraints = new RoomConstraints();
 
     Specification spec = new Specification("spec1", 5, 4, 3, 5, Arrays.asList(c1, c2, c3), Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2), unavailabilityConstraints, roomConstraints);
-    RoomOccupancyConstraint roomOccupancyConstraint = new RoomOccupancyConstraint(spec);
+    TeacherAvailabilityConstraint teacherAvailabilityConstraint = new TeacherAvailabilityConstraint(spec);
 
-    @Test
-    public void shouldFailWithTwoLecturesInSameRoomAtSamePeriod() {
-        Timetable t = new Timetable();
-        t.addMeeting(new Meeting(c1, r1, 0, 1));
-        t.addMeeting(new Meeting(c2, r2, 0, 1));
-        t.addMeeting(new Meeting(c3, r1, 0, 1));
-        assertTrue(roomOccupancyConstraint.violations(t) > 0);
+    @Before
+    public void init() {
+        unavailabilityConstraints.addUnavailability(c1, 0, 1);
     }
 
     @Test
-    public void shouldSucceedWithDifferentRoomsPerPeriod() {
+    public void shouldFailWithTeacherNotAvailable() {
         Timetable t = new Timetable();
+        // teacher not available
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
+        t.addMeeting(new Meeting(c3, r1, 0, 1));
+        assertTrue(teacherAvailabilityConstraint.violations(t) > 0);
+    }
+
+    @Test
+    public void shouldSucceedWithTeacherAvailable() {
+        Timetable t = new Timetable();
+        t.addMeeting(new Meeting(c1, r1, 1, 1));
+        t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r3, 0, 1));
-        assertEquals(0, roomOccupancyConstraint.violations(t));
+        assertEquals(0, teacherAvailabilityConstraint.violations(t));
     }
 
 }

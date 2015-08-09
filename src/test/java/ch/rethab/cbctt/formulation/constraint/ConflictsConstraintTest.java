@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.validator.constraint;
+package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;

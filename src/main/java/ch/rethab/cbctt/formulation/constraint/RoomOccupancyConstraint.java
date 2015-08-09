@@ -9,7 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Only one lecture may be scheduled in a room at a certain period
+ * From 'Benchmarking Curriculum-Based Course Timetabling:
+ *       Formulations, Data Formats, Instances, Validation, and
+ *       Results' (De Cesco et al):
+ *
+ * RoomOccupancy: Two lectures cannot take place in the same room in the same period.
+ * Two lectures in the same room at the same period represent one violation. Any
+ * extra lecture in the same period and room counts as one more violation. * @author Reto Habluetzel, 2015
  *
  * @author Reto Habluetzel, 2015
  */

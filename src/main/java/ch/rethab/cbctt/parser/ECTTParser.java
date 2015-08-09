@@ -1,8 +1,6 @@
 package ch.rethab.cbctt.parser;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.domain.RoomConstraints;
-import ch.rethab.cbctt.domain.UnavailabilityConstraints;
 
 import java.io.BufferedReader;
 import java.io.IOException;

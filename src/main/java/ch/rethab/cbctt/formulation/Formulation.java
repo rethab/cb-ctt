@@ -1,12 +1,16 @@
 package ch.rethab.cbctt.formulation;
 
-import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
 
-import java.util.List;
-import java.util.Map;
-
 /**
+ *
+ * Problem formulation. Each timetable may be solved with certain
+ * objectives to be optimized. Depending on the specific formulation,
+ * different objectives are optimized and each of them is weighted
+ * differently.
+ *
+ * The weight has originally been added in order to convert these
+ * problems to single-optimization problems.
  *
  * See 'Benchmarking Curriculum-Based Course Timetabling: Formulations,
         Data Formats, Instances, Validation, and Results' (De Cesco et al).

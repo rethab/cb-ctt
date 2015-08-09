@@ -3,6 +3,7 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
+import ch.rethab.cbctt.ea.op.DummyVariation;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.InitializerAdapter;
@@ -10,6 +11,7 @@ import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.moea.TimetablingProblem;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variation;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -23,17 +25,26 @@ public class CurriculumBasedTimetabling implements TimetablingProblem {
     private final Formulation formulation;
 
     private final SolutionConverter solutionConverter;
+    
+    private final Variation variation;
 
-    public CurriculumBasedTimetabling(Specification spec, Initializer initializer, Formulation formulation, SolutionConverter solutionConverter) {
+    public CurriculumBasedTimetabling(Specification spec, Initializer initializer, Formulation formulation,
+                                      SolutionConverter solutionConverter, Variation variation) {
         this.spec = spec;
         this.initializer = initializer;
         this.formulation = formulation;
         this.solutionConverter = solutionConverter;
+        this.variation = variation;
     }
 
     @Override
     public Initialization getInitialization(int populationSize) {
         return new InitializerAdapter(this.formulation, this.initializer, spec, populationSize);
+    }
+
+    @Override
+    public Variation getVariation() {
+        return variation;
     }
 
     public Formulation getFormulation() {
@@ -62,6 +73,7 @@ public class CurriculumBasedTimetabling implements TimetablingProblem {
 
     @Override
     public void evaluate(Solution solution) {
+        System.out.println("Evaluate");
         Timetable t = solutionConverter.fromSolution(solution);
 
         for (int i = 0; i < this.formulation.getConstraints().length; i++) {
@@ -79,7 +91,7 @@ public class CurriculumBasedTimetabling implements TimetablingProblem {
 
     @Override
     public Solution newSolution() {
-        throw new IllegalStateException("I believe this is not used in NSGA-III");
+        throw new UnsupportedOperationException("I don't think this is required here");
     }
 
     @Override

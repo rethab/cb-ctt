@@ -9,7 +9,13 @@ import ch.rethab.cbctt.ea.Timetable;
 import java.util.List;
 
 /**
- * All lectures of a course have are scheduled at distinct periods
+ * From 'Benchmarking Curriculum-Based Course Timetabling:
+ *       Formulations, Data Formats, Instances, Validation, and
+ *       Results' (De Cesco et al):
+ *
+ * Lectures: All lectures of a course must be scheduled, and they must be assigned to
+ * distinct periods. A violation occurs if a lecture is not scheduled or two lectures are
+ * in the same period.
  *
  * @author Reto Habluetzel, 2015
  */

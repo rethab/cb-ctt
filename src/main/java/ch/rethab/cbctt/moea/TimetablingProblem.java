@@ -3,6 +3,7 @@ package ch.rethab.cbctt.moea;
 import ch.rethab.cbctt.formulation.Formulation;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
 
 /**
  * Extension of the standard MOEA problem for udinese-style timetabling.
@@ -21,5 +22,7 @@ public interface TimetablingProblem extends Problem {
     Initialization getInitialization(int populationSize);
 
     Formulation getFormulation();
+
+    Variation getVariation();
 
 }

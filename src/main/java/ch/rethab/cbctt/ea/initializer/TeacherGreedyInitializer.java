@@ -53,6 +53,7 @@ public class TeacherGreedyInitializer implements Initializer {
 
     @Override
     public List<Timetable> initialize(Specification spec, int size) {
+        System.out.println("PopulationSize: " + size);
         this.hardness = new HashMap<>();
         return IntStream.range(0, size).mapToObj(i -> createTimetable(spec)).collect(Collectors.toList());
     }
