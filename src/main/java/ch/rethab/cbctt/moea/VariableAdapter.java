@@ -16,9 +16,7 @@ public class VariableAdapter implements Variable {
 
     @Override
     public Variable copy() {
-        Timetable copy = new Timetable();
-        this.timetable.getMeetings().forEach(copy::addMeeting);
-        return new VariableAdapter(copy);
+        return new VariableAdapter(timetable.copy());
     }
 
     public Timetable getTimetable() {

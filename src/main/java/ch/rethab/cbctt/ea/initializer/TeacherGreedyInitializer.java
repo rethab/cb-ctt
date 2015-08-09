@@ -153,7 +153,7 @@ public class TeacherGreedyInitializer implements Initializer {
     }
 
     private Timetable toTimetable(Specification spec, FlatTimetable timetable) {
-        Timetable t = new Timetable();
+        Timetable t = new Timetable(spec.getCurricula(), spec.getNumberOfDaysPerWeek(), spec.getPeriodsPerDay(), spec.getRooms());
         for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
             for (int period = 0; period < spec.getPeriodsPerDay(); period++) {
                 Iterator<Room> rooms = spec.getRooms().iterator();

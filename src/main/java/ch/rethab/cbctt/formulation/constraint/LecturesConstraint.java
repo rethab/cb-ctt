@@ -7,6 +7,7 @@ import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * From 'Benchmarking Curriculum-Based Course Timetabling:
@@ -31,7 +32,7 @@ public class LecturesConstraint implements Constraint {
     public int violations(Timetable t) {
         int count = 0;
         for (Course c : spec.getCourses()) {
-            List<Meeting> meetings = t.getMeetingsByCourse(c);
+            Set<Meeting> meetings = t.getMeetingsByCourse(c);
 
             // all lectures scheduled
             if (meetings.size() != c.getNumberOfLectures()) {

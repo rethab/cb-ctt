@@ -150,7 +150,10 @@ public final class ECTTParser {
                 if (curriculumCurses.size() != nCurses) {
                     throw new IOException("Expected " + ncourses + " but got " + curriculumCurses.size());
                 }
-                curricula.add(new Curriculum(id, curriculumCurses));
+                Curriculum c = new Curriculum(id, curriculumCurses);
+
+                curriculumCurses.forEach(course -> course.setCurriculum(c));
+                curricula.add(c);
             } else {
                 throw new IOException("Expected curriculum");
             }

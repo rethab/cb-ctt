@@ -7,6 +7,7 @@ import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * From 'Benchmarking Curriculum-Based Course Timetabling:
@@ -39,7 +40,7 @@ public class ConflictsConstraint implements Constraint {
             // occupied day/periods by teacher
             boolean occupieds[][] = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
 
-            List<Meeting> meetings = t.getMeetingsByTeacher(teacher);
+            Set<Meeting> meetings = t.getMeetingsByTeacher(teacher);
             for (Meeting meeting : meetings) {
                 boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                 if (occupied) {
@@ -58,7 +59,7 @@ public class ConflictsConstraint implements Constraint {
             // no two lectures within curriculum on same day
             boolean occupieds[][] = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
             for (Course course : curriculum.getCourses()) {
-                List<Meeting> meetings = t.getMeetingsByCourse(course);
+                Set<Meeting> meetings = t.getMeetingsByCourse(course);
                 for (Meeting meeting : meetings) {
                     boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                     if (occupied) {

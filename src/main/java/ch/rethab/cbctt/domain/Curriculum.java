@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.domain;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +11,11 @@ public class Curriculum {
 
     private final String id;
 
-    private final List<Course> courses;
+    private List<Course> courses;
+
+    public Curriculum(String id) {
+        this(id, Collections.<Course>emptyList());
+    }
 
     public Curriculum(String id, List<Course> courses) {
         this.id = id;
@@ -38,6 +43,14 @@ public class Curriculum {
         sb.append(", courses=").append(courses);
         sb.append('}');
         return sb.toString();
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public List<Course> getCourses() {

@@ -42,5 +42,6 @@ public class Main {
                 .run();
 
         System.out.println(result.size());
+        System.out.println(solutionConverter.fromSolution(result.get(0)));
     }
 }
