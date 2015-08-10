@@ -152,7 +152,7 @@ public final class ECTTParser {
                 }
                 Curriculum c = new Curriculum(id, curriculumCurses);
 
-                curriculumCurses.forEach(course -> course.setCurriculum(c));
+                curriculumCurses.forEach(course -> course.setCurriculum(c.getId()));
                 curricula.add(c);
             } else {
                 throw new IOException("Expected curriculum");

@@ -9,7 +9,7 @@ public class Course {
 
     private final String id;
 
-    private Curriculum curriculum;
+    private String curriculum;
 
     private final String teacher;
 
@@ -25,7 +25,7 @@ public class Course {
         this(id, null, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
     }
 
-    public Course(String id, Curriculum curriculum, String teacher, int nLectures, int nWorkingDays, int nStudents, boolean doubleLectures) {
+    public Course(String id, String curriculum, String teacher, int nLectures, int nWorkingDays, int nStudents, boolean doubleLectures) {
         this.id = id;
         this.curriculum = curriculum;
         this.teacher = teacher;
@@ -78,11 +78,11 @@ public class Course {
         return teacher;
     }
 
-    public Curriculum getCurriculum() {
+    public String getCurriculum() {
         return curriculum;
     }
 
-    public void setCurriculum(Curriculum c) {
+    public void setCurriculum(String c) {
         this.curriculum = c;
     }
 }

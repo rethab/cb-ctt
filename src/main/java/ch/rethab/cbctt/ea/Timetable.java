@@ -24,13 +24,7 @@ public class Timetable {
 
     private final int periodsPerDay;
 
-    public Timetable(List<Curriculum> curricula, int days, int periodsPerDay, List<Room> rooms) {
-        this(curricula.stream().map(Curriculum::getId).collect(Collectors.toSet()),
-             rooms.stream().map(Room::getId).collect(Collectors.toSet()),
-             days, periodsPerDay);
-    }
-
-    private Timetable(Set<String> curricula, Set<String> rooms, int days, int periodsPerDay) {
+    public Timetable(Set<String> curricula, Set<String> rooms, int days, int periodsPerDay) {
         this.days = days;
         this.periodsPerDay = periodsPerDay;
         curricula.forEach(cid -> curriculumTimetables.put(cid, new CurriculumTimetable(days, periodsPerDay)));
@@ -38,12 +32,12 @@ public class Timetable {
     }
 
     public void addMeeting(Meeting meeting) {
-        String currID = meeting.getCourse().getCurriculum().getId();
+        String currID = meeting.getCourse().getCurriculum();
         curriculumTimetables.get(currID).setMeeting(meeting);
     }
 
     public Set<Meeting> getMeetingsByCourse(Course c) {
-        String currID = c.getCurriculum().getId();
+        String currID = c.getCurriculum();
         return curriculumTimetables.get(currID).getMeetingsByCourse(c);
     }
 
