@@ -95,7 +95,7 @@ public class Timetable {
             }
 
             if (meetings[slotIdx] != null) {
-                throw new IllegalStateException("Meeting should not be occupied due to room constraint list");
+                throw new InfeasibilityException("Meeting should not be occupied due to room constraint list");
             }
 
             meetings[slotIdx] = meeting;
@@ -119,7 +119,7 @@ public class Timetable {
         }
     }
 
-    private static final class InfeasibilityException extends RuntimeException {
+    public static final class InfeasibilityException extends RuntimeException {
         public InfeasibilityException(String message) {
             super(message);
         }

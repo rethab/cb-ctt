@@ -7,7 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -16,46 +18,46 @@ import static org.junit.Assert.*;
  */
 public class RoomOccupancyConstraintTest {
 
-    Course c1, c2, c3;
+    int days = 5;
+    int periodsPerDay = 4;
 
     Curriculum cur1 = new Curriculum("curr1");
     Curriculum cur2 = new Curriculum("curr2");
+    Set<String> curricula = new HashSet(Arrays.asList(cur1.getId(), cur2.getId()));
 
-    List<Curriculum> curricula = Arrays.asList(cur1, cur2);
+    Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 40, true);
+    Course c2 = new Course("c2", cur1.getId(), "t2", 1, 1, 15, true);
+    Course c3 = new Course("c3", cur2.getId(), "t3", 1, 1, 15, true);
 
     Room r1 = new Room("r1", 40, 1);
     Room r2 = new Room("r2", 30, 1);
     Room r3 = new Room("r3", 14, 0);
+    Set<String> rooms = new HashSet<>(Arrays.asList(r1.getId(), r2.getId(), r3.getId()));
 
-    UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(5, 4);
+    UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(days, periodsPerDay);
     RoomConstraints roomConstraints = new RoomConstraints();
 
-    Specification spec = new Specification("spec1", 5, 4, 3, 5, Arrays.asList(c1, c2, c3), Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2), unavailabilityConstraints, roomConstraints);
+    Specification spec = new Specification("spec1", days, periodsPerDay, 3, 5, Arrays.asList(c1, c2, c3), Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2), unavailabilityConstraints, roomConstraints);
     RoomOccupancyConstraint roomOccupancyConstraint = new RoomOccupancyConstraint(spec);
 
     @Before
     public void init() {
         cur1.setCourses(Arrays.asList(c1, c2));
         cur2.setCourses(Arrays.asList(c3));
-
-        c1 = new Course("c1", cur1, "t1", 1, 1, 40, true);
-        c2 = new Course("c2", cur1, "t2", 1, 1, 15, true);
-        c3 = new Course("c3", cur2, "t3", 1, 1, 15, true);
-
     }
 
     @Test
     public void shouldFailWithTwoLecturesInSameRoomAtSamePeriod() {
-        Timetable t = new Timetable(curricula, );
+        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r1, 0, 1));
-        assertTrue(roomOccupancyConstraint.violations(t) > 0);
+        assertEquals(1, roomOccupancyConstraint.violations(t));
     }
 
     @Test
     public void shouldSucceedWithDifferentRoomsPerPeriod() {
-        Timetable t = new Timetable(curricula);
+        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r3, 0, 1));

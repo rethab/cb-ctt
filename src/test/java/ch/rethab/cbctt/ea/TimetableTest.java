@@ -17,19 +17,31 @@ import static org.junit.Assert.*;
  */
 public class TimetableTest {
 
-    @Test
+    Curriculum cur1 = new Curriculum("curr1");
+    Curriculum cur2 = new Curriculum("curr2");
+    Set<String> curricula = new HashSet<>(Arrays.asList(cur1.getId(), cur2.getId()));
+
+    Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 1, false);
+    Course c2 = new Course("c2", cur1.getId(), "t2", 1, 1, 1, false);
+
+    Room r1 = new Room("r1", 1, 1);
+    Room r2 = new Room("r2", 1, 1);
+    Set<String> rooms = new HashSet<>(Arrays.asList(r1.getId(), r2.getId()));
+
+    @Test(expected = Timetable.InfeasibilityException.class)
     public void shouldNotAllowTwoMeetingsAtTheSameTime() {
-        Set<String> curricula = new HashSet(Arrays.asList(new String[] {"curr1"}));
-        Set<String> rooms = new HashSet(Arrays.asList(new String[] {"r1"}));
         Timetable tt = new Timetable(curricula, rooms, 1, 1);
 
-        tt.addMeeting(new Meeting(new Course("c1", "curr1", 1, 1, 1, false), new Room("r1", 1, 1), 0, 0));
-        tt.addMeeting(new Meeting(new Course("c2", "curr1", 1, 1, 1, false), new Room("r1", 1, 1), 0, 0));
+        tt.addMeeting(new Meeting(c1, r1, 0, 0));
+        tt.addMeeting(new Meeting(c2, r1, 0, 0));
     }
 
-    @Test
-    public void makeMoreIntegrityTests() {
-        fail("make more integrity tests");
+    @Test(expected = Timetable.InfeasibilityException.class)
+    public void shouldNotAllowToScheduleTwoCoursesOfSameCurriculumAtSameTime() {
+        Timetable tt = new Timetable(curricula, rooms, 1, 1);
+
+        tt.addMeeting(new Meeting(c1, r1, 0, 0));
+        tt.addMeeting(new Meeting(c2, r2, 0, 0));
     }
 
 }

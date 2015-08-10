@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * RoomOccupancy: Two lectures cannot take place in the same room in the same period.
  * Two lectures in the same room at the same period represent one violation. Any
- * extra lecture in the same period and room counts as one more violation. * @author Reto Habluetzel, 2015
+ * extra lecture in the same period and room counts as one more violation.
  *
  * @author Reto Habluetzel, 2015
  */
