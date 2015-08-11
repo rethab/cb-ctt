@@ -24,10 +24,10 @@ public class ConflictsConstraintTest {
     Curriculum cur2 = new Curriculum("curr2");
     Set<String> curricula = new HashSet<>(Arrays.asList(cur1.getId(), cur2.getId()));
 
-    Course c1 = new Course("c1", "cur1", "t1", 1, 1, 40, true);
-    Course c2 = new Course("c2", "cur1", "t2", 1, 1, 15, true);
-    Course c3 = new Course("c3", "cur2", "t3", 1, 1, 15, true);
-    Course c4 = new Course("c4", "cur2", "t2", 1, 1, 15, true);
+    Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 40, true);
+    Course c2 = new Course("c2", cur1.getId(), "t2", 1, 1, 15, true);
+    Course c3 = new Course("c3", cur2.getId(), "t3", 1, 1, 15, true);
+    Course c4 = new Course("c4", cur2.getId(), "t2", 1, 1, 15, true);
 
 
     Room r1 = new Room("r1", 40, 1);

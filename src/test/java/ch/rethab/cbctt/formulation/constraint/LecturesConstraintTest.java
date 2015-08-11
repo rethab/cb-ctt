@@ -24,8 +24,8 @@ public class LecturesConstraintTest {
     Curriculum curr1 = new Curriculum("curr1");
     Set<String> curriculua = new HashSet<>(Arrays.asList(curr1.getId()));
 
-    Course c1 = new Course("c1", "t1", 1, 1, 40, true);
-    Course c2 = new Course("c2", "t2", 2, 2, 15, true);
+    Course c1 = new Course("c1", curr1.getId(), "t1", 1, 1, 40, true);
+    Course c2 = new Course("c2", curr1.getId(), "t2", 2, 2, 15, true);
 
     Room r1 = new Room("r1", 40, 1);
     Room r2 = new Room("r2", 30, 1);

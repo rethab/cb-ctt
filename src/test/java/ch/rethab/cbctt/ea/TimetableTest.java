@@ -23,6 +23,7 @@ public class TimetableTest {
 
     Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 1, false);
     Course c2 = new Course("c2", cur1.getId(), "t2", 1, 1, 1, false);
+    Course c3 = new Course("c3", cur2.getId(), "t3", 1, 1, 1, false);
 
     Room r1 = new Room("r1", 1, 1);
     Room r2 = new Room("r2", 1, 1);
@@ -42,6 +43,14 @@ public class TimetableTest {
 
         tt.addMeeting(new Meeting(c1, r1, 0, 0));
         tt.addMeeting(new Meeting(c2, r2, 0, 0));
+    }
+
+    @Test
+    public void shouldAllowTwoCursesOfDifferentCurriculaAtSameTime() {
+        Timetable tt = new Timetable(curricula, rooms, 1, 1);
+
+        tt.addMeeting(new Meeting(c1, r1, 0, 0));
+        tt.addMeeting(new Meeting(c3, r2, 0, 0));
     }
 
 }
