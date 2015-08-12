@@ -22,11 +22,13 @@ public class MinWorkingDaysConstraintTest {
     int periodsPerDay = 5;
 
     Curriculum curr1 = new Curriculum("curr1");
-    Set<String> curricula = new HashSet<>(Arrays.asList(curr1.getId()));
+    Curriculum curr2 = new Curriculum("curr2");
+    Curriculum curr3 = new Curriculum("curr3");
+    Set<String> curricula = new HashSet<>(Arrays.asList(curr1.getId(), curr2.getId(), curr3.getId()));
 
     Course c1 = new Course("c1", curr1.getId(), "t1", 5, 5, 1, false);
-    Course c2 = new Course("c2", curr1.getId(), "t2", 3, 2, 1, false);
-    Course c3 = new Course("c3", curr1.getId(), "t3", 2, 1, 1, false);
+    Course c2 = new Course("c2", curr2.getId(), "t2", 3, 2, 1, false);
+    Course c3 = new Course("c3", curr3.getId(), "t3", 2, 1, 1, false);
 
     Room r1 = new Room("r1", 1, 1);
     Room r2 = new Room("r2", 1, 1);
@@ -75,13 +77,13 @@ public class MinWorkingDaysConstraintTest {
         t.addMeeting(new Meeting(c1, r3, 0, 4));
 
         // c2 min 2 days. actual 1 day --> 1 violation
-        t.addMeeting(new Meeting(c2, r2, 0, 0));
-        t.addMeeting(new Meeting(c2, r2, 0, 1));
-        t.addMeeting(new Meeting(c2, r2, 0, 0));
+        t.addMeeting(new Meeting(c2, r2, 1, 0));
+        t.addMeeting(new Meeting(c2, r2, 1, 1));
+        t.addMeeting(new Meeting(c2, r2, 1, 2));
 
         // c3 min 1 day. actual 1 day --> 0 violations
-        t.addMeeting(new Meeting(c3, r3, 0, 0));
-        t.addMeeting(new Meeting(c3, r3, 0, 1));
+        t.addMeeting(new Meeting(c3, r3, 2, 0));
+        t.addMeeting(new Meeting(c3, r3, 2, 1));
 
         assertEquals(5, minWorkingDaysConstraint.violations(t));
     }

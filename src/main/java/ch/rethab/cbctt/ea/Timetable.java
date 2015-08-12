@@ -87,15 +87,18 @@ public class Timetable {
         public void setMeeting(Meeting meeting) {
 
             // all slots are organized linearly in one list
-            int slotIdx = meeting.getDay() * periodsPerDay + meeting.getPeriod();
+            int slotIdx = toSlotIdx(meeting.getDay(), meeting.getPeriod());
 
             boolean[] occupancy = roomOccupancy.get(meeting.getRoom().getId());
             if (occupancy[slotIdx]) {
                 throw new InfeasibilityException("Room is occupied at Day="+meeting.getDay()+" and Period="+meeting.getPeriod());
             }
 
-            if (meetings[slotIdx] != null) {
-                throw new InfeasibilityException("Meeting should not be occupied due to room constraint list");
+            Meeting existing = meetings[slotIdx];
+            if (existing != null) {
+                String msg = String.format("Cannot add Meeting for Course %s, %s is already here",
+                                           meeting.getCourse().getId(), existing.getCourse().getId());
+                throw new InfeasibilityException(msg);
             }
 
             meetings[slotIdx] = meeting;
@@ -104,6 +107,10 @@ public class Timetable {
         
         public Meeting get(int slotIdx) {
             return meetings[slotIdx];
+        }
+
+        public Meeting get(int day, int period) {
+            return meetings[toSlotIdx(day, period)];
         }
 
         public Set<Meeting> getMeetingsByCourse(Course c) {
@@ -116,6 +123,10 @@ public class Timetable {
 
         public Stream<Meeting> getAll() {
             return Arrays.stream(meetings).filter(m -> m != null);
+        }
+
+        private int toSlotIdx(int day, int period) {
+            return day * periodsPerDay + period;
         }
     }
 

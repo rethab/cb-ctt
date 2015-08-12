@@ -48,18 +48,6 @@ public class ConflictsConstraintTest {
     }
 
     @Test
-    public void shouldFailWithLecturesOfSameCurriculumAtSamePeriod() {
-        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
-        t.addMeeting(new Meeting(c1, r3, 0, 1));
-        t.addMeeting(new Meeting(c3, r2, 2, 1));
-
-        // c4 has same teacher
-        t.addMeeting(new Meeting(c2, r1, 0, 1));
-        t.addMeeting(new Meeting(c4, r2, 1, 1));
-        assertTrue(conflictsConstraint.violations(t) > 0);
-    }
-
-    @Test
     public void shouldSuccessWithAllOk() {
         Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
         t.addMeeting(new Meeting(c1, r3, 0, 1));

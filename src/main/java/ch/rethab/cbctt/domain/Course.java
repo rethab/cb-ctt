@@ -85,4 +85,8 @@ public class Course {
     public void setCurriculum(String c) {
         this.curriculum = c;
     }
+
+    public int getNumberOfStudents() {
+        return nStudents;
+    }
 }

@@ -7,6 +7,7 @@ import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * From 'Benchmarking Curriculum-Based Course Timetabling:
@@ -29,26 +30,13 @@ public class LecturesConstraint implements Constraint {
 
     @Override
     public int violations(Timetable t) {
-        int count = 0;
-        for (Course c : spec.getCourses()) {
-            Set<Meeting> meetings = t.getMeetingsByCourse(c);
-
-            // all lectures scheduled
-            if (meetings.size() != c.getNumberOfLectures()) {
-                count++;
-            }
-
-            // no two meetings at the same time
-            boolean[][] occupieds = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
-            for (Meeting m : meetings) {
-                boolean occupied = occupieds[m.getDay()][m.getPeriod()];
-                if (occupied) {
-                    count++;
-                } else {
-                    occupieds[m.getDay()][m.getPeriod()] = true;
-                }
-            }
-        }
-        return count;
+        /*
+         * the construction of the timetable makes sure no
+         * two lectures may be scheduled at the same period
+         */
+        return spec.getCourses()
+                .stream()
+                .map(c -> c.getNumberOfLectures() - t.getMeetingsByCourse(c).size())
+                .collect(Collectors.summingInt(Integer::valueOf));
     }
 }

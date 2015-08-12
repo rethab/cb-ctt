@@ -22,10 +22,12 @@ public class LecturesConstraintTest {
     RoomConstraints roomConstraints = new RoomConstraints();
 
     Curriculum curr1 = new Curriculum("curr1");
-    Set<String> curriculua = new HashSet<>(Arrays.asList(curr1.getId()));
+    Curriculum curr2 = new Curriculum("curr2");
+    Set<String> curriculua = new HashSet<>(Arrays.asList(curr1.getId(), curr2.getId()));
 
     Course c1 = new Course("c1", curr1.getId(), "t1", 1, 1, 40, true);
     Course c2 = new Course("c2", curr1.getId(), "t2", 2, 2, 15, true);
+    Course c3 = new Course("c3", curr2.getId(), "t3", 2, 2, 15, true);
 
     Room r1 = new Room("r1", 40, 1);
     Room r2 = new Room("r2", 30, 1);
@@ -49,34 +51,34 @@ public class LecturesConstraintTest {
     }
 
     @Test
-    public void shouldFailWithLecturesOfSameCourseAtSamePeriod() {
-        Timetable t = new Timetable(curriculua, rooms, days, periodsPerDay);
-        t.addMeeting(new Meeting(c1, r3, 0, 1));
-
-        // two lectures of same course at same period
-        t.addMeeting(new Meeting(c2, r1, 0, 1));
-        t.addMeeting(new Meeting(c2, r2, 0, 1));
-        assertEquals(1, lecturesConstraint.violations(t));
-    }
-
-    @Test
     public void shouldSucceedWithLecturesAtDifferentPeriod() {
         Timetable t = new Timetable(curriculua, rooms, days, periodsPerDay);
+        // c1 consists of one lecture
         t.addMeeting(new Meeting(c1, r3, 0, 1));
 
-        t.addMeeting(new Meeting(c2, r1, 0, 1));
-        t.addMeeting(new Meeting(c2, r2, 1, 1));
+        // c3 consists of two lectures
+        t.addMeeting(new Meeting(c3, r1, 0, 1));
+        t.addMeeting(new Meeting(c3, r2, 1, 1));
         assertEquals(0, lecturesConstraint.violations(t));
     }
 
     @Test
-    public void shouldFailSinceNotAllLecturesScheduled() {
+    public void shouldCountMissingLecturesOfSameCourse() {
         Timetable t = new Timetable(curriculua, rooms, days, periodsPerDay);
-        t.addMeeting(new Meeting(c1, r3, 0, 1));
-
+        // course 1 consists of 1 lecture
+        t.addMeeting(new Meeting(c1, r1, 0, 0));
         // course 2 consists of 2 lectures
         t.addMeeting(new Meeting(c2, r1, 0, 1));
         assertEquals(1, lecturesConstraint.violations(t));
+    }
+
+    @Test
+    public void shouldCountMissingLecturesOfDifferentCourse() {
+        Timetable t = new Timetable(curriculua, rooms, days, periodsPerDay);
+        // course 1 consists of 1 lecture: missing entirely
+        // course 2 consists of 2 lectures
+        t.addMeeting(new Meeting(c2, r1, 0, 1));
+        assertEquals(2, lecturesConstraint.violations(t));
     }
 
 

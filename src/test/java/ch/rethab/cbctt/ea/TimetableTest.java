@@ -53,4 +53,29 @@ public class TimetableTest {
         tt.addMeeting(new Meeting(c3, r2, 0, 0));
     }
 
+    @Test(expected = Timetable.InfeasibilityException.class)
+    public void shouldFailWithLecturesOfSameCurriculumAtSamePeriod() {
+        Timetable t = new Timetable(curricula, rooms, 1, 1);
+        t.addMeeting(new Meeting(c1, r1, 0, 0));
+        t.addMeeting(new Meeting(c2, r2, 0, 0));
+    }
+
+    @Test(expected = Timetable.InfeasibilityException.class)
+    public void shouldFailWithLecturesOfSameCourseAtSamePeriod() {
+        Timetable t = new Timetable(curricula, rooms, 1, 2);
+        t.addMeeting(new Meeting(c1, r2, 0, 0));
+
+        // two lectures of same course at same period
+        t.addMeeting(new Meeting(c2, r1, 0, 1));
+        t.addMeeting(new Meeting(c2, r2, 0, 1));
+    }
+
+    @Test(expected = Timetable.InfeasibilityException.class)
+    public void shouldFailWithTwoLecturesInSameRoomAtSamePeriod() {
+        Timetable t = new Timetable(curricula, rooms, 1, 2);
+        t.addMeeting(new Meeting(c1, r1, 0, 1));
+        t.addMeeting(new Meeting(c2, r2, 0, 1));
+        t.addMeeting(new Meeting(c3, r1, 0, 1));
+    }
+
 }

@@ -37,7 +37,8 @@ public class TeacherAvailabilityTest {
     Room r3 = new Room("r3", 14, 0);
     Set<String> rooms = new HashSet<>(Arrays.asList(r1.getId(), r2.getId(), r3.getId()));
 
-    Specification spec = new Specification("spec1", days, daysPerPeriods, 3, 5, Arrays.asList(c1, c2, c3), Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2), unavailabilityConstraints, roomConstraints);
+    Specification spec = new Specification("spec1", days, daysPerPeriods, 3, 5, Arrays.asList(c1, c2, c3),
+            Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2), unavailabilityConstraints, roomConstraints);
 
     TeacherAvailabilityConstraint teacherAvailabilityConstraint = new TeacherAvailabilityConstraint(spec);
 
@@ -67,9 +68,8 @@ public class TeacherAvailabilityTest {
     public void shouldFailWithTeacherNotAvailable() {
         unavailabilityConstraints.addUnavailability(c1, 0, 1);
         Timetable t = new Timetable(curricula, rooms, days, daysPerPeriods);
-        // teacher not available
-        t.addMeeting(new Meeting(c1, r1, 0, 1));
-        t.addMeeting(new Meeting(c2, r2, 0, 1));
+        t.addMeeting(new Meeting(c1, r1, 0, 1)); // teacher not available
+        t.addMeeting(new Meeting(c3, r2, 0, 1));
         assertEquals(1, teacherAvailabilityConstraint.violations(t));
     }
 

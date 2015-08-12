@@ -19,7 +19,7 @@ public class UD1Formulation extends Formulation {
             new Objective[] {
                 new Objective(new RoomCapacityConstraint(), 1),
                 new Objective(new MinWorkingDaysConstraint(), 5),
-                new Objective(new IsolatedLecturesConstraint(), 1)
+                new Objective(new IsolatedLecturesConstraint(spec), 1)
             }
         );
     }

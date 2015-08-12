@@ -47,4 +47,8 @@ public class Room {
     public String getId() {
         return id;
     }
+
+    public int getCapacity() {
+        return capacity;
+    }
 }

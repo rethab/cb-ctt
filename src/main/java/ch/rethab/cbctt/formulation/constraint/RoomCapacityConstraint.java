@@ -2,6 +2,8 @@ package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.ea.Timetable;
 
+import java.util.stream.Collectors;
+
 /**
  * From 'Benchmarking Curriculum-Based Course Timetabling:
  *       Formulations, Data Formats, Instances, Validation, and
@@ -16,6 +18,16 @@ public class RoomCapacityConstraint implements Constraint {
 
     @Override
     public int violations(Timetable t) {
-        return 0;
+        return t.getCurriculumTimetables()
+                .values()
+                .stream()
+                .map(this::countCurriculumViolations)
+                .collect(Collectors.summingInt(Integer::valueOf));
+    }
+
+    private int countCurriculumViolations(Timetable.CurriculumTimetable ctt) {
+        return ctt.getAll()
+                .map(m -> m.getCourse().getNumberOfStudents() > m.getRoom().getCapacity() ? 1 : 0)
+                .collect(Collectors.summingInt(Integer::valueOf));
     }
 }

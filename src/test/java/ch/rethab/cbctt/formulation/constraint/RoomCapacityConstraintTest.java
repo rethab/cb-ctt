@@ -40,7 +40,7 @@ public class RoomCapacityConstraintTest {
     public void shouldSumUpViolations() {
         Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
 
-        t.addMeeting(new Meeting(c7, r2, 0, 1)); // violation
+        t.addMeeting(new Meeting(c7, r2, 0, 0)); // violation
         t.addMeeting(new Meeting(c7, r7, 0, 1));
         t.addMeeting(new Meeting(c7, r12, 0, 2));
         t.addMeeting(new Meeting(c7, r2, 1, 1)); // violation
