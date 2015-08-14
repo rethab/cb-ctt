@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -21,13 +20,23 @@ public class TimetableTest {
     Curriculum cur2 = new Curriculum("curr2");
     Set<String> curricula = new HashSet<>(Arrays.asList(cur1.getId(), cur2.getId()));
 
-    Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 1, false);
-    Course c2 = new Course("c2", cur1.getId(), "t2", 1, 1, 1, false);
-    Course c3 = new Course("c3", cur2.getId(), "t3", 1, 1, 1, false);
+    Course c1 = Course.Builder.id("c1").curriculum(cur1).teacher("t1").build();
+    Course c2 = Course.Builder.id("c2").curriculum(cur1).teacher("t2").build();
+    Course c3 = Course.Builder.id("c3").curriculum(cur2).teacher("t3").build();
+    Course c4 = Course.Builder.id("c4").curriculum(cur1).curriculum(cur2).teacher("t4").build();
 
     Room r1 = new Room("r1", 1, 1);
     Room r2 = new Room("r2", 1, 1);
     Set<String> rooms = new HashSet<>(Arrays.asList(r1.getId(), r2.getId()));
+
+    @Test
+    public void shouldReturnSameMeetingForAllCoursesIfMultipleCurricula() {
+        Timetable tt = new Timetable(curricula, rooms, 1, 1);
+        tt.addMeeting(new Meeting(c4, r1, 0, 0));
+        Set<Meeting> meetingsByCourse = tt.getMeetingsByCourse(c4);
+        assertEquals(1, meetingsByCourse.size());
+        assertEquals(c4, meetingsByCourse.iterator().next().getCourse());
+    }
 
     @Test(expected = Timetable.InfeasibilityException.class)
     public void shouldNotAllowTwoMeetingsAtTheSameTime() {
@@ -53,6 +62,14 @@ public class TimetableTest {
         tt.addMeeting(new Meeting(c3, r2, 0, 0));
     }
 
+    @Test (expected = Timetable.InfeasibilityException.class)
+    public void shouldSetCourseOfMultileCurriculaOnAllCurriculaTimetables() {
+        Timetable tt = new Timetable(curricula, rooms, 1, 1);
+
+        tt.addMeeting(new Meeting(c4, r2, 0, 0)); // belongs to cur1 + cur2
+        tt.addMeeting(new Meeting(c1, r1, 0, 0));
+    }
+
     @Test(expected = Timetable.InfeasibilityException.class)
     public void shouldFailWithLecturesOfSameCurriculumAtSamePeriod() {
         Timetable t = new Timetable(curricula, rooms, 1, 1);
@@ -76,6 +93,19 @@ public class TimetableTest {
         t.addMeeting(new Meeting(c1, r1, 0, 1));
         t.addMeeting(new Meeting(c2, r2, 0, 1));
         t.addMeeting(new Meeting(c3, r1, 0, 1));
+    }
+
+    @Test
+    public void shouldAllowACourseToBeInTwoCurricula() {
+        Timetable t = new Timetable(curricula, rooms, 1, 2);
+        Timetable.CurriculumTimetable c1tt = t.getCurriculumTimetables().get(cur1.getId());
+        Timetable.CurriculumTimetable c2tt = t.getCurriculumTimetables().get(cur2.getId());
+
+        t.addMeeting(new Meeting(c4, r1, 0, 1)); // c4 belongs to both cur1 + cur2
+
+        Meeting m1 = c1tt.get(0, 1);
+        Meeting m2 = c2tt.get(0, 1);
+        assertEquals(m1.getCourse(), m2.getCourse());
     }
 
 }

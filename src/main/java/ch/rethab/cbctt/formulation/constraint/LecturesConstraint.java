@@ -1,12 +1,9 @@
 package ch.rethab.cbctt.formulation.constraint;
 
 
-import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

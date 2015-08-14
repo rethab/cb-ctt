@@ -25,9 +25,9 @@ public class RoomCapacityConstraintTest {
     Curriculum curr2 = new Curriculum("curr2");
     Set<String> curricula = new HashSet<>(Arrays.asList(curr1.getId(), curr2.getId()));
 
-    Course c3 = new Course("c3", curr1.getId(), "t1", 5, 5, 3, false);
-    Course c7 = new Course("c7", curr1.getId(), "t2", 3, 2, 7, false);
-    Course c11 = new Course("c11", curr2.getId(), "t3", 2, 1, 11, false);
+    Course c3 = Course.Builder.id("c3").curriculum(curr1).teacher("t1").nlectures(5).nWorkingDays(5).nStudents(3).doubleLectures(false).build();
+    Course c7 = Course.Builder.id("c7").curriculum(curr1).teacher("t2").nlectures(3).nWorkingDays(2).nStudents(7).doubleLectures(false).build();
+    Course c11 = Course.Builder.id("c11").curriculum(curr2).teacher("t3").nlectures(2).nWorkingDays(1).nStudents(11).doubleLectures(false).build();
 
     Room r2 = new Room("r2", 2, 1);
     Room r7 = new Room("r7", 7, 1);

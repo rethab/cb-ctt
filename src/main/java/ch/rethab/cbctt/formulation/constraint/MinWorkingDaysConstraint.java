@@ -1,6 +1,14 @@
 package ch.rethab.cbctt.formulation.constraint;
 
+import ch.rethab.cbctt.domain.Course;
+import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * From 'Benchmarking Curriculum-Based Course Timetabling:
@@ -14,8 +22,30 @@ import ch.rethab.cbctt.ea.Timetable;
  */
 public class MinWorkingDaysConstraint implements Constraint {
 
+    private final Specification spec;
+
+    public MinWorkingDaysConstraint(Specification spec) {
+        this.spec = spec;
+    }
+
     @Override
     public int violations(Timetable t) {
-        return 0;
+        return spec.getCourses().stream()
+                .map(c -> Math.max(0, c.getMinWorkingDays() - countWorkingDays(c, t)))
+                .collect(Collectors.summingInt(Integer::valueOf));
+    }
+
+    private int countWorkingDays(Course c, Timetable t) {
+        boolean[] days = new boolean[spec.getNumberOfDaysPerWeek()];
+
+        int ndays = 0;
+        for (Meeting meeting : t.getMeetingsByCourse(c)) {
+            if (!days[meeting.getDay()]) {
+                ndays++;
+            }
+            days[meeting.getDay()] = true;
+        }
+
+        return ndays;
     }
 }

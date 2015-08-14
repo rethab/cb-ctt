@@ -24,11 +24,10 @@ public class ConflictsConstraintTest {
     Curriculum cur2 = new Curriculum("curr2");
     Set<String> curricula = new HashSet<>(Arrays.asList(cur1.getId(), cur2.getId()));
 
-    Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 40, true);
-    Course c2 = new Course("c2", cur1.getId(), "t2", 1, 1, 15, true);
-    Course c3 = new Course("c3", cur2.getId(), "t3", 1, 1, 15, true);
-    Course c4 = new Course("c4", cur2.getId(), "t2", 1, 1, 15, true);
-
+    Course c1 = Course.Builder.id("c1").curriculum(cur1).teacher("t1").nlectures(1).nWorkingDays(1).nStudents(40).doubleLectures(true).build();
+    Course c2 = Course.Builder.id("c2").curriculum(cur1).teacher("t2").nlectures(1).nWorkingDays(1).nStudents(15).doubleLectures(true).build();
+    Course c3 = Course.Builder.id("c3").curriculum(cur2).teacher("t3").nlectures(1).nWorkingDays(1).nStudents(15).doubleLectures(true).build();
+    Course c4 = Course.Builder.id("c4").curriculum(cur2).teacher("t2").nlectures(1).nWorkingDays(1).nStudents(15).doubleLectures(true).build();
 
     Room r1 = new Room("r1", 40, 1);
     Room r2 = new Room("r2", 30, 1);
@@ -38,7 +37,15 @@ public class ConflictsConstraintTest {
     private int days = 5;
     private int periodsPerDay = 4;
 
-    Specification spec = new Specification("spec1", days, periodsPerDay, 3, 5, Arrays.asList(c1, c2, c3, c4), Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2), unavailabilityConstraints, roomConstraints);
+    Specification spec = Specification.Builder.name("spec1")
+            .days(days).periodsPerDay(periodsPerDay)
+            .minLectures(3).maxLectures(5)
+            .course(c1).course(c2).course(c3).course(c4)
+            .room(r1).room(r2).room(r3)
+            .curriculum(cur1).curriculum(cur2)
+            .unavailabilityConstraints(unavailabilityConstraints)
+            .roomConstraints(roomConstraints).build();
+
     ConflictsConstraint conflictsConstraint = new ConflictsConstraint(spec);
 
     @Before

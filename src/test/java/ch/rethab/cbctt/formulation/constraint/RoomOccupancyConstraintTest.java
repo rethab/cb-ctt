@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -26,9 +25,9 @@ public class RoomOccupancyConstraintTest {
     Curriculum cur3 = new Curriculum("curr3");
     Set<String> curricula = new HashSet(Arrays.asList(cur1.getId(), cur2.getId(), cur3.getId()));
 
-    Course c1 = new Course("c1", cur1.getId(), "t1", 1, 1, 40, true);
-    Course c2 = new Course("c2", cur2.getId(), "t2", 1, 1, 15, true);
-    Course c3 = new Course("c3", cur3.getId(), "t3", 1, 1, 15, true);
+    Course c1 = Course.Builder.id("c1").curriculum(cur1).teacher("t1").nlectures(1).nWorkingDays(1).nStudents(40).doubleLectures(true).build();
+    Course c2 = Course.Builder.id("c2").curriculum(cur2).teacher("t2").nlectures(1).nWorkingDays(1).nStudents(15).doubleLectures(true).build();
+    Course c3 = Course.Builder.id("c3").curriculum(cur3).teacher("t3").nlectures(1).nWorkingDays(1).nStudents(15).doubleLectures(true).build();
 
     Room r1 = new Room("r1", 40, 1);
     Room r2 = new Room("r2", 30, 1);
@@ -38,7 +37,17 @@ public class RoomOccupancyConstraintTest {
     UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(days, periodsPerDay);
     RoomConstraints roomConstraints = new RoomConstraints();
 
-    Specification spec = new Specification("spec1", days, periodsPerDay, 3, 5, Arrays.asList(c1, c2, c3), Arrays.asList(r1, r2, r3), Arrays.asList(cur1, cur2, cur3), unavailabilityConstraints, roomConstraints);
+    Specification spec = Specification.Builder.name("spec1")
+                                              .days(days)
+                                              .periodsPerDay(periodsPerDay)
+                                              .minLectures(3)
+                                              .maxLectures(5)
+                                              .course(c1).course(c2).course(c3)
+                                              .room(r1).room(r2).room(r3)
+                                              .curriculum(cur1).curriculum(cur2).curriculum(cur3)
+                                              .unavailabilityConstraints(unavailabilityConstraints)
+                                              .roomConstraints(roomConstraints).build();
+
     RoomOccupancyConstraint roomOccupancyConstraint = new RoomOccupancyConstraint(spec);
 
     @Before

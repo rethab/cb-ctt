@@ -43,12 +43,6 @@ public class ECTTParserTest {
         assertEquals(2, specification.getMinLectures());
         assertEquals(3, specification.getMaxLectures());
 
-        Course sceCosc = new Course("SceCosC", "Ocra", 3, 3, 30, true);
-        Course arcTec = new Course("ArcTec", "Indaco", 3, 2, 42, false);
-        Course tecCos = new Course("TecCos", "Rosa", 5, 4, 40, true);
-        Course geotec = new Course("Geotec", "Scarlatti", 5, 4, 18, true);
-        List<Course> courses = Arrays.asList(sceCosc, arcTec, tecCos, geotec);
-        assertEqualsList(courses, specification.getCourses());
 
         Room rA = new Room("rA", 32, 1);
         Room rB = new Room("rB", 50, 0);
@@ -56,10 +50,21 @@ public class ECTTParserTest {
         List<Room> rooms = Arrays.asList(rA, rB, rC);
         assertEqualsList(rooms, specification.getRooms());
 
-        List<Curriculum> curricula = Arrays.asList(
-            new Curriculum("Cur1", Arrays.asList(sceCosc, arcTec, tecCos)),
-            new Curriculum("Cur2", Arrays.asList(tecCos, geotec))
-        );
+        Curriculum cur1 = new Curriculum("Cur1");
+        Curriculum cur2 = new Curriculum("Cur2");
+
+        // courses
+        Course sceCosc = Course.Builder.id("SceCosC").curriculum(cur1).teacher("Ocra").nlectures(3).nWorkingDays(3).nStudents(30).doubleLectures(true).build();
+        Course arcTec = Course.Builder.id("ArcTec").curriculum(cur1).teacher("Indaco").nlectures(3).nWorkingDays(2).nStudents(42).doubleLectures(false).build();
+        Course tecCos = Course.Builder.id("TecCos").curriculum(cur1).curriculum(cur2).teacher("Rosa").nlectures(5).nWorkingDays(4).nStudents(40).doubleLectures(true).build();
+        Course geotec = Course.Builder.id("Geotec").curriculum(cur2).teacher("Scarlatti").nlectures(5).nWorkingDays(4).nStudents(18).doubleLectures(true).build();
+        List<Course> courses = Arrays.asList(sceCosc, arcTec, tecCos, geotec);
+        assertEqualsList(courses, specification.getCourses());
+
+        // curricula
+        cur1.setCourses(Arrays.asList(sceCosc, arcTec, tecCos));
+        cur2.setCourses(Arrays.asList(tecCos, geotec));
+        List<Curriculum> curricula = Arrays.asList(cur1, cur2);
         assertEqualsList(curricula, specification.getCurricula());
 
         assertFalse(specification.getUnavailabilityConstraints().checkAvailability(tecCos, 2, 0));

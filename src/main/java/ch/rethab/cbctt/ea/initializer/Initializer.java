@@ -10,6 +10,9 @@ import java.util.List;
  */
 public interface Initializer {
 
+    /**
+     * Creates a specified number of timetables using the given specification
+     */
     List<Timetable> initialize(Specification specification, int size);
 
 }

@@ -59,21 +59,29 @@ public class TeacherGreedyTest {
     }
 
     private Specification testData() {
-        Course sceCosc = new Course("SceCosC", "Ocra", 3, 3, 30, true);
-        Course arcTec = new Course("ArcTec", "Indaco", 3, 2, 42, false);
-        Course tecCos = new Course("TecCos", "Rosa", 5, 4, 40, true);
-        Course geotec = new Course("Geotec", "Scarlatti", 5, 4, 18, true);
-        List<Course> courses = Arrays.asList(sceCosc, arcTec, tecCos, geotec);
+
+        Specification.Builder builder = Specification.Builder.name("Toy");
+
+        builder.days(5).periodsPerDay(4);
+        builder.minLectures(2).maxLectures(3);
 
         Room rA = new Room("rA", 32, 1);
         Room rB = new Room("rB", 50, 0);
         Room rC = new Room("rC", 40, 0);
-        List<Room> rooms = Arrays.asList(rA, rB, rC);
+        builder.room(rA).room(rB).room(rC);
 
-        List<Curriculum> curricula = Arrays.asList(
-                new Curriculum("Cur1", Arrays.asList(sceCosc, arcTec, tecCos)),
-                new Curriculum("Cur2", Arrays.asList(tecCos, geotec))
-        );
+        Curriculum cur1 = new Curriculum("Cur1");
+        Curriculum cur2 = new Curriculum("Cur2");
+        builder.curriculum(cur1).curriculum(cur2);
+
+        Course sceCosc = Course.Builder.id("SceCosC").curriculum(cur1).teacher("Ocra").nlectures(3).nWorkingDays(3).nStudents(30).doubleLectures(true).build();
+        Course arcTec = Course.Builder.id("ArcTec").curriculum(cur1).teacher("Indaco").nlectures(3).nWorkingDays(2).nStudents(42).doubleLectures(false).build();
+        Course tecCos = Course.Builder.id("TecCos").curriculum(cur1).curriculum(cur2).teacher("Rosa").nlectures(5).nWorkingDays(4).nStudents(40).doubleLectures(false).build();
+        Course geotec = Course.Builder.id("Geotec").curriculum(cur2).teacher("Scarlatti").nlectures(5).nWorkingDays(4).nStudents(18).doubleLectures(true).build();
+        builder.course(sceCosc).course(arcTec).course(tecCos).course(geotec);
+
+        cur1.setCourses(Arrays.asList(sceCosc, arcTec, tecCos));
+        cur2.setCourses(Arrays.asList(tecCos, geotec));
 
         UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(5, 4);
         unavailabilityConstraints.addUnavailability(tecCos, 2, 0);
@@ -84,13 +92,15 @@ public class TeacherGreedyTest {
         unavailabilityConstraints.addUnavailability(arcTec, 4, 1);
         unavailabilityConstraints.addUnavailability(arcTec, 4, 2);
         unavailabilityConstraints.addUnavailability(arcTec, 4, 3);
+        builder.unavailabilityConstraints(unavailabilityConstraints);
 
         RoomConstraints roomConstraints = new RoomConstraints();
         roomConstraints.addRoomConstraint(sceCosc, rA);
         roomConstraints.addRoomConstraint(geotec, rB);
         roomConstraints.addRoomConstraint(tecCos, rC);
+        builder.roomConstraints(roomConstraints);
 
-        return new Specification("Toy", 5, 4, 2, 3, courses, rooms, curricula, unavailabilityConstraints, roomConstraints);
+        return builder.build();
     }
 
     @Test

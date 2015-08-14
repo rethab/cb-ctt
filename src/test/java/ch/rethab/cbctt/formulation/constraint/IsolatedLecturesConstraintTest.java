@@ -23,19 +23,25 @@ public class IsolatedLecturesConstraintTest {
     UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(days, periodsPerDay);
     RoomConstraints roomConstraints = new RoomConstraints();
 
-    Course c1 = new Course("c1", "curr1", "t1", 2, 1, 3, false);
-    Course c2 = new Course("c2", "curr1", "t2", 2, 1, 3, false);
-    Course c3 = new Course("c3", "curr2", "t3", 2, 1, 3, false);
-
     Curriculum curr1 = new Curriculum("curr1");
     Curriculum curr2 = new Curriculum("curr2");
     Set<String> curricula = new HashSet<>(Arrays.asList(new String[]{curr1.getId(), curr2.getId()}));
 
+    Course c1 = Course.Builder.id("c1").curriculum(curr1).teacher("t1").nlectures(2).nWorkingDays(1).nStudents(3).doubleLectures(false).build();
+    Course c2 = Course.Builder.id("c2").curriculum(curr1).teacher("t2").nlectures(2).nWorkingDays(1).nStudents(3).doubleLectures(false).build();
+    Course c3 = Course.Builder.id("c3").curriculum(curr2).teacher("t3").nlectures(2).nWorkingDays(1).nStudents(3).doubleLectures(false).build();
+
     Room r1 = new Room("r1", 1, 1);
     Set<String> rooms = new HashSet<>(Arrays.asList(new String[]{r1.getId()}));
 
-    Specification spec = new Specification("spec1", days, periodsPerDay, 3, 5, Arrays.asList(c1, c2, c3),
-            Arrays.asList(r1), Arrays.asList(curr1, curr2), unavailabilityConstraints, roomConstraints);
+    Specification spec = Specification.Builder.name("spec1")
+            .days(days).periodsPerDay(periodsPerDay)
+            .minLectures(3).maxLectures(5)
+            .course(c1).course(c2).course(c3)
+            .room(r1)
+            .curriculum(curr1).curriculum(curr2)
+            .unavailabilityConstraints(unavailabilityConstraints)
+            .roomConstraints(roomConstraints).build();
 
     IsolatedLecturesConstraint isolatedLecturesConstraint = new IsolatedLecturesConstraint(spec);
 

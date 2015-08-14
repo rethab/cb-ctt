@@ -1,8 +1,6 @@
 package ch.rethab.cbctt.formulation.constraint;
 
-import ch.rethab.cbctt.domain.Course;
-import ch.rethab.cbctt.domain.Curriculum;
-import ch.rethab.cbctt.domain.Room;
+import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 import org.junit.Test;
@@ -26,16 +24,24 @@ public class MinWorkingDaysConstraintTest {
     Curriculum curr3 = new Curriculum("curr3");
     Set<String> curricula = new HashSet<>(Arrays.asList(curr1.getId(), curr2.getId(), curr3.getId()));
 
-    Course c1 = new Course("c1", curr1.getId(), "t1", 5, 5, 1, false);
-    Course c2 = new Course("c2", curr2.getId(), "t2", 3, 2, 1, false);
-    Course c3 = new Course("c3", curr3.getId(), "t3", 2, 1, 1, false);
+    Course c1 = Course.Builder.id("c1").curriculum(curr1).teacher("t1").nlectures(5).nWorkingDays(5).nStudents(1).doubleLectures(false).build();
+    Course c2 = Course.Builder.id("c2").curriculum(curr2).teacher("t2").nlectures(3).nWorkingDays(2).nStudents(1).doubleLectures(false).build();
+    Course c3 = Course.Builder.id("c3").curriculum(curr3).teacher("t3").nlectures(2).nWorkingDays(1).nStudents(1).doubleLectures(false).build();
 
     Room r1 = new Room("r1", 1, 1);
     Room r2 = new Room("r2", 1, 1);
     Room r3 = new Room("r3", 1, 1);
     Set<String> rooms = new HashSet<>(Arrays.asList(r1.getId(), r2.getId(), r3.getId()));
 
-    MinWorkingDaysConstraint minWorkingDaysConstraint = new MinWorkingDaysConstraint();
+    Specification spec = Specification.Builder.name("TestSpec").days(5).periodsPerDay(5)
+            .minLectures(2).maxLectures(3)
+            .curriculum(curr1).curriculum(curr2).curriculum(curr3)
+            .course(c1).course(c2).course(c3)
+            .room(r1).room(r2).room(r3)
+            .roomConstraints(new RoomConstraints())
+            .unavailabilityConstraints(new UnavailabilityConstraints(days, periodsPerDay)).build();
+
+    MinWorkingDaysConstraint minWorkingDaysConstraint = new MinWorkingDaysConstraint(spec);
 
     @Test
     public void shouldFindViolationInDifferentRoom() {
@@ -47,6 +53,15 @@ public class MinWorkingDaysConstraintTest {
         t.addMeeting(new Meeting(c1, r1, 2, 0));
         t.addMeeting(new Meeting(c1, r1, 3, 0));
         t.addMeeting(new Meeting(c1, r1, 4, 0));
+
+        // no violations
+        t.addMeeting(new Meeting(c2, r2, 1, 0));
+        t.addMeeting(new Meeting(c2, r2, 1, 1));
+        t.addMeeting(new Meeting(c2, r2, 2, 2));
+
+        // no violations
+        t.addMeeting(new Meeting(c3, r3, 2, 0));
+        t.addMeeting(new Meeting(c3, r3, 3, 1));
 
         assertEquals(1, minWorkingDaysConstraint.violations(t));
     }
@@ -61,6 +76,15 @@ public class MinWorkingDaysConstraintTest {
         t.addMeeting(new Meeting(c1, r1, 0, 2)); // violation
         t.addMeeting(new Meeting(c1, r2, 0, 3)); // violation
         t.addMeeting(new Meeting(c1, r3, 0, 4)); // violation
+
+        // no violations
+        t.addMeeting(new Meeting(c2, r2, 1, 0));
+        t.addMeeting(new Meeting(c2, r2, 1, 1));
+        t.addMeeting(new Meeting(c2, r2, 2, 2));
+
+        // no violations
+        t.addMeeting(new Meeting(c3, r3, 2, 0));
+        t.addMeeting(new Meeting(c3, r3, 3, 1));
 
         assertEquals(4, minWorkingDaysConstraint.violations(t));
     }

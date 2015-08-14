@@ -37,7 +37,8 @@ public final class ECTTParser {
 
         Matcher matcher;
 
-        String name;
+        Specification.Builder builder;
+
         int ncourses, nrooms, daysPerWeek, periodsPerDay, ncurricula, minLectures, maxLectures;
         int nunavailabilityConstraints, nroomConstraints;
         List<Course> courses = new LinkedList<>();
@@ -45,7 +46,7 @@ public final class ECTTParser {
         List<Curriculum> curricula = new LinkedList<>();
 
         matcher = stringValue.matcher(reader.readLine());
-        if (matcher.matches()) { name = matcher.group(1); }
+        if (matcher.matches()) { builder = Specification.Builder.name(matcher.group(1)); }
         else { throw new IOException("Expected name"); }
 
         matcher = intValue.matcher(reader.readLine());
@@ -59,10 +60,12 @@ public final class ECTTParser {
         matcher = intValue.matcher(reader.readLine());
         if (matcher.matches()) { daysPerWeek = Integer.parseInt(matcher.group(1)); }
         else { throw new IOException("Expected ndays"); }
+        builder.days(daysPerWeek);
 
         matcher = intValue.matcher(reader.readLine());
         if (matcher.matches()) { periodsPerDay = Integer.parseInt(matcher.group(1)); }
         else { throw new IOException("Expected periodPerDay"); }
+        builder.periodsPerDay(periodsPerDay);
 
         matcher = intValue.matcher(reader.readLine());
         if (matcher.matches()) { ncurricula = Integer.parseInt(matcher.group(1)); }
@@ -72,6 +75,7 @@ public final class ECTTParser {
         if (matcher.matches()) { minLectures = Integer.parseInt(matcher.group(1));
                                  maxLectures = Integer.parseInt(matcher.group(2)); }
         else { throw new IOException("Expected min/maxLectures"); }
+        builder.minLectures(minLectures).maxLectures(maxLectures);
 
         matcher = intValue.matcher(reader.readLine());
         if (matcher.matches()) { nunavailabilityConstraints = Integer.parseInt(matcher.group(1)); }
@@ -81,27 +85,31 @@ public final class ECTTParser {
         if (matcher.matches()) { nroomConstraints = Integer.parseInt(matcher.group(1)); }
         else { throw new IOException("Expected nroomConstraints"); }
 
+
         reader.readLine(); // empty line
         reader.readLine(); // COURSES
         parseCourses(ncourses, courses);
+        courses.forEach(builder::course);
 
         reader.readLine(); // empty line
         reader.readLine(); // ROOMS
         parseRooms(nrooms, rooms);
+        rooms.forEach(builder::room);
 
         reader.readLine(); // empty line
         reader.readLine(); // CURRICULA
         parseCurricula(ncourses, ncurricula, courses, curricula);
+        curricula.forEach(builder::curriculum);
 
         reader.readLine(); // empty line
         reader.readLine(); // UNAVAILABILITY_CONSTRAINTS:
-        UnavailabilityConstraints unavailabilityConstraints = parseUnavailabilityConstraints(nunavailabilityConstraints, courses, daysPerWeek, periodsPerDay);
+        builder.unavailabilityConstraints(parseUnavailabilityConstraints(nunavailabilityConstraints, courses, daysPerWeek, periodsPerDay));
 
         reader.readLine(); // empty line
         reader.readLine(); // ROOM_CONSTRAINTS:
-        RoomConstraints roomConstraints = parseRoomConstraints(nroomConstraints, courses, rooms);
+        builder.roomConstraints(parseRoomConstraints(nroomConstraints, courses, rooms));
 
-        return new Specification(name, daysPerWeek, periodsPerDay, minLectures, maxLectures, courses, rooms, curricula, unavailabilityConstraints, roomConstraints);
+        return builder.build();
     }
 
     private RoomConstraints parseRoomConstraints(int nroomConstraints, List<Course> courses, List<Room> rooms) throws IOException {
@@ -152,7 +160,7 @@ public final class ECTTParser {
                 }
                 Curriculum c = new Curriculum(id, curriculumCurses);
 
-                curriculumCurses.forEach(course -> course.setCurriculum(c.getId()));
+                curriculumCurses.forEach(course -> course.addCurriculum(c.getId()));
                 curricula.add(c);
             } else {
                 throw new IOException("Expected curriculum");

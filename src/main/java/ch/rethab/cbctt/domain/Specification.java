@@ -1,5 +1,8 @@
 package ch.rethab.cbctt.domain;
 
+import ch.rethab.cbctt.formulation.constraint.RoomCapacityConstraint;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,7 +32,7 @@ public class Specification {
 
     private final RoomConstraints roomConstraints;
 
-    public Specification(String name, int numberOfDaysPerWeek, int periodsPerDay, int minLectures, int maxLectures,
+    private Specification(String name, int numberOfDaysPerWeek, int periodsPerDay, int minLectures, int maxLectures,
                          List<Course> courses, List<Room> rooms, List<Curriculum> curricula,
                          UnavailabilityConstraints unavailabilityConstraints, RoomConstraints roomConstraints) {
         this.name = name;
@@ -90,6 +93,78 @@ public class Specification {
 
     public Set<Curriculum> getByCourse(Course course) {
         return curricula.stream().filter(c -> c.getCourses().contains(course)).collect(Collectors.toSet());
+    }
+
+    public static class Builder {
+
+        private String name;
+        private Integer numberOfDaysPerWeek;
+        private Integer periodsPerDay;
+        private Integer minLectures;
+        private Integer maxLectures;
+        private List<Course> courses = new LinkedList<>();
+        private List<Room> rooms = new LinkedList<>();
+        private List<Curriculum> curricula = new LinkedList<>();
+        private UnavailabilityConstraints unavailabilityConstraints;
+        private RoomConstraints roomConstraints;
+
+        public static Builder name(String name) {
+            Builder b = new Builder();
+            b.name = name;
+            return b;
+        }
+
+        public Specification build() {
+            if (name == null || numberOfDaysPerWeek == null || periodsPerDay == null || minLectures == null || maxLectures == null || courses.isEmpty() ||
+                    rooms.isEmpty() || curricula.isEmpty() || unavailabilityConstraints == null || roomConstraints == null) {
+                throw new IllegalArgumentException("Nothing can be null here..");
+            }
+            return new Specification(name, numberOfDaysPerWeek, periodsPerDay, minLectures,
+                    maxLectures, courses, rooms, curricula, unavailabilityConstraints, roomConstraints);
+        }
+
+        public Builder days(int numberOfDaysPerWeek) {
+            this.numberOfDaysPerWeek = numberOfDaysPerWeek;
+            return this;
+        }
+
+        public Builder periodsPerDay(int periodsPerDay) {
+            this.periodsPerDay = periodsPerDay;
+            return this;
+        }
+
+        public Builder minLectures(int minLectures) {
+            this.minLectures = minLectures;
+            return this;
+        }
+
+        public Builder maxLectures(int maxLectures) {
+            this.maxLectures = maxLectures;
+            return this;
+        }
+
+        public Builder course(Course course) {
+            this.courses.add(course);
+            return this;
+        }
+
+        public Builder room(Room room) {
+            this.rooms.add(room);
+            return this;
+        }
+
+        public Builder curriculum(Curriculum curriculum) {
+            this.curricula.add(curriculum);
+            return this;
+        }
+        public Builder unavailabilityConstraints(UnavailabilityConstraints unavailabilityConstraints) {
+            this.unavailabilityConstraints = unavailabilityConstraints;
+            return this;
+        }
+        public Builder roomConstraints(RoomConstraints roomConstraints) {
+            this.roomConstraints = roomConstraints;
+            return this;
+        }
     }
 }
 
