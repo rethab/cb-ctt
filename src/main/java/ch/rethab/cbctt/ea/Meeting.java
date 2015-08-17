@@ -23,6 +23,10 @@ public class Meeting {
         this.period = period;
     }
 
+    public Meeting copy(Room room) {
+        return new Meeting(course, room, day, period);
+    }
+
     public Course getCourse() {
         return course;
     }

@@ -315,9 +315,12 @@ public class TeacherGreedyInitializer implements Initializer {
             }
         }
 
-        private boolean hasLectureOfSameCurriculum(Specification spec, Lecture l, int x) {
+        /**
+         * Returns true if at the same time a lecture of the same curriculum is already scheduled
+         */
+        private boolean hasLectureOfSameCurriculum(Specification spec, Lecture l, int slotIdx) {
             Set<Curriculum> cs = spec.getByCourse(l.c);
-            for (Lecture lecture : lectures[x]) {
+            for (Lecture lecture : lectures[slotIdx]) {
                 Set<Curriculum> curCurricula = spec.getByCourse(lecture.c);
                 for (Curriculum curCurriculum : curCurricula) {
                     if (cs.contains(curCurriculum)) {
@@ -328,8 +331,11 @@ public class TeacherGreedyInitializer implements Initializer {
             return false;
         }
 
-        private boolean hasLectureWithSameTeacher(Lecture l, int x) {
-            for (Lecture lecture : lectures[x]) {
+        /**
+         * Returns true if at slotIdx the same teacher is already teaching a class
+         */
+        private boolean hasLectureWithSameTeacher(Lecture l, int slotIdx) {
+            for (Lecture lecture : lectures[slotIdx]) {
                 if (lecture.c.getTeacher().equals(l.c.getTeacher())) {
                     return true;
                 }
