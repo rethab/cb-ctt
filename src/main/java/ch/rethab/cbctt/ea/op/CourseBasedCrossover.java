@@ -56,12 +56,15 @@ public class CourseBasedCrossover implements Variation {
 
             Set<Meeting> p2Meetings = getMeetingsForRandomCourse(parent1);
             scheduleMeetings(p2Meetings, child2);
+
+            return new Timetable[]{child1, child2};
         } catch (CrossoverFailedException cfe) {
             System.err.println(cfe.getMessage());
             cfe.printStackTrace();
-        }
 
-        return new Timetable[]{child1, child2};
+            // TODO ideally, we could signal somehow that the crossover has failed
+            return new Timetable[]{ parent1.copy(), parent2.copy() };
+        }
     }
 
     private void scheduleMeetings(Set<Meeting> meetings, Timetable t) throws CrossoverFailedException {
@@ -91,7 +94,7 @@ public class CourseBasedCrossover implements Variation {
 
                 Room r;
                 if (isFeasible(t, c, day, period) && (r = toRoom(t.getFreeRoomId(day, period))) != null) {
-                    t.setMeeting(new Meeting(c, r, day, period));
+                    t.addMeeting(new Meeting(c, r, day, period));
                 } else {
                     if (period < spec.getPeriodsPerDay() - 1) {
                         period++;
@@ -124,8 +127,7 @@ public class CourseBasedCrossover implements Variation {
                 Room r = toRoom(t.getFreeRoomId(m.getDay(), m.getPeriod()));
                 // there still is a free room. schedule directly
                 if (r != null) {
-                    Meeting copy = m.copy(r);
-                    t.setMeeting(copy);
+                    t.addMeeting(m.copy(r));
                 } else {
                     // replace one meeting at this period with the new one
                     Meeting m2 = t.replaceMeeting(m.getDay(), m.getPeriod(), m);
@@ -158,7 +160,7 @@ public class CourseBasedCrossover implements Variation {
      * Returns true if the course is feasible to be scheduled here.
      * There may be meetings scheduled already.
      */
-    public boolean isFeasible(Timetable t, Course course, int day, int period) {
+    private boolean isFeasible(Timetable t, Course course, int day, int period) {
         if (!spec.getUnavailabilityConstraints().checkAvailability(course, day, period)) {
             return false;
         } else if (t.hasLectureOfSameCurriculum(course.getCurricula(), day, period)) {
