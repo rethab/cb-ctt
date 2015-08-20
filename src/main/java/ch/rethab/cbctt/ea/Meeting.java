@@ -3,6 +3,8 @@ package ch.rethab.cbctt.ea;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 
+import java.util.Objects;
+
 /**
  * @author Reto Habluetzel, 2015
  */
@@ -52,5 +54,21 @@ public class Meeting {
         sb.append(", period=").append(period);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meeting meeting = (Meeting) o;
+        return Objects.equals(day, meeting.day) &&
+                Objects.equals(period, meeting.period) &&
+                Objects.equals(course, meeting.course) &&
+                Objects.equals(room, meeting.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(course, room, day, period);
     }
 }

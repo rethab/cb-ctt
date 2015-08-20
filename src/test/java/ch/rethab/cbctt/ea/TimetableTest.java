@@ -108,4 +108,26 @@ public class TimetableTest {
         assertEquals(m1.getCourse(), m2.getCourse());
     }
 
+    @Test
+    public void shouldAddAndRemoveAndReplace() {
+        Timetable t = new Timetable(curricula, rooms, 1, 2);
+        Meeting m1 = new Meeting(c4, r1, 0, 1);
+        Meeting m2 = new Meeting(c3, r1, 0, 1);
+
+        // should be there
+        t.addMeeting(m1);
+        assertEquals(m1, t.getMeeting(m1.getCourse(), 0, 1));
+        assertEquals(1, t.getMeetings().size());
+
+        // m1 should be returned and m2 scheduled
+        assertEquals(m1, t.replaceMeeting(0, 1, m2));
+        assertEquals(m2, t.getMeeting(m2.getCourse(), 0, 1));
+        assertEquals(1, t.getMeetings().size());
+
+        // none should be there
+        t.removeMeeting(m2);
+        assertNull(t.getMeeting(m2.getCourse(), 0, 1));
+        assertEquals(0, t.getMeetings().size());
+    }
+
 }

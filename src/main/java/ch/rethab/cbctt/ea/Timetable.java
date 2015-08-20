@@ -83,13 +83,24 @@ public class Timetable {
                 .findFirst().orElse(null);
     }
 
+    /**
+     * Schedules the specified meeting at the specified day and period
+     * and returns the existing meeting if there is one.
+     */
     public Meeting replaceMeeting(int day, int period, Meeting m) {
         return m.getCourse().getCurricula().stream().map(currID -> {
             CurriculumTimetable ctt = curriculumTimetables.get(currID);
             Meeting m2 = ctt.get(day, period);
             ctt.unsetMeeting(day, period);
+            ctt.setMeeting(m);
             return m2;
         }).findFirst().orElse(null);
+    }
+
+    public void removeMeeting(Meeting m) {
+        m.getCourse().getCurricula().stream().forEach(currID ->
+            curriculumTimetables.get(currID).unsetMeeting(m.getDay(), m.getPeriod())
+        );
     }
 
     public boolean hasLectureOfSameCurriculum(List<String> curricula, int day, int period) {

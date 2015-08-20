@@ -43,7 +43,8 @@ public class CourseBasedCrossover implements Variation {
         Timetable parent1 = solutionConverter.fromSolution(solutions[0]);
         Timetable parent2 = solutionConverter.fromSolution(solutions[1]);
 
-        return (Solution[]) Arrays.stream(crossover(parent1, parent2)).map(solutionConverter::toSolution).toArray();
+        Timetable[] kids = crossover(parent1, parent2);
+        return new Solution[]{solutionConverter.toSolution(kids[0]), solutionConverter.toSolution(kids[1])};
     }
 
     private Timetable[] crossover(Timetable parent1, Timetable parent2) {
@@ -51,11 +52,11 @@ public class CourseBasedCrossover implements Variation {
         Timetable child2 = parent2.copy();
 
         try {
-            Set<Meeting> p1Meetings = getMeetingsForRandomCourse(parent2);
-            scheduleMeetings(p1Meetings, child1);
+            Course p1Course = getRandomCourse(parent2);
+            scheduleMeetings(p1Course, child1);
 
-            Set<Meeting> p2Meetings = getMeetingsForRandomCourse(parent1);
-            scheduleMeetings(p2Meetings, child2);
+            Course p2Course = getRandomCourse(parent1);
+            scheduleMeetings(p2Course, child2);
 
             return new Timetable[]{child1, child2};
         } catch (CrossoverFailedException cfe) {
@@ -67,7 +68,7 @@ public class CourseBasedCrossover implements Variation {
         }
     }
 
-    private void scheduleMeetings(Set<Meeting> meetings, Timetable t) throws CrossoverFailedException {
+    private void scheduleMeetings(Course course, Timetable t) throws CrossoverFailedException {
         /* Procedure:
          * 1. For each meeting m1 in meetings:
          *   a) try to set m at m1.day/m1.period.
@@ -81,36 +82,18 @@ public class CourseBasedCrossover implements Variation {
          * 2. Greedy insert all from to_be_scheduled
          */
 
-        List<Course> leftovers = scheduleAtSpecifiedPeriods(meetings, t);
+        Set<Meeting> meetings = unscheduleMeetingsByCourse(t, course);
+        List<Course> leftovers = scheduleAtSpecifiedPeriods(t, meetings);
         scheduleGreedy(t, leftovers);
     }
 
-    private void scheduleGreedy(Timetable t, List<Course> toBeScheduled) throws CrossoverFailedException {
-        for (Course c : toBeScheduled) {
-
-            int day = 0;
-            int period = 0;
-            while (true) {
-
-                Room r;
-                if (isFeasible(t, c, day, period) && (r = toRoom(t.getFreeRoomId(day, period))) != null) {
-                    t.addMeeting(new Meeting(c, r, day, period));
-                } else {
-                    if (period < spec.getPeriodsPerDay() - 1) {
-                        period++;
-                    } else if (day < spec.getNumberOfDaysPerWeek() - 1) {
-                        day++;
-                        period = 0;
-                    } else {
-                        throw new CrossoverFailedException("Failed to schedule Course " + c.getId());
-                    }
-                }
-
-            }
-        }
+    private Set<Meeting> unscheduleMeetingsByCourse(Timetable t, Course course) {
+        Set<Meeting> meetings = t.getMeetingsByCourse(course);
+        meetings.stream().forEach(t::removeMeeting);
+        return meetings;
     }
 
-    private List<Course> scheduleAtSpecifiedPeriods(Set<Meeting> meetings, Timetable t) {
+    private List<Course> scheduleAtSpecifiedPeriods(Timetable t, Set<Meeting> meetings) {
         List<Course> leftovers = new LinkedList<>();
 
         meetings.forEach(m -> {
@@ -119,7 +102,7 @@ public class CourseBasedCrossover implements Variation {
 
             // already scheduled here. this is what we want
             if (existing != null) {
-                return;
+                throw new IllegalStateException("Meetings should haven been unscheduled before");
             }
 
             // could this be scheduled here while maintaining feasibility
@@ -141,6 +124,33 @@ public class CourseBasedCrossover implements Variation {
         return leftovers;
     }
 
+    /** Places the specified courses wherever they fit */
+    private void scheduleGreedy(Timetable t, List<Course> toBeScheduled) throws CrossoverFailedException {
+        for (Course c : toBeScheduled) {
+
+            int day = 0;
+            int period = 0;
+            while (true) {
+
+                Room r;
+                if (isFeasible(t, c, day, period) && (r = toRoom(t.getFreeRoomId(day, period))) != null) {
+                    t.addMeeting(new Meeting(c, r, day, period));
+                    break;
+                } else {
+                    if (period < spec.getPeriodsPerDay() - 1) {
+                        period++;
+                    } else if (day < spec.getNumberOfDaysPerWeek() - 1) {
+                        day++;
+                        period = 0;
+                    } else {
+                        throw new CrossoverFailedException("Failed to schedule Course " + c.getId());
+                    }
+                }
+
+            }
+        }
+    }
+
     private Room toRoom(String roomID) {
         if (roomID == null) {
             return null;
@@ -151,10 +161,10 @@ public class CourseBasedCrossover implements Variation {
         }
     }
 
-    private Set<Meeting> getMeetingsForRandomCourse(Timetable t) {
+    private Course getRandomCourse(Timetable t) {
         Meeting[] meetings = t.getMeetings().toArray(new Meeting[t.getMeetings().size()]);
         int idx = new SecureRandom().nextInt(meetings.length);
-        return t.getMeetingsByCourse(meetings[idx].getCourse());
+        return meetings[idx].getCourse();
     }
     /**
      * Returns true if the course is feasible to be scheduled here.

@@ -89,4 +89,13 @@ public class CourseBasedCrossoverTest {
         fail("implement me");
     }
 
+    @Test
+    public void shouldReplaceExistingMeetingIfFeasible() {
+        fail("implement me");
+    }
+
+    @Test
+    public void shouldNotIncreaseOrDecreaseTotalNumberOfMeetings() {
+        fail("implement me");
+    }
 }
