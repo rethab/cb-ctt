@@ -232,18 +232,54 @@ public class CourseBasedCrossoverTest {
     }
 
     @Test
-    public void shouldNotIncreaseOrDecreaseTotalNumberOfMeetings() {
-        fail("implement me");
+    public void shouldPlaceFromFirstParentInSecondChild() {
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent1Meeting = new Meeting(c3, r1, 0, 0);
+        parent1.addMeeting(parent1Meeting);
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m1 = new Meeting(c1, r1, 0, 0);
+        parent2.addMeeting(m1);
+        Meeting m2 = new Meeting(c2, r2, 0, 0);
+        parent2.addMeeting(m2);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        Timetable child2 = solutionConverter.fromSolution(kids[1]);
+
+        // new meeting should exist at 0/0. cannot compare entire meeting due to room change
+        assertEquals(c3, child2.getMeeting(c3, 0, 0).getCourse());
+        // one old meeting should also still be there..
+        assertTrue(child2.getMeeting(c1, 0, 0) != null || child2.getMeeting(c2, 0, 0) != null);
+        // ..but not both
+        assertFalse(child2.getMeeting(c1, 0, 0) != null && child2.getMeeting(c2, 0, 0) != null);
+
+        // ..all should be scheduled somewhere
+        assertEquals(3, child2.getMeetings().size());
     }
 
     @Test
     public void shouldNotModifyParents() {
-        fail("implement me");
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m1 = new Meeting(c1, r1, 0, 0);
+        parent1.addMeeting(m1);
+        Meeting m2 = new Meeting(c2, r2, 0, 0);
+        parent1.addMeeting(m2);
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent2Meeting = new Meeting(c3, r1, 0, 0);
+        parent2.addMeeting(parent2Meeting);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        courseBasedCrossover.evolve(new Solution[]{s1, s2});
+
+        assertEquals(2, parent1.getMeetings().size());
+        assertEquals(m1, parent1.getMeeting(c1, 0, 0));
+        assertEquals(m2, parent1.getMeeting(c2, 0, 0));
+
+        assertEquals(1, parent2.getMeetings().size());
+        assertEquals(parent2Meeting, parent2.getMeeting(c3, 0, 0));
     }
-
-    @Test
-    public void shouldPlaceFromFirstParentInSecondChild() {
-
-    }
-
 }
