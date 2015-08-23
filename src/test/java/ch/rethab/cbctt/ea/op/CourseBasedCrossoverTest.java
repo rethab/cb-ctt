@@ -3,12 +3,19 @@ package ch.rethab.cbctt.ea.op;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
+import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
+import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.SolutionConverter;
+import ch.rethab.cbctt.parser.ECTTParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -281,5 +288,29 @@ public class CourseBasedCrossoverTest {
 
         assertEquals(1, parent2.getMeetings().size());
         assertEquals(parent2Meeting, parent2.getMeeting(c3, 0, 0));
+    }
+
+    @Test
+    public void shouldProduceFeasibleOffspringsFromRealSample() throws Exception {
+        String filename = String.format("comp%02d.ectt", 19);
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+        Formulation v = new UD1Formulation(spec);
+        List<Timetable> ts = new TeacherGreedyInitializer().initialize(spec, 2);
+
+        SolutionConverter solutionConverter = new SolutionConverter(v);
+        Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
+        Solution kids[] = courseBasedCrossover.evolve(parents);
+        Timetable offspring1 = solutionConverter.fromSolution(kids[0]);
+        Timetable offspring2 = solutionConverter.fromSolution(kids[1]);
+
+        for (Constraint c : v.getConstraints()) {
+            assertEquals(0, c.violations(offspring1));
+        }
+        for (Constraint c : v.getConstraints()) {
+            assertEquals(0, c.violations(offspring2));
+        }
     }
 }

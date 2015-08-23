@@ -24,6 +24,9 @@ import java.util.*;
  */
 public class CourseBasedCrossover implements Variation {
 
+    // if a crossover fails, it is restarted this many times
+    private static final int ATTEMPTSAFTERFAIL = 100;
+
     private final SolutionConverter solutionConverter;
 
     private final Specification spec;
@@ -48,28 +51,49 @@ public class CourseBasedCrossover implements Variation {
     }
 
     private Timetable[] crossover(Timetable parent1, Timetable parent2) {
-        Timetable child1 = parent1.copy();
-        Timetable child2 = parent2.copy();
+        Timetable child2 = null;
+        Timetable child1 = null;
 
-        try {
-            // schedule course from p2 in p1's offspring
-            Course p2Course = getRandomCourse(parent2);
-            Set<Meeting> p2Meetings = parent2.getMeetingsByCourse(p2Course);
-            scheduleMeetings(p2Course, p2Meetings, child1);
+        for (int i = 0; i < ATTEMPTSAFTERFAIL; i++) {
+            try {
+                Timetable tmpChild1 = parent1.copy();
+                // schedule course from p2 in p1's offspring
+                Course p2Course = getRandomCourse(parent2);
+                Set<Meeting> p2Meetings = parent2.getMeetingsByCourse(p2Course);
+                scheduleMeetings(p2Course, p2Meetings, tmpChild1);
 
-            // schedule course from p1 in p2's offspring
-            Course p1Course = getRandomCourse(parent1);
-            Set<Meeting> p1Meetings = parent1.getMeetingsByCourse(p1Course);
-            scheduleMeetings(p1Course, p1Meetings, child2);
-
-            return new Timetable[]{child1, child2};
-        } catch (CrossoverFailedException cfe) {
-            System.err.println(cfe.getMessage());
-            cfe.printStackTrace();
-
-            // TODO ideally, we could signal somehow that the crossover has failed
-            return new Timetable[]{ parent1.copy(), parent2.copy() };
+                child1 = tmpChild1;
+                break;
+            } catch (CrossoverFailedException cfe) {
+                System.err.println("Crossover failed ("+i+"). Restarting..");
+            }
         }
+
+        // permanently failed
+        if (child1 == null) {
+            child1 = parent1.copy();
+        }
+
+        for (int i = 0; i < ATTEMPTSAFTERFAIL; i++) {
+            try {
+                Timetable tmpChild2 = parent2.copy();
+                // schedule course from p1 in p2's offspring
+                Course p1Course = getRandomCourse(parent1);
+                Set<Meeting> p1Meetings = parent1.getMeetingsByCourse(p1Course);
+                scheduleMeetings(p1Course, p1Meetings, tmpChild2);
+
+                child2 = tmpChild2;
+            } catch (CrossoverFailedException cfe) {
+                System.err.println("Crossover failed ("+i+"). Restarting..");
+            }
+        }
+
+        // permanently failed
+        if (child2 == null) {
+            child2 = parent2.copy();
+        }
+
+        return new Timetable[]{child1, child2};
     }
 
     private void scheduleMeetings(Course course, Set<Meeting> meetings, Timetable t) throws CrossoverFailedException {
