@@ -52,11 +52,13 @@ public class CourseBasedCrossover implements Variation {
         Timetable child2 = parent2.copy();
 
         try {
-            Course p1Course = getRandomCourse(parent2);
-            scheduleMeetings(p1Course, child1);
+            Course p2Course = getRandomCourse(parent2);
+            Set<Meeting> p2Meetings = parent2.getMeetingsByCourse(p2Course);
+            scheduleMeetings(p2Course, p2Meetings, child1);
 
-            Course p2Course = getRandomCourse(parent1);
-            scheduleMeetings(p2Course, child2);
+            Course p1Course = getRandomCourse(parent1);
+            Set<Meeting> p1Meetings = parent1.getMeetingsByCourse(p1Course);
+            scheduleMeetings(p1Course, p1Meetings, child2);
 
             return new Timetable[]{child1, child2};
         } catch (CrossoverFailedException cfe) {
@@ -68,7 +70,7 @@ public class CourseBasedCrossover implements Variation {
         }
     }
 
-    private void scheduleMeetings(Course course, Timetable t) throws CrossoverFailedException {
+    private void scheduleMeetings(Course course, Set<Meeting> meetings, Timetable t) throws CrossoverFailedException {
         /* Procedure:
          * 1. For each meeting m1 in meetings:
          *   a) try to set m at m1.day/m1.period.
@@ -82,15 +84,14 @@ public class CourseBasedCrossover implements Variation {
          * 2. Greedy insert all from to_be_scheduled
          */
 
-        Set<Meeting> meetings = unscheduleMeetingsByCourse(t, course);
+        unscheduleMeetingsByCourse(t, course);
         List<Course> leftovers = scheduleAtSpecifiedPeriods(t, meetings);
         scheduleGreedy(t, leftovers);
     }
 
-    private Set<Meeting> unscheduleMeetingsByCourse(Timetable t, Course course) {
+    private void unscheduleMeetingsByCourse(Timetable t, Course course) {
         Set<Meeting> meetings = t.getMeetingsByCourse(course);
         meetings.stream().forEach(t::removeMeeting);
-        return meetings;
     }
 
     private List<Course> scheduleAtSpecifiedPeriods(Timetable t, Set<Meeting> meetings) {
