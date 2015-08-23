@@ -88,13 +88,27 @@ public class Timetable {
      * and returns the existing meeting if there is one.
      */
     public Meeting replaceMeeting(int day, int period, Meeting m) {
-        return m.getCourse().getCurricula().stream().map(currID -> {
-            CurriculumTimetable ctt = curriculumTimetables.get(currID);
-            Meeting m2 = ctt.get(day, period);
-            ctt.unsetMeeting(day, period);
-            ctt.setMeeting(m);
-            return m2;
-        }).findFirst().orElse(null);
+        /*
+         * Find a meeting to be replaced and remove all instances of it's
+         * courses in all curricula. Then set the new one. These multiple
+         * steps are required since the two meetings may not belong to the
+         * same curricula
+         */
+        Meeting toBeRemoved = m.getCourse().getCurricula().stream().map(currID ->
+            curriculumTimetables.get(currID).get(day, period)
+        ).findFirst().orElse(null);
+
+        if (toBeRemoved != null) {
+            toBeRemoved.getCourse().getCurricula().stream().forEach(currID -> {
+                curriculumTimetables.get(currID).unsetMeeting(day, period);
+            });
+        }
+
+        m.getCourse().getCurricula().stream().forEach(currID -> {
+            curriculumTimetables.get(currID).setMeeting(m);
+        });
+
+        return toBeRemoved;
     }
 
     public void removeMeeting(Meeting m) {
