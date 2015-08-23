@@ -1,6 +1,7 @@
 package ch.rethab.cbctt.ea;
 
 import ch.rethab.cbctt.domain.Course;
+import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
 
 import java.util.*;
@@ -30,11 +31,11 @@ public class Timetable {
     }
 
     public void addMeeting(Meeting meeting) {
-        checkRoomAvailability(meeting);
+        checkRoomAvailability(meeting.getRoom(), meeting.getDay(), meeting.getPeriod());
         meeting.getCourse().getCurricula().stream().forEach(currID ->
                         curriculumTimetables.get(currID).setMeeting(meeting)
         );
-        setRoomToOccupied(meeting);
+        setRoomToOccupied(meeting.getRoom(), meeting.getDay(), meeting.getPeriod());
     }
 
     public Set<Meeting> getMeetingsByCourse(Course c) {
@@ -48,7 +49,7 @@ public class Timetable {
     }
 
     public Set<Meeting> getMeetings() {
-        return curriculumTimetables.values().stream().flatMap(ct -> ct.getAll()).collect(Collectors.toSet());
+        return curriculumTimetables.values().stream().flatMap(CurriculumTimetable::getAll).collect(Collectors.toSet());
     }
 
     public Timetable copy() {
@@ -78,8 +79,9 @@ public class Timetable {
 
     public String getFreeRoomId(int day, int period) {
         return roomOccupancy.entrySet().stream()
-                .map(entry -> !entry.getValue()[toSlotIdx(day, period)] ? entry.getKey() : null)
-                .filter(roomID -> roomID != null)
+                .flatMap(entry -> !entry.getValue()[toSlotIdx(day, period)]
+                        ? Stream.of(entry.getKey())
+                        : Stream.empty())
                 .findFirst().orElse(null);
     }
 
@@ -94,19 +96,28 @@ public class Timetable {
          * steps are required since the two meetings may not belong to the
          * same curricula
          */
-        Meeting toBeRemoved = m.getCourse().getCurricula().stream().map(currID ->
-            curriculumTimetables.get(currID).get(day, period)
-        ).findFirst().orElse(null);
+        Meeting toBeRemoved = getMeetings().stream()
+                .filter(m1 -> m1.getDay() == day && m1.getPeriod() == period)
+                .findFirst().orElse(null);
 
+        Meeting toBeScheduled;
         if (toBeRemoved != null) {
+            setRoomToFree(toBeRemoved.getRoom(), m.getDay(), m.getPeriod());
             toBeRemoved.getCourse().getCurricula().stream().forEach(currID -> {
                 curriculumTimetables.get(currID).unsetMeeting(day, period);
             });
+
+            toBeScheduled = m.copy(toBeRemoved.getRoom());
+        } else {
+            toBeScheduled = m;
         }
 
+
+        checkRoomAvailability(toBeScheduled.getRoom(), toBeScheduled.getDay(), toBeScheduled.getPeriod());
         m.getCourse().getCurricula().stream().forEach(currID -> {
-            curriculumTimetables.get(currID).setMeeting(m);
+            curriculumTimetables.get(currID).setMeeting(toBeScheduled);
         });
+        setRoomToOccupied(toBeScheduled.getRoom(), toBeScheduled.getDay(), toBeScheduled.getPeriod());
 
         return toBeRemoved;
     }
@@ -135,15 +146,20 @@ public class Timetable {
         return new PrettyTextPrinter().print(this);
     }
 
-    private void setRoomToOccupied(Meeting meeting) {
-        boolean[] occupancy = roomOccupancy.get(meeting.getRoom().getId());
-        occupancy[toSlotIdx(meeting.getDay(), meeting.getPeriod())] = true;
+    private void setRoomToOccupied(Room room, int day, int period) {
+        boolean[] occupancy = roomOccupancy.get(room.getId());
+        occupancy[toSlotIdx(day, period)] = true;
     }
 
-    private void checkRoomAvailability(Meeting meeting) {
-        boolean[] occupancy = roomOccupancy.get(meeting.getRoom().getId());
-        if (occupancy[toSlotIdx(meeting.getDay(), meeting.getPeriod())]) {
-            throw new InfeasibilityException("Room is occupied at Day="+meeting.getDay()+" and Period="+meeting.getPeriod());
+    private void setRoomToFree(Room room, int day, int period) {
+        boolean[] occupancy = roomOccupancy.get(room.getId());
+        occupancy[toSlotIdx(day, period)] = false;
+    }
+
+    private void checkRoomAvailability(Room room, int day, int period) {
+        boolean[] occupancy = roomOccupancy.get(room.getId());
+        if (occupancy[toSlotIdx(day, period)]) {
+            throw new InfeasibilityException("Room="+room.getId()+" is occupied at Day="+day+" and Period="+period);
         }
     }
 

@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.moeaframework.core.Solution;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -23,19 +24,22 @@ public class CourseBasedCrossoverTest {
 
     Curriculum curr1 = new Curriculum("curr1");
     Curriculum curr2 = new Curriculum("curr2");
+    Curriculum curr3 = new Curriculum("curr3");
 
     Course c1 = Course.Builder.id("c1").teacher("t1").curriculum(curr1).nlectures(2)
             .nWorkingDays(3).nStudents(3).doubleLectures(false).build();
     Course c2 = Course.Builder.id("c2").teacher("t2").curriculum(curr2).nlectures(1)
             .nWorkingDays(3).nStudents(3).doubleLectures(false).build();
-    Course c3 = Course.Builder.id("c3").teacher("t3").curriculum(curr1).curriculum(curr2)
+    Course c3 = Course.Builder.id("c3").teacher("t3").curriculum(curr3).nlectures(1)
+            .nWorkingDays(3).nStudents(3).doubleLectures(false).build();
+    Course c4 = Course.Builder.id("c4").teacher("t4").curriculum(curr1).curriculum(curr2)
             .nlectures(1).nWorkingDays(3).nStudents(3).doubleLectures(false).build();
 
     Room r1 = new Room("r1", 3, 0);
     Room r2 = new Room("r2", 4, 1);
 
-    Set<String> curricula = new HashSet(Arrays.asList(curr1.getId(), curr2.getId()));
-    Set<String> rooms = new HashSet(Arrays.asList(r1.getId(), r2.getId()));
+    Set<String> curricula;
+    Set<String> rooms;
 
     UnavailabilityConstraints unavailabilityConstraints = new UnavailabilityConstraints(days, periodsPerDay);
     RoomConstraints roomConstraints = new RoomConstraints();
@@ -43,8 +47,8 @@ public class CourseBasedCrossoverTest {
     Specification spec = Specification.Builder.name("specification")
             .days(days).periodsPerDay(periodsPerDay).minLectures(3).maxLectures(5)
             .room(r1).room(r2)
-            .course(c1).course(c2).course(c3)
-            .curriculum(curr1).curriculum(curr2)
+            .course(c1).course(c2).course(c3).course(c4)
+            .curriculum(curr1).curriculum(curr2).curriculum(curr3)
             .unavailabilityConstraints(unavailabilityConstraints)
             .roomConstraints(roomConstraints)
             .build();
@@ -55,8 +59,11 @@ public class CourseBasedCrossoverTest {
 
     @Before
     public void init() {
-        curr1.setCourses(Arrays.asList(c1, c3));
-        curr2.setCourses(Arrays.asList(c2, c3));
+        curr1.setCourses(Arrays.asList(c1, c4));
+        curr2.setCourses(Arrays.asList(c2, c4));
+        curr3.setCourses(Collections.singletonList(c3));
+        curricula = spec.getCurricula().stream().map(Curriculum::getId).collect(Collectors.toSet());
+        rooms = spec.getRooms().stream().map(Room::getId).collect(Collectors.toSet());
     }
 
     @Test
@@ -111,11 +118,11 @@ public class CourseBasedCrossoverTest {
         Meeting m = new Meeting(c1, r1, 0, 0);
         parent1.addMeeting(m);
         parent1.addMeeting(new Meeting(c1, r1, 0, 1));
-        parent1.addMeeting(new Meeting(c3, r2, 1, 0));
+        parent1.addMeeting(new Meeting(c4, r2, 1, 0));
         Solution s1 = solutionConverter.toSolution(parent1);
 
         Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
-        Meeting parent2Meeting = new Meeting(c3, r2, 0, 0);
+        Meeting parent2Meeting = new Meeting(c4, r2, 0, 0);
         parent2.addMeeting(parent2Meeting);
         Solution s2 = solutionConverter.toSolution(parent2);
 
@@ -125,10 +132,10 @@ public class CourseBasedCrossoverTest {
         // original meeting should still be there
         assertEquals(m, child1.getMeeting(c1, 0, 0));
         // new meeting should be not have been scheduled here
-        assertNull(child1.getMeeting(c3, 0, 0));
+        assertNull(child1.getMeeting(c4, 0, 0));
         // should not override other existing either..
-        assertNull(child1.getMeeting(c3, 0, 1));
-        // ..but should be placed somewhere (two from c1, one from c3)
+        assertNull(child1.getMeeting(c4, 0, 1));
+        // ..but should be placed somewhere (two from c1, one from c4)
         assertEquals(3, child1.getMeetings().size());
     }
 
@@ -139,16 +146,16 @@ public class CourseBasedCrossoverTest {
         parent1.addMeeting(m1);
         Meeting m2 = new Meeting(c1, r1, 0, 1);
         parent1.addMeeting(m2);
-        parent1.addMeeting(new Meeting(c3, r2, 1, 0));
+        parent1.addMeeting(new Meeting(c4, r2, 1, 0));
         Solution s1 = solutionConverter.toSolution(parent1);
 
         Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
-        Meeting parent2Meeting = new Meeting(c3, r1, 0, 0);
+        Meeting parent2Meeting = new Meeting(c4, r1, 0, 0);
         parent2.addMeeting(parent2Meeting);
         Solution s2 = solutionConverter.toSolution(parent2);
 
-        // usually c3 could be scheduled in r1 at 0/0, but now c1 occupies r1 and c3 cannot happen in r2
-        roomConstraints.addRoomConstraint(c3, r2);
+        // usually c4 could be scheduled in r1 at 0/0, but now c1 occupies r1 and c4 cannot happen in r2
+        roomConstraints.addRoomConstraint(c4, r2);
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         Timetable child1 = solutionConverter.fromSolution(kids[0]);
@@ -157,10 +164,10 @@ public class CourseBasedCrossoverTest {
         assertEquals(m1, child1.getMeeting(c1, 0, 0));
         assertEquals(m2, child1.getMeeting(c1, 0, 1));
 
-        // c3 must not be here due to room constraint
-        assertNull(child1.getMeeting(c3, 0, 0));
+        // c4 must not be here due to room constraint
+        assertNull(child1.getMeeting(c4, 0, 0));
 
-        // ..but should be placed somewhere (two from c1, one from c3)
+        // ..but should be placed somewhere (two from c1, one from c4)
         assertEquals(3, child1.getMeetings().size());
     }
 
@@ -171,16 +178,16 @@ public class CourseBasedCrossoverTest {
         parent1.addMeeting(m1);
         Meeting m2 = new Meeting(c1, r1, 0, 1);
         parent1.addMeeting(m2);
-        parent1.addMeeting(new Meeting(c3, r2, 1, 0));
+        parent1.addMeeting(new Meeting(c4, r2, 1, 0));
         Solution s1 = solutionConverter.toSolution(parent1);
 
         Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
-        Meeting parent2Meeting = new Meeting(c3, r1, 0, 0);
+        Meeting parent2Meeting = new Meeting(c4, r1, 0, 0);
         parent2.addMeeting(parent2Meeting);
         Solution s2 = solutionConverter.toSolution(parent2);
 
-        // usually c3 could be scheduled in r1 at 0/0, but now t3 cannot teach at 0/0
-        unavailabilityConstraints.addUnavailability(c3, 0, 0);
+        // usually c4 could be scheduled in r1 at 0/0, but now t4 cannot teach at 0/0
+        unavailabilityConstraints.addUnavailability(c4, 0, 0);
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         Timetable child1 = solutionConverter.fromSolution(kids[0]);
@@ -189,16 +196,39 @@ public class CourseBasedCrossoverTest {
         assertEquals(m1, child1.getMeeting(c1, 0, 0));
         assertEquals(m2, child1.getMeeting(c1, 0, 1));
 
-        // c3 must not be here, because teacher is unavailable
-        assertNull(child1.getMeeting(c3, 0, 0));
+        // c4 must not be here, because teacher is unavailable
+        assertNull(child1.getMeeting(c4, 0, 0));
 
-        // ..but should be placed somewhere (two from c1, one from c3)
+        // ..but should be placed somewhere (two from c1, one from c4)
         assertEquals(3, child1.getMeetings().size());
     }
 
     @Test
     public void shouldReplaceExistingMeetingIfFeasible() {
-        fail("implement me");
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m1 = new Meeting(c1, r1, 0, 0);
+        parent1.addMeeting(m1);
+        Meeting m2 = new Meeting(c2, r2, 0, 0);
+        parent1.addMeeting(m2);
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent2Meeting = new Meeting(c3, r1, 0, 0);
+        parent2.addMeeting(parent2Meeting);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        Timetable child1 = solutionConverter.fromSolution(kids[0]);
+
+        // new meeting should exist at 0/0. cannot compare entire meeting due to room change
+        assertEquals(c3, child1.getMeeting(c3, 0, 0).getCourse());
+        // one old meeting should also still be there..
+        assertTrue(child1.getMeeting(c1, 0, 0) != null || child1.getMeeting(c2, 0, 0) != null);
+        // ..but not both
+        assertFalse(child1.getMeeting(c1, 0, 0) != null && child1.getMeeting(c2, 0, 0) != null);
+
+        // ..all should be scheduled somewhere
+        assertEquals(3, child1.getMeetings().size());
     }
 
     @Test
@@ -209,6 +239,11 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldNotModifyParents() {
         fail("implement me");
+    }
+
+    @Test
+    public void shouldPlaceFromFirstParentInSecondChild() {
+
     }
 
 }
