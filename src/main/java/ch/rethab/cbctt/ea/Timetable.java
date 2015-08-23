@@ -16,7 +16,7 @@ public class Timetable {
     /** the curriculum timetables */
     private final Map<String, CurriculumTimetable> curriculumTimetables = new HashMap<>();
 
-    /** RoomID -> OccupiedTimeslots for room */
+    /** RoomID -> OccupiedTimeslots for room. true means occupied */
     private final Map<String, boolean[]> roomOccupancy = new HashMap<>();
 
     private final int days;
@@ -99,6 +99,10 @@ public class Timetable {
         Meeting toBeRemoved = getMeetings().stream()
                 .filter(m1 -> m1.getDay() == day && m1.getPeriod() == period)
                 .findFirst().orElse(null);
+
+        if (toBeRemoved == null) {
+            System.out.println("is null");
+        }
 
         Meeting toBeScheduled;
         if (toBeRemoved != null) {

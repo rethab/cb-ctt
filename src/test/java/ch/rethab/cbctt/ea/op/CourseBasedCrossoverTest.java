@@ -302,6 +302,7 @@ public class CourseBasedCrossoverTest {
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
+        CourseBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, spec);
         Solution kids[] = courseBasedCrossover.evolve(parents);
         Timetable offspring1 = solutionConverter.fromSolution(kids[0]);
         Timetable offspring2 = solutionConverter.fromSolution(kids[1]);

@@ -29,6 +29,17 @@ public class ECTTParserTest {
     }
 
     @Test
+    public void shouldBeAbleToReadMixedRoomIDs() throws IOException {
+        String filename = "comp19.ectt";
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+
+        assertTrue(spec.getRooms().stream().anyMatch(r -> r.getId().equals("rDS1")));
+    }
+
+    @Test
     public void shouldSetTheAttributes() throws IOException {
         InputStream is = ECTTParserTest.class.getClassLoader().getResourceAsStream("toy.ectt");
         if (is == null) {

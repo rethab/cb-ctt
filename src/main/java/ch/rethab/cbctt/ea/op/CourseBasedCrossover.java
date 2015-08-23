@@ -182,9 +182,12 @@ public class CourseBasedCrossover implements Variation {
         if (roomID == null) {
             return null;
         } else {
-            return spec.getRooms().stream()
-                    .filter(r -> r.getId().equals(roomID))
-                    .findFirst().orElse(null);
+            for (Room room : spec.getRooms()) {
+                if (room.getId().equals(roomID)) {
+                    return room;
+                }
+            }
+            throw new IllegalStateException("Room " + roomID + " must exist in spec!");
         }
     }
 
