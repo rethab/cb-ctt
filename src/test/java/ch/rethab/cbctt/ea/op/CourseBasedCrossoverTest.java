@@ -28,6 +28,8 @@ public class CourseBasedCrossoverTest {
             .nWorkingDays(3).nStudents(3).doubleLectures(false).build();
     Course c2 = Course.Builder.id("c2").teacher("t2").curriculum(curr2).nlectures(1)
             .nWorkingDays(3).nStudents(3).doubleLectures(false).build();
+    Course c3 = Course.Builder.id("c3").teacher("t3").curriculum(curr1).curriculum(curr2)
+            .nlectures(1).nWorkingDays(3).nStudents(3).doubleLectures(false).build();
 
     Room r1 = new Room("r1", 3, 0);
     Room r2 = new Room("r2", 4, 1);
@@ -41,7 +43,7 @@ public class CourseBasedCrossoverTest {
     Specification spec = Specification.Builder.name("specification")
             .days(days).periodsPerDay(periodsPerDay).minLectures(3).maxLectures(5)
             .room(r1).room(r2)
-            .course(c1).course(c2)
+            .course(c1).course(c2).course(c3)
             .curriculum(curr1).curriculum(curr2)
             .unavailabilityConstraints(unavailabilityConstraints)
             .roomConstraints(roomConstraints)
@@ -53,8 +55,8 @@ public class CourseBasedCrossoverTest {
 
     @Before
     public void init() {
-        curr1.setCourses(Collections.singletonList(c1));
-        curr2.setCourses(Collections.singletonList(c2));
+        curr1.setCourses(Arrays.asList(c1, c3));
+        curr2.setCourses(Arrays.asList(c2, c3));
     }
 
     @Test
@@ -80,8 +82,86 @@ public class CourseBasedCrossoverTest {
     }
 
     @Test
+    public void shouldPlaceInSamePeriodWithOtherCourseIfDifferentCurriculum() {
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m1 = new Meeting(c1, r1, 0, 0); // c2 will be scheduled here, but it should stay
+        parent1.addMeeting(m1);
+        parent1.addMeeting(new Meeting(c1, r1, 0, 1));
+        parent1.addMeeting(new Meeting(c2, r2, 1, 0)); // this should be removed
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent2Meeting = new Meeting(c2, r2, 0, 0);
+        parent2.addMeeting(parent2Meeting);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        Timetable child1 = solutionConverter.fromSolution(kids[0]);
+
+        // the old and the new meeting should be at the same period
+        assertEquals(m1, child1.getMeeting(c1, 0, 0));
+        assertEquals(new Meeting(c2, r2, 0, 0), child1.getMeeting(c2, 0, 0));
+        // two meetings for c1, one for c2
+        assertEquals(3, child1.getMeetings().size());
+    }
+
+    @Test
+    public void shouldNotPlaceIfOtherCourseFromSameCurriculumIsThere() {
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m = new Meeting(c1, r1, 0, 0);
+        parent1.addMeeting(m);
+        parent1.addMeeting(new Meeting(c1, r1, 0, 1));
+        parent1.addMeeting(new Meeting(c3, r2, 1, 0));
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent2Meeting = new Meeting(c3, r2, 0, 0);
+        parent2.addMeeting(parent2Meeting);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        Timetable child1 = solutionConverter.fromSolution(kids[0]);
+
+        // original meeting should still be there
+        assertEquals(m, child1.getMeeting(c1, 0, 0));
+        // new meeting should be not have been scheduled here
+        assertNull(child1.getMeeting(c3, 0, 0));
+        // should not override other existing either..
+        assertNull(child1.getMeeting(c3, 0, 1));
+        // ..but should be placed somewhere (two from c1, one from c3)
+        assertEquals(3, child1.getMeetings().size());
+    }
+
+    @Test
     public void shouldNotPlaceInViolationOfRoomConstraints() {
-        fail("implement me");
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m1 = new Meeting(c1, r1, 0, 0);
+        parent1.addMeeting(m1);
+        Meeting m2 = new Meeting(c1, r1, 0, 1);
+        parent1.addMeeting(m2);
+        parent1.addMeeting(new Meeting(c3, r2, 1, 0));
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent2Meeting = new Meeting(c3, r1, 0, 0);
+        parent2.addMeeting(parent2Meeting);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        // usually c3 could be scheduled in r1 at 0/0, but now c1 occupies r1 and c3 cannot happen in r2
+        roomConstraints.addRoomConstraint(c3, r2);
+
+        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        Timetable child1 = solutionConverter.fromSolution(kids[0]);
+
+        // original meetings should still be there
+        assertEquals(m1, child1.getMeeting(c1, 0, 0));
+        assertEquals(m2, child1.getMeeting(c1, 0, 1));
+
+        // c3 must not be here due to room constraint
+        assertNull(child1.getMeeting(c3, 0, 0));
+
+        // ..but should be placed somewhere (two from c1, one from c3)
+        assertEquals(3, child1.getMeetings().size());
     }
 
     @Test
@@ -98,4 +178,10 @@ public class CourseBasedCrossoverTest {
     public void shouldNotIncreaseOrDecreaseTotalNumberOfMeetings() {
         fail("implement me");
     }
+
+    @Test
+    public void shouldNotModifyParents() {
+        fail("implement me");
+    }
+
 }

@@ -52,10 +52,12 @@ public class CourseBasedCrossover implements Variation {
         Timetable child2 = parent2.copy();
 
         try {
+            // schedule course from p2 in p1's offspring
             Course p2Course = getRandomCourse(parent2);
             Set<Meeting> p2Meetings = parent2.getMeetingsByCourse(p2Course);
             scheduleMeetings(p2Course, p2Meetings, child1);
 
+            // schedule course from p1 in p2's offspring
             Course p1Course = getRandomCourse(parent1);
             Set<Meeting> p1Meetings = parent1.getMeetingsByCourse(p1Course);
             scheduleMeetings(p1Course, p1Meetings, child2);
