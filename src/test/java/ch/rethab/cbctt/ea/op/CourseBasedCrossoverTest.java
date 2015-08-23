@@ -166,7 +166,34 @@ public class CourseBasedCrossoverTest {
 
     @Test
     public void shouldNotPlaceInViolationOfUnavailabilityConstraints() {
-        fail("implement me");
+        Timetable parent1 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting m1 = new Meeting(c1, r1, 0, 0);
+        parent1.addMeeting(m1);
+        Meeting m2 = new Meeting(c1, r1, 0, 1);
+        parent1.addMeeting(m2);
+        parent1.addMeeting(new Meeting(c3, r2, 1, 0));
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        Timetable parent2 = new Timetable(curricula, rooms, days, periodsPerDay);
+        Meeting parent2Meeting = new Meeting(c3, r1, 0, 0);
+        parent2.addMeeting(parent2Meeting);
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        // usually c3 could be scheduled in r1 at 0/0, but now t3 cannot teach at 0/0
+        unavailabilityConstraints.addUnavailability(c3, 0, 0);
+
+        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        Timetable child1 = solutionConverter.fromSolution(kids[0]);
+
+        // original meetings should still be there
+        assertEquals(m1, child1.getMeeting(c1, 0, 0));
+        assertEquals(m2, child1.getMeeting(c1, 0, 1));
+
+        // c3 must not be here, because teacher is unavailable
+        assertNull(child1.getMeeting(c3, 0, 0));
+
+        // ..but should be placed somewhere (two from c1, one from c3)
+        assertEquals(3, child1.getMeetings().size());
     }
 
     @Test
