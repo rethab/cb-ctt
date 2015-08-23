@@ -33,7 +33,7 @@ public class Timetable {
     public void addMeeting(Meeting meeting) {
         checkRoomAvailability(meeting.getRoom(), meeting.getDay(), meeting.getPeriod());
         meeting.getCourse().getCurricula().stream().forEach(currID ->
-                        curriculumTimetables.get(currID).setMeeting(meeting)
+            curriculumTimetables.get(currID).setMeeting(meeting)
         );
         setRoomToOccupied(meeting.getRoom(), meeting.getDay(), meeting.getPeriod());
     }
@@ -103,9 +103,9 @@ public class Timetable {
         Meeting toBeScheduled;
         if (toBeRemoved != null) {
             setRoomToFree(toBeRemoved.getRoom(), m.getDay(), m.getPeriod());
-            toBeRemoved.getCourse().getCurricula().stream().forEach(currID -> {
-                curriculumTimetables.get(currID).unsetMeeting(day, period);
-            });
+            toBeRemoved.getCourse().getCurricula().stream().forEach(currID ->
+                curriculumTimetables.get(currID).unsetMeeting(day, period)
+            );
 
             toBeScheduled = m.copy(toBeRemoved.getRoom());
         } else {
@@ -114,9 +114,9 @@ public class Timetable {
 
 
         checkRoomAvailability(toBeScheduled.getRoom(), toBeScheduled.getDay(), toBeScheduled.getPeriod());
-        m.getCourse().getCurricula().stream().forEach(currID -> {
-            curriculumTimetables.get(currID).setMeeting(toBeScheduled);
-        });
+        m.getCourse().getCurricula().stream().forEach(currID ->
+            curriculumTimetables.get(currID).setMeeting(toBeScheduled)
+        );
         setRoomToOccupied(toBeScheduled.getRoom(), toBeScheduled.getDay(), toBeScheduled.getPeriod());
 
         return toBeRemoved;
@@ -126,6 +126,7 @@ public class Timetable {
         m.getCourse().getCurricula().stream().forEach(currID ->
             curriculumTimetables.get(currID).unsetMeeting(m.getDay(), m.getPeriod())
         );
+        setRoomToFree(m.getRoom(), m.getDay(), m.getPeriod());
     }
 
     public boolean hasLectureOfSameCurriculum(List<String> curricula, int day, int period) {
@@ -211,7 +212,7 @@ public class Timetable {
             return Arrays.stream(meetings).filter(m -> m != null);
         }
 
-        public void unsetMeeting(int day, int period) {
+        public void unsetMeeting(int day, int period) { // todo checkj
             meetings[toSlotIdx(day, period)] = null;
         }
     }

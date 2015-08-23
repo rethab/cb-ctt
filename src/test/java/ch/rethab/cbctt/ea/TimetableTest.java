@@ -46,6 +46,16 @@ public class TimetableTest {
         tt.addMeeting(new Meeting(c2, r1, 0, 0));
     }
 
+    @Test
+    public void shouldSetRoomToFreeWhenRemovingMeeting() {
+        Timetable t = new Timetable(curricula, rooms, 1, 2);
+        Meeting m1 = new Meeting(c1, r1, 0, 1);
+        Meeting m2 = new Meeting(c2, r1, 0, 1);
+        t.addMeeting(m1);
+        t.removeMeeting(m1);
+        t.addMeeting(m2);
+    }
+
     @Test(expected = Timetable.InfeasibilityException.class)
     public void shouldNotAllowToScheduleTwoCoursesOfSameCurriculumAtSameTime() {
         Timetable tt = new Timetable(curricula, rooms, 1, 1);
