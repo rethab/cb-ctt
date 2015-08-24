@@ -10,7 +10,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Inspired by 'New Crossover Algorithms for Timetabling with

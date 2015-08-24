@@ -5,9 +5,6 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

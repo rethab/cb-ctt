@@ -1,7 +1,5 @@
 package ch.rethab.cbctt.domain;
 
-import ch.rethab.cbctt.formulation.constraint.RoomCapacityConstraint;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
