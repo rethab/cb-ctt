@@ -27,7 +27,7 @@ import java.util.Set;
 public class CourseBasedCrossover implements Variation {
 
     // if a crossover fails, it is restarted this many times
-    private static final int ATTEMPTSAFTERFAIL = 100;
+    private static final int ATTEMPTS_AFTER_FAIL = 100;
 
     private final SolutionConverter solutionConverter;
 
@@ -56,7 +56,7 @@ public class CourseBasedCrossover implements Variation {
         Timetable child2 = null;
         Timetable child1 = null;
 
-        for (int i = 0; i < ATTEMPTSAFTERFAIL; i++) {
+        for (int i = 0; i < ATTEMPTS_AFTER_FAIL; i++) {
             try {
                 Timetable tmpChild1 = parent1.copy();
                 // schedule course from p2 in p1's offspring
@@ -76,7 +76,7 @@ public class CourseBasedCrossover implements Variation {
             child1 = parent1.copy();
         }
 
-        for (int i = 0; i < ATTEMPTSAFTERFAIL; i++) {
+        for (int i = 0; i < ATTEMPTS_AFTER_FAIL; i++) {
             try {
                 Timetable tmpChild2 = parent2.copy();
                 // schedule course from p1 in p2's offspring
@@ -85,6 +85,7 @@ public class CourseBasedCrossover implements Variation {
                 scheduleMeetings(p1Course, p1Meetings, tmpChild2);
 
                 child2 = tmpChild2;
+                break;
             } catch (CrossoverFailedException cfe) {
                 System.err.println("Crossover failed ("+i+"). Restarting..");
             }
