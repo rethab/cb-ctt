@@ -3,22 +3,22 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
-import ch.rethab.cbctt.ea.op.DummyVariation;
-import ch.rethab.cbctt.ea.printer.Printer;
-import ch.rethab.cbctt.ea.printer.UdinePrinter;
+import ch.rethab.cbctt.ea.op.CourseBasedCrossover;
+import ch.rethab.cbctt.ea.op.Evaluator;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.Executor;
+import org.moeaframework.Instrumenter;
+import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PopulationIO;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.CompoundVariation;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -36,17 +36,37 @@ public class Main {
         Initializer initializer = new TeacherGreedyInitializer();
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
-        CompoundVariation variation = new CompoundVariation(new DummyVariation()); // todo add mutation here
+        CourseBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, spec);
+        CompoundVariation variation = new CompoundVariation(cbc);
+        Evaluator evaluator = new Evaluator(formulation, solutionConverter);
+
+        Instrumenter instrumenter = new Instrumenter()
+                .withProblemClass(CurriculumBasedTimetabling.class, spec, initializer, formulation, solutionConverter, variation)
+                // every 100 evaluations
+                .withFrequency(100)
+                .withReferenceSet(new File("src/test/resources/reference-set-comp01"))
+                .attachAll();
 
         NondominatedPopulation result = new Executor()
                 .usingAlgorithmFactory(new InitializingAlgorithmFactory())
-                .withProblemClass(CurriculumBasedTimetabling.class, spec, initializer, formulation, solutionConverter, variation)
+                .withProblemClass(CurriculumBasedTimetabling.class, spec, initializer, formulation, variation, evaluator)
                 .withAlgorithm("NSGAIII")
-                .withProperty("populationSize", 20)
-                .withMaxEvaluations(100)
+                .withProperty("populationSize", 2)
+                .withMaxEvaluations(10)
+                .withInstrumenter(instrumenter)
                 .run();
 
-        Printer p = new UdinePrinter();
-        System.out.println(p.print(solutionConverter.fromSolution(result.get(0))));
+        Accumulator accumulator = instrumenter.getLastAccumulator();
+        for (int i=0; i<accumulator.size("NFE"); i++) {
+            System.out.println(accumulator.get("NFE", i) + "\t" + accumulator.get("GenerationalDistance", i));
+        }
+
+        for (Solution solution : result) {
+            System.out.printf("Solution:");
+            for (double objective : solution.getObjectives()) {
+                System.out.printf(" %2.2f", objective);
+            }
+            System.out.printf("\n");
+        }
     }
 }

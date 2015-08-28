@@ -249,8 +249,7 @@ public class TeacherGreedyInitializer implements Initializer {
             this.lectures = initLectures(nslots);
 
             // new x every time
-            FlatTimetable.x++;
-            FlatTimetable.x %= nslots;
+            x = getNextX(x);
         }
 
         private List<Lecture>[] initLectures(int nslots) {
@@ -290,7 +289,7 @@ public class TeacherGreedyInitializer implements Initializer {
         }
 
         public int getNextX(int x) {
-            x++;
+            x += new Random().nextInt(lectures.length);
             x %= lectures.length;
             return x;
         }

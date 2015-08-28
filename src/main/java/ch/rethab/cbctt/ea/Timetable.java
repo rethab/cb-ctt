@@ -100,10 +100,6 @@ public class Timetable {
                 .filter(m1 -> m1.getDay() == day && m1.getPeriod() == period)
                 .findFirst().orElse(null);
 
-        if (toBeRemoved == null) {
-            System.out.println("is null");
-        }
-
         Meeting toBeScheduled;
         if (toBeRemoved != null) {
             setRoomToFree(toBeRemoved.getRoom(), m.getDay(), m.getPeriod());

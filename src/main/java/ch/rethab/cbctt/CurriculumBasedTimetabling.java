@@ -3,6 +3,8 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
+import ch.rethab.cbctt.ea.op.Evaluator;
+import ch.rethab.cbctt.ea.printer.Printer;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.InitializerAdapter;
@@ -23,17 +25,17 @@ public class CurriculumBasedTimetabling implements TimetablingProblem {
 
     private final Formulation formulation;
 
-    private final SolutionConverter solutionConverter;
-    
     private final Variation variation;
 
+    private final Evaluator evaluator;
+
     public CurriculumBasedTimetabling(Specification spec, Initializer initializer, Formulation formulation,
-                                      SolutionConverter solutionConverter, Variation variation) {
+                                      Variation variation, Evaluator evaluator) {
         this.spec = spec;
         this.initializer = initializer;
         this.formulation = formulation;
-        this.solutionConverter = solutionConverter;
         this.variation = variation;
+        this.evaluator = evaluator;
     }
 
     @Override
@@ -72,20 +74,7 @@ public class CurriculumBasedTimetabling implements TimetablingProblem {
 
     @Override
     public void evaluate(Solution solution) {
-        System.out.println("Evaluate");
-        Timetable t = solutionConverter.fromSolution(solution);
-
-        for (int i = 0; i < this.formulation.getConstraints().length; i++) {
-            double constraint = - this.formulation.getConstraints()[i].violations(t);
-            solution.setConstraint(i, constraint);
-        }
-
-        for (int i = 0; i < this.formulation.getObjectives().length; i++) {
-            Constraint c = this.formulation.getObjectives()[i].constraint;
-            int penalty  = this.formulation.getObjectives()[i].penalty;
-
-            solution.setObjective(i, c.violations(t) * penalty);
-        }
+        evaluator.evaluate(solution);
     }
 
     @Override
