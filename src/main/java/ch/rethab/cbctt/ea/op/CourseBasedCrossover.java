@@ -97,20 +97,6 @@ public class CourseBasedCrossover implements Variation {
             child2 = parent2.copy();
         }
 
-        Evaluator evaluator = new Evaluator(new UD1Formulation(spec), solutionConverter);
-        Solution p1s = solutionConverter.toSolution(parent1);
-        Solution p2s = solutionConverter.toSolution(parent2);
-        Solution c1s = solutionConverter.toSolution(child1);
-        Solution c2s = solutionConverter.toSolution(child2);
-        evaluator.evaluate(p1s);
-        evaluator.evaluate(p2s);
-        evaluator.evaluate(c1s);
-        evaluator.evaluate(c2s);
-        System.out.printf("Obj 1: p1: %3.0f, p2: %3.0f, c1: %3.0f, c2: %3.0f\n", p1s.getObjective(0), p2s.getObjective(0), c1s.getObjective(0), c2s.getObjective(0));
-        System.out.printf("Obj 2: p1: %3.0f, p2: %3.0f, c1: %3.0f, c2: %3.0f\n", p1s.getObjective(1), p2s.getObjective(1), c1s.getObjective(1), c2s.getObjective(1));
-        System.out.printf("Obj 3: p1: %3.0f, p2: %3.0f, c1: %3.0f, c2: %3.0f\n", p1s.getObjective(2), p2s.getObjective(2), c1s.getObjective(2), c2s.getObjective(2));
-        System.out.printf("\n");
-
         return new Timetable[]{child1, child2};
     }
 

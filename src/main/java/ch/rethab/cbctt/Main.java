@@ -51,8 +51,8 @@ public class Main {
                 .usingAlgorithmFactory(new InitializingAlgorithmFactory())
                 .withProblemClass(CurriculumBasedTimetabling.class, spec, initializer, formulation, variation, evaluator)
                 .withAlgorithm("NSGAIII")
-                .withProperty("populationSize", 50)
-                .withMaxEvaluations(100000)
+                .withProperty("populationSize", 20)
+                .withMaxEvaluations(10000)
                 .withInstrumenter(instrumenter)
                 .run();
 
