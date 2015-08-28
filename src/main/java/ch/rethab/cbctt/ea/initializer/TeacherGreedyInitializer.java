@@ -87,7 +87,7 @@ public class TeacherGreedyInitializer implements Initializer {
     private Timetable createTimetable(Specification spec) {
         List<Lecture> lectures = initLectures(spec);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             LectureIterator it = new LectureIterator(lectures);
             Timetable t = getTimetable0(spec, it, lectures);
             if (t != null) {
