@@ -27,7 +27,7 @@ public class RoomCapacityConstraint implements Constraint {
 
     private int countCurriculumViolations(Timetable.CurriculumTimetable ctt) {
         return ctt.getAll()
-                .map(m -> m.getCourse().getNumberOfStudents() > m.getRoom().getCapacity() ? 1 : 0)
+                .map(m -> Math.max(0, m.getCourse().getNumberOfStudents() - m.getRoom().getCapacity()))
                 .collect(Collectors.summingInt(Integer::valueOf));
     }
 }

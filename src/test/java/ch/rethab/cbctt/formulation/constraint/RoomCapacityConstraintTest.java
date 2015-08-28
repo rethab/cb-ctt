@@ -40,26 +40,26 @@ public class RoomCapacityConstraintTest {
     public void shouldSumUpViolations() {
         Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
 
-        t.addMeeting(new Meeting(c7, r2, 0, 0)); // violation
+        t.addMeeting(new Meeting(c7, r2, 0, 0)); // 5 violations
         t.addMeeting(new Meeting(c7, r7, 0, 1));
         t.addMeeting(new Meeting(c7, r12, 0, 2));
-        t.addMeeting(new Meeting(c7, r2, 1, 1)); // violation
-        t.addMeeting(new Meeting(c7, r2, 2, 1)); // violation
+        t.addMeeting(new Meeting(c7, r2, 1, 1)); // 5 violations
+        t.addMeeting(new Meeting(c7, r2, 2, 1)); // 5 violation
 
-        assertEquals(3, roomCapacityConstraint.violations(t));
+        assertEquals(15, roomCapacityConstraint.violations(t));
     }
 
     @Test
     public void shouldSumUpViolationsFromDifferentCurricula() {
         Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
 
-        t.addMeeting(new Meeting(c3, r2, 0, 0)); // violation
+        t.addMeeting(new Meeting(c3, r2, 0, 0)); // 1 violation
         t.addMeeting(new Meeting(c7, r7, 0, 1));
-        t.addMeeting(new Meeting(c7, r2, 1, 1)); // violation
-        t.addMeeting(new Meeting(c11, r7, 1, 1)); // violation
+        t.addMeeting(new Meeting(c7, r2, 1, 1)); // 5 violation
+        t.addMeeting(new Meeting(c11, r7, 1, 1)); // 4 violation
         t.addMeeting(new Meeting(c11, r12, 1, 2));
 
-        assertEquals(3, roomCapacityConstraint.violations(t));
+        assertEquals(10, roomCapacityConstraint.violations(t));
     }
 
     @Test
