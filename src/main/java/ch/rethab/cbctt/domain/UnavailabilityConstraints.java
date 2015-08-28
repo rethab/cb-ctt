@@ -1,12 +1,13 @@
 package ch.rethab.cbctt.domain;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class UnavailabilityConstraints {
+public class UnavailabilityConstraints implements Serializable {
 
     private Map<Course, boolean[][]> unavailabilities = new HashMap<>();
 

@@ -1,11 +1,12 @@
 package ch.rethab.cbctt.domain;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class Room {
+public class Room implements Serializable {
 
     private final String id;
 

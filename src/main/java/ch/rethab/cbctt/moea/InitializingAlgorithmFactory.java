@@ -19,20 +19,28 @@ import java.util.Properties;
  */
 public class InitializingAlgorithmFactory extends AlgorithmFactory {
 
+    private final InitializationFactory initializationFactory;
+    private final Variation variation;
+
+    public InitializingAlgorithmFactory(InitializationFactory initializationFactory, Variation variation) {
+        this.initializationFactory = initializationFactory;
+        this.variation = variation;
+    }
+
     @Override
     public synchronized Algorithm getAlgorithm(String name, Properties properties, Problem problem) {
         TypedProperties typedProps = new TypedProperties(properties);
         if (name.equals("NSGAIII"))  {
-            return newNSGAIII(typedProps, (TimetablingProblem) problem);
+            return newNSGAIII(typedProps, problem);
         } else {
             throw new IllegalArgumentException("Unhandled Algorithm: " + name);
         }
     }
 
-    private Algorithm newNSGAIII(TypedProperties properties, TimetablingProblem problem) {
+    private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
         int populationSize = (int)properties.getDouble("populationSize", 100.0D);
 
-        ReferencePointNondominatedSortingPopulation population = null;
+        ReferencePointNondominatedSortingPopulation population;
         int selection;
         if(properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
             selection = (int)properties.getDouble("divisionsOuter", 4.0D);
@@ -43,8 +51,7 @@ public class InitializingAlgorithmFactory extends AlgorithmFactory {
             population = new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), selection);
         }
 
-        Initialization initialization = problem.getInitialization(populationSize);
-        Variation variation = problem.getVariation();
+        Initialization initialization = initializationFactory.create(populationSize);
 
         TournamentSelection selection1 = new TournamentSelection(2, new ParetoDominanceComparator());
         return new NSGAII(problem, population, null, selection1, variation, initialization);

@@ -2,6 +2,8 @@ package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.ea.Timetable;
 
+import java.io.Serializable;
+
 /**
  * Constraints (or 'cost components') are used to evaluate a timetable.
  *
@@ -13,7 +15,7 @@ import ch.rethab.cbctt.ea.Timetable;
  *
  * @author Reto Habluetzel, 2015
  */
-public interface Constraint {
+public interface Constraint extends Serializable {
 
     /**
      * Count the number of constraint violations the specified timetable has

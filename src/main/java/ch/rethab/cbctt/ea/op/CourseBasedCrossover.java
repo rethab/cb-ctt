@@ -5,7 +5,6 @@ import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
-import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -68,7 +67,7 @@ public class CourseBasedCrossover implements Variation {
                 child1 = tmpChild1;
                 break;
             } catch (CrossoverFailedException cfe) {
-                System.err.println("Crossover failed ("+i+"). Restarting..");
+                //System.err.println("Crossover failed ("+i+"). Restarting..");
             }
         }
 
@@ -88,7 +87,7 @@ public class CourseBasedCrossover implements Variation {
                 child2 = tmpChild2;
                 break;
             } catch (CrossoverFailedException cfe) {
-                System.err.println("Crossover failed ("+i+"). Restarting..");
+                //System.err.println("Crossover failed ("+i+"). Restarting..");
             }
         }
 

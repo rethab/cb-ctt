@@ -3,12 +3,13 @@ package ch.rethab.cbctt.ea;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class Meeting {
+public class Meeting implements Serializable {
 
     private final Course course;
 

@@ -4,6 +4,7 @@ import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * @author Reto Habluetzel, 2015
  */
-public class Timetable {
+public class Timetable implements Serializable {
 
     /** the curriculum timetables */
     private final Map<String, CurriculumTimetable> curriculumTimetables = new HashMap<>();
@@ -168,7 +169,7 @@ public class Timetable {
         return day * periodsPerDay + period;
     }
 
-    public final class CurriculumTimetable {
+    public final class CurriculumTimetable implements Serializable {
 
         // Array of Meeting (array elements are timeslots)
         private final Meeting[] meetings;

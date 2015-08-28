@@ -1,51 +1,24 @@
 package ch.rethab.cbctt;
 
-import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.op.Evaluator;
 import ch.rethab.cbctt.formulation.Formulation;
-import ch.rethab.cbctt.moea.InitializerAdapter;
-import ch.rethab.cbctt.moea.TimetablingProblem;
-import org.moeaframework.core.Initialization;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+
+import java.io.Serializable;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class CurriculumBasedTimetabling implements TimetablingProblem {
-
-    private final Specification spec;
-
-    private final Initializer initializer;
+public class CurriculumBasedTimetabling implements Problem, Serializable {
 
     private final Formulation formulation;
 
-    private final Variation variation;
-
     private final Evaluator evaluator;
 
-    public CurriculumBasedTimetabling(Specification spec, Initializer initializer, Formulation formulation,
-                                      Variation variation, Evaluator evaluator) {
-        this.spec = spec;
-        this.initializer = initializer;
+    public CurriculumBasedTimetabling(Formulation formulation, Evaluator evaluator) {
         this.formulation = formulation;
-        this.variation = variation;
         this.evaluator = evaluator;
-    }
-
-    @Override
-    public Initialization getInitialization(int populationSize) {
-        return new InitializerAdapter(this.formulation, this.initializer, spec, populationSize);
-    }
-
-    @Override
-    public Variation getVariation() {
-        return variation;
-    }
-
-    public Formulation getFormulation() {
-        return this.formulation;
     }
 
     @Override

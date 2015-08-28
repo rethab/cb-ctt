@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.domain;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -7,7 +8,7 @@ import java.util.Objects;
 /**
  * @author Reto Habluetzel, 2015
  */
-public class Curriculum {
+public class Curriculum implements Serializable {
 
     private final String id;
 

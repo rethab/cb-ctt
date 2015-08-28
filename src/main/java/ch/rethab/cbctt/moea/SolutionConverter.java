@@ -4,6 +4,9 @@ import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.formulation.Formulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
+import org.moeaframework.util.distributed.PublicFutureSolution;
+
+import java.io.Serializable;
 
 /**
  *
@@ -13,7 +16,7 @@ import org.moeaframework.core.Variable;
  *
  * @author Reto Habluetzel, 2015
  */
-public class SolutionConverter {
+public class SolutionConverter implements Serializable {
 
     private final Formulation formulation;
 
@@ -30,7 +33,7 @@ public class SolutionConverter {
 
         s.setVariable(0, new VariableAdapter(t));
 
-        return s;
+        return new PublicFutureSolution(s);
     }
 
     public Timetable fromSolution(Solution solution) {

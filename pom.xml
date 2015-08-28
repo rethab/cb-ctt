@@ -34,6 +34,28 @@
             <version>3.5</version>
         </dependency>
 
+        <!-- jppf -->
+        <dependency>
+            <artifactId>jppf-client</artifactId>
+            <groupId>org.jppf</groupId>
+            <version>5.0.3</version>
+        </dependency>
+        <dependency>
+            <artifactId>jppf-common</artifactId>
+            <groupId>org.jppf</groupId>
+            <version>5.0.3</version>
+        </dependency>
+        <dependency>
+            <artifactId>jppf-common-node</artifactId>
+            <groupId>org.jppf</groupId>
+            <version>4.2.8</version>
+        </dependency>
+        <dependency>
+            <artifactId>jppf-jmxremote_optional</artifactId>
+            <groupId>org.jppf</groupId>
+            <version>1.1.1</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

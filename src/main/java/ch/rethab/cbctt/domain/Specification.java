@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.domain;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * @author Reto Habluetzel, 2015
  */
-public class Specification {
+public class Specification implements Serializable {
 
     private final String name;
 

@@ -6,7 +6,9 @@ import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
 
-public class Evaluator {
+import java.io.Serializable;
+
+public class Evaluator implements Serializable {
 
     private final Formulation formulation;
 

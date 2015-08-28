@@ -2,6 +2,8 @@ package ch.rethab.cbctt.formulation;
 
 import ch.rethab.cbctt.formulation.constraint.Constraint;
 
+import java.io.Serializable;
+
 /**
  *
  * Problem formulation. Each timetable may be solved with certain
@@ -17,7 +19,7 @@ import ch.rethab.cbctt.formulation.constraint.Constraint;
  *
  * @author Reto Habluetzel, 2015
  */
-public abstract class Formulation {
+public abstract class Formulation implements Serializable {
 
     private final Constraint[] constraints;
 
@@ -49,7 +51,7 @@ public abstract class Formulation {
         return objectives;
     }
 
-    public static class Objective {
+    public static class Objective implements Serializable {
         public final Constraint constraint;
         public final int penalty;
         public Objective(Constraint constraint, int penalty) {
