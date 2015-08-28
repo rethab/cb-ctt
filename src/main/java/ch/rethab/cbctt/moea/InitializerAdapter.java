@@ -3,8 +3,6 @@ package ch.rethab.cbctt.moea;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
-import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
-import ch.rethab.cbctt.ea.printer.Printer;
 import ch.rethab.cbctt.formulation.Formulation;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;

@@ -1,14 +1,10 @@
 package ch.rethab.cbctt;
 
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.op.Evaluator;
-import ch.rethab.cbctt.ea.printer.Printer;
 import ch.rethab.cbctt.formulation.Formulation;
-import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.InitializerAdapter;
-import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.moea.TimetablingProblem;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;

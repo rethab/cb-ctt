@@ -1,7 +1,6 @@
 package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.ea.Meeting;
 import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;

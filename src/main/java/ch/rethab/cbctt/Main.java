@@ -5,6 +5,7 @@ import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.CourseBasedCrossover;
 import ch.rethab.cbctt.ea.op.Evaluator;
+import ch.rethab.cbctt.ea.printer.UdinePrinter;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
@@ -14,7 +15,6 @@ import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.CompoundVariation;
 
@@ -51,8 +51,8 @@ public class Main {
                 .usingAlgorithmFactory(new InitializingAlgorithmFactory())
                 .withProblemClass(CurriculumBasedTimetabling.class, spec, initializer, formulation, variation, evaluator)
                 .withAlgorithm("NSGAIII")
-                .withProperty("populationSize", 2)
-                .withMaxEvaluations(10)
+                .withProperty("populationSize", 50)
+                .withMaxEvaluations(100000)
                 .withInstrumenter(instrumenter)
                 .run();
 
@@ -62,11 +62,9 @@ public class Main {
         }
 
         for (Solution solution : result) {
-            System.out.printf("Solution:");
-            for (double objective : solution.getObjectives()) {
-                System.out.printf(" %2.2f", objective);
-            }
+            System.out.println(new UdinePrinter().print(solutionConverter.fromSolution(solution)));
             System.out.printf("\n");
         }
+
     }
 }

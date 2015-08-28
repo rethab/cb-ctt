@@ -18,7 +18,6 @@ import org.moeaframework.core.Variation;
  */
 public interface TimetablingProblem extends Problem {
 
-
     Initialization getInitialization(int populationSize);
 
     Formulation getFormulation();
