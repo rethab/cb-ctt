@@ -29,6 +29,11 @@ public class ConflictsConstraint implements Constraint {
     }
 
     @Override
+    public String name() {
+        return "Conflicts";
+    }
+
+    @Override
     public int violations(Timetable t) {
         return lecturesByCurriculaViolations(t) + teacherViolations(t);
     }

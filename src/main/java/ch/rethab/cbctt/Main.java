@@ -11,8 +11,7 @@ import ch.rethab.cbctt.moea.InitializationFactory;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.parser.ECTTParser;
-import org.jppf.client.JPPFClient;
-import org.jppf.client.concurrent.JPPFExecutorService;
+import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
@@ -21,22 +20,31 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.CompoundVariation;
 
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Reto Habluetzel, 2015
  */
 public class Main {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException {
         if (args.length != 1) {
             throw new FileNotFoundException("First parameter must be file that exists!");
         }
         String filename = args[0];
 
-        JPPFClient jppfClient = new JPPFClient();
-        JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
-        jppfExecutorService.setBatchSize(100);
-        jppfExecutorService.setBatchTimeout(100);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+        // JPPFClient jppfClient = new JPPFClient();
+        // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
+        // jppfExecutorService.setBatchSize(100);
+        // jppfExecutorService.setBatchTimeout(100);
 
         Specification spec = new ECTTParser(new BufferedReader(new FileReader(filename))).parse();
         Initializer initializer = new TeacherGreedyInitializer();
@@ -61,11 +69,11 @@ public class Main {
                 .withProperty("populationSize", 40)
                 .withMaxEvaluations(10000)
                 .withInstrumenter(instrumenter)
-                .distributeWith(jppfExecutorService)
+                // .distributeWith(jppfExecutorService)
                 .run();
 
-        jppfExecutorService.shutdown();
-        jppfClient.close();
+        // jppfExecutorService.shutdown();
+        // jppfClient.close();
 
         Accumulator accumulator = instrumenter.getLastAccumulator();
         for (int i=0; i<accumulator.size("NFE"); i++) {

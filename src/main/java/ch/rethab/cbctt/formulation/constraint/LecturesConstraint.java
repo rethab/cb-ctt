@@ -26,6 +26,11 @@ public class LecturesConstraint implements Constraint {
     }
 
     @Override
+    public String name() {
+        return "Lectures";
+    }
+
+    @Override
     public int violations(Timetable t) {
         /*
          * the construction of the timetable makes sure no

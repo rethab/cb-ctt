@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
 public class RoomCapacityConstraint implements Constraint {
 
     @Override
+    public String name() {
+        return "RoomCapacity";
+    }
+
+    @Override
     public int violations(Timetable t) {
         return t.getCurriculumTimetables()
                 .values()

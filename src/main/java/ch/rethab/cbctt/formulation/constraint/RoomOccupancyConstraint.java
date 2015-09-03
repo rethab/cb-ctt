@@ -28,6 +28,11 @@ public class RoomOccupancyConstraint implements Constraint {
     }
 
     @Override
+    public String name() {
+        return "RoomOccupancy";
+    }
+
+    @Override
     public int violations(Timetable t) {
         int count = 0;
         Map<Room, boolean[][]> occupies = new HashMap<>();

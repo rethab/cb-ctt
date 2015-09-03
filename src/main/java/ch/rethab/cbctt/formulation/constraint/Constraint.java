@@ -18,6 +18,11 @@ import java.io.Serializable;
 public interface Constraint extends Serializable {
 
     /**
+     * Returns the name for diagnostics etc.
+     */
+    String name();
+
+    /**
      * Count the number of constraint violations the specified timetable has
      */
     int violations(Timetable t);

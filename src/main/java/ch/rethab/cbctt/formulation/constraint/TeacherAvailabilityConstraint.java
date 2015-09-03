@@ -25,6 +25,11 @@ public class TeacherAvailabilityConstraint implements Constraint {
     }
 
     @Override
+    public String name() {
+        return "TeacherAvailability";
+    }
+
+    @Override
     public int violations(Timetable t) {
         int count = 0;
         UnavailabilityConstraints unav = spec.getUnavailabilityConstraints();

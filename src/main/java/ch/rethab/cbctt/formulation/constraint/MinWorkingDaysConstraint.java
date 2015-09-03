@@ -26,6 +26,11 @@ public class MinWorkingDaysConstraint implements Constraint {
     }
 
     @Override
+    public String name() {
+        return "MinWorkingDays";
+    }
+
+    @Override
     public int violations(Timetable t) {
         return spec.getCourses().stream()
                 .map(c -> Math.max(0, c.getMinWorkingDays() - countWorkingDays(c, t)))

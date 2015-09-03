@@ -1,6 +1,7 @@
 package ch.rethab.cbctt.formulation;
 
 import ch.rethab.cbctt.formulation.constraint.Constraint;
+import org.moeaframework.core.Solution;
 
 import java.io.Serializable;
 
@@ -49,6 +50,14 @@ public abstract class Formulation implements Serializable {
 
     public Objective[] getObjectives() {
         return objectives;
+    }
+
+    public String showObjectives(Solution s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < objectives.length; i++) {
+            sb.append(String.format("%s: %4.0f ", objectives[i].constraint.name(), s.getObjective(i)));
+        }
+        return sb.toString();
     }
 
     public static class Objective implements Serializable {

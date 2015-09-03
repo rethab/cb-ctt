@@ -27,6 +27,11 @@ public class IsolatedLecturesConstraint implements Constraint {
     }
 
     @Override
+    public String name() {
+        return "IsolatedLectures";
+    }
+
+    @Override
     public int violations(Timetable t) {
         return t.getCurriculumTimetables()
                 .values()
