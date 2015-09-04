@@ -1,8 +1,7 @@
 package ch.rethab.cbctt.moea;
 
-import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;
@@ -21,19 +20,16 @@ public final class InitializationFactory {
 
     private final Initializer initializer;
 
-    private final Specification spec;
-
     private final SolutionConverter solutionConverter;
 
-    public InitializationFactory(Formulation formulation, Initializer initializer, Specification spec) {
+    public InitializationFactory(Formulation formulation, Initializer initializer) {
         this.initializer = initializer;
-        this.spec = spec;
         this.solutionConverter = new SolutionConverter(formulation);
     }
 
     public Initialization create(int populationSize) {
         return () -> {
-            List<Timetable> timetables = initializer.initialize(spec, populationSize);
+            List<TimetableWithRooms> timetables = initializer.initialize(populationSize);
             List<Solution> solutions =  timetables.stream().map(solutionConverter::toSolution).collect(Collectors.toList());
             return solutions.toArray(new Solution[populationSize]);
         };

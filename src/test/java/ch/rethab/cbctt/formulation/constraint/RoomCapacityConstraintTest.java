@@ -3,8 +3,8 @@ package ch.rethab.cbctt.formulation.constraint;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Room;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -36,43 +36,50 @@ public class RoomCapacityConstraintTest {
 
     RoomCapacityConstraint roomCapacityConstraint = new RoomCapacityConstraint();
 
+    Specification spec = Specification.Builder.name("spec")
+            .curriculum(curr1).curriculum(curr2)
+            .course(c3).course(c7).course(c11)
+            .room(r2).room(r7).room(r12)
+            .days(days).periodsPerDay(periodsPerDay)
+            .build();
+
     @Test
     public void shouldSumUpViolations() {
-        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
+        TimetableWithRooms.Builder builder = TimetableWithRooms.Builder.newBuilder(spec);
 
-        t.addMeeting(new Meeting(c7, r2, 0, 0)); // 5 violations
-        t.addMeeting(new Meeting(c7, r7, 0, 1));
-        t.addMeeting(new Meeting(c7, r12, 0, 2));
-        t.addMeeting(new Meeting(c7, r2, 1, 1)); // 5 violations
-        t.addMeeting(new Meeting(c7, r2, 2, 1)); // 5 violation
+        builder.addMeeting(c7, r2, 0, 0); // 5 violations
+        builder.addMeeting(c7, r7, 0, 1);
+        builder.addMeeting(c7, r12, 0, 2);
+        builder.addMeeting(c7, r2, 1, 1); // 5 violations
+        builder.addMeeting(c7, r2, 2, 1); // 5 violation
 
-        assertEquals(15, roomCapacityConstraint.violations(t));
+        assertEquals(15, roomCapacityConstraint.violations(builder.build()));
     }
 
     @Test
     public void shouldSumUpViolationsFromDifferentCurricula() {
-        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
+        TimetableWithRooms.Builder builder = TimetableWithRooms.Builder.newBuilder(spec);
 
-        t.addMeeting(new Meeting(c3, r2, 0, 0)); // 1 violation
-        t.addMeeting(new Meeting(c7, r7, 0, 1));
-        t.addMeeting(new Meeting(c7, r2, 1, 1)); // 5 violation
-        t.addMeeting(new Meeting(c11, r7, 1, 1)); // 4 violation
-        t.addMeeting(new Meeting(c11, r12, 1, 2));
+        builder.addMeeting(c3, r2, 0, 0); // 1 violation
+        builder.addMeeting(c7, r7, 0, 1);
+        builder.addMeeting(c7, r2, 1, 1); // 5 violation
+        builder.addMeeting(c11, r7, 1, 1); // 4 violation
+        builder.addMeeting(c11, r12, 1, 2);
 
-        assertEquals(10, roomCapacityConstraint.violations(t));
+        assertEquals(10, roomCapacityConstraint.violations(builder.build()));
     }
 
     @Test
     public void shouldCountZeroIfAllFitIn() {
-        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
+        TimetableWithRooms.Builder builder = TimetableWithRooms.Builder.newBuilder(spec);
 
-        t.addMeeting(new Meeting(c3, r7, 0, 0));
-        t.addMeeting(new Meeting(c7, r7, 0, 1));
-        t.addMeeting(new Meeting(c7, r12, 1, 1));
-        t.addMeeting(new Meeting(c11, r12, 0, 1));
-        t.addMeeting(new Meeting(c11, r12, 1, 2));
+        builder.addMeeting(c3, r7, 0, 0);
+        builder.addMeeting(c7, r7, 0, 1);
+        builder.addMeeting(c7, r12, 1, 1);
+        builder.addMeeting(c11, r12, 0, 1);
+        builder.addMeeting(c11, r12, 1, 2);
 
-        assertEquals(0, roomCapacityConstraint.violations(t));
+        assertEquals(0, roomCapacityConstraint.violations(builder.build()));
     }
 
 }

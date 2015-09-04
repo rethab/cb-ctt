@@ -3,8 +3,7 @@ package ch.rethab.cbctt.ea.op;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.*;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -31,10 +30,13 @@ public class CourseBasedCrossover implements Variation {
 
     private final SolutionConverter solutionConverter;
 
+    private final RoomAssigner roomAssigner;
+
     private final Specification spec;
 
-    public CourseBasedCrossover(SolutionConverter solutionConverter, Specification spec) {
+    public CourseBasedCrossover(SolutionConverter solutionConverter, RoomAssigner roomAssigner, Specification spec) {
         this.solutionConverter = solutionConverter;
+        this.roomAssigner = roomAssigner;
         this.spec = spec;
     }
 
@@ -45,26 +47,27 @@ public class CourseBasedCrossover implements Variation {
 
     @Override
     public Solution[] evolve(Solution[] solutions) {
-        Timetable parent1 = solutionConverter.fromSolution(solutions[0]);
-        Timetable parent2 = solutionConverter.fromSolution(solutions[1]);
+        TimetableWithRooms parent1 = solutionConverter.fromSolution(solutions[0]);
+        TimetableWithRooms parent2 = solutionConverter.fromSolution(solutions[1]);
 
-        Timetable[] kids = crossover(parent1, parent2);
+        TimetableWithRooms[] kids = crossover(parent1, parent2);
+
         return new Solution[]{solutionConverter.toSolution(kids[0]), solutionConverter.toSolution(kids[1])};
     }
 
-    private Timetable[] crossover(Timetable parent1, Timetable parent2) {
-        Timetable child2 = null;
-        Timetable child1 = null;
+    private TimetableWithRooms[] crossover(TimetableWithRooms parent1, TimetableWithRooms parent2) {
+        TimetableWithRooms child2 = null;
+        TimetableWithRooms child1 = null;
 
         for (int i = 0; i < ATTEMPTS_AFTER_FAIL; i++) {
             try {
-                Timetable tmpChild1 = parent1.copy();
+                Timetable tmpChild1 = parent1.newChild();
                 // schedule course from p2 in p1's offspring
                 Course p2Course = getRandomCourse(parent2);
-                Set<Meeting> p2Meetings = parent2.getMeetingsByCourse(p2Course);
+                Set<MeetingWithRoom> p2Meetings = parent2.getMeetingsByCourse(p2Course);
                 scheduleMeetings(p2Course, p2Meetings, tmpChild1);
 
-                child1 = tmpChild1;
+                child1 = roomAssigner.assignRooms(tmpChild1);
                 break;
             } catch (CrossoverFailedException cfe) {
                 //System.err.println("Crossover failed ("+i+"). Restarting..");
@@ -73,18 +76,19 @@ public class CourseBasedCrossover implements Variation {
 
         // permanently failed
         if (child1 == null) {
-            child1 = parent1.copy();
+            // copy is not required, since timetable is unmodifiable
+            child1 = parent1;
         }
 
         for (int i = 0; i < ATTEMPTS_AFTER_FAIL; i++) {
             try {
-                Timetable tmpChild2 = parent2.copy();
+                Timetable tmpChild2 = parent2.newChild();
                 // schedule course from p1 in p2's offspring
                 Course p1Course = getRandomCourse(parent1);
-                Set<Meeting> p1Meetings = parent1.getMeetingsByCourse(p1Course);
+                Set<MeetingWithRoom> p1Meetings = parent1.getMeetingsByCourse(p1Course);
                 scheduleMeetings(p1Course, p1Meetings, tmpChild2);
 
-                child2 = tmpChild2;
+                child2 = roomAssigner.assignRooms(tmpChild2);
                 break;
             } catch (CrossoverFailedException cfe) {
                 //System.err.println("Crossover failed ("+i+"). Restarting..");
@@ -93,13 +97,14 @@ public class CourseBasedCrossover implements Variation {
 
         // permanently failed
         if (child2 == null) {
-            child2 = parent2.copy();
+            // copy is not required, since timetable is unmodifiable
+            child2 = parent2;
         }
 
-        return new Timetable[]{child1, child2};
+        return new TimetableWithRooms[]{child1, child2};
     }
 
-    private void scheduleMeetings(Course course, Set<Meeting> meetings, Timetable t) throws CrossoverFailedException {
+    private void scheduleMeetings(Course course, Set<MeetingWithRoom> meetings, Timetable t) throws CrossoverFailedException {
         /* Procedure:
          * 1. For each meeting m1 in meetings:
          *   a) try to set m at m1.day/m1.period.
@@ -123,7 +128,7 @@ public class CourseBasedCrossover implements Variation {
         meetings.stream().forEach(t::removeMeeting);
     }
 
-    private List<Course> scheduleAtSpecifiedPeriods(Timetable t, Set<Meeting> meetings) {
+    private List<Course> scheduleAtSpecifiedPeriods(Timetable t, Set<MeetingWithRoom> meetings) {
         List<Course> leftovers = new LinkedList<>();
 
         meetings.forEach(m -> {
@@ -137,13 +142,11 @@ public class CourseBasedCrossover implements Variation {
 
             // could this be scheduled here while maintaining feasibility
             if (isFeasible(t, m.getCourse(), m.getDay(), m.getPeriod())) {
-                Room r = toRoom(t.getFreeRoomId(m.getDay(), m.getPeriod()));
-                // there still is a free room. schedule directly
-                if (r != null) {
-                    t.addMeeting(m.copy(r));
-                } else {
+                // there still is a free room.
+                boolean scheduled = t.addMeeting(m.withoutRoom());
+                if (!scheduled) {
                     // replace one meeting at this period with the new one
-                    Meeting m2 = t.replaceMeeting(m.getDay(), m.getPeriod(), m);
+                    Meeting m2 = t.replaceMeeting(m.getDay(), m.getPeriod(), m.withoutRoom());
                     leftovers.add(m2.getCourse());
                 }
             } else {
@@ -162,9 +165,7 @@ public class CourseBasedCrossover implements Variation {
             int period = 0;
             while (true) {
 
-                Room r;
-                if (isFeasible(t, c, day, period) && (r = toRoom(t.getFreeRoomId(day, period))) != null) {
-                    t.addMeeting(new Meeting(c, r, day, period));
+                if (isFeasible(t, c, day, period) && t.addMeeting(new Meeting(c, day, period))) {
                     break;
                 } else {
                     if (period < spec.getPeriodsPerDay() - 1) {
@@ -194,8 +195,8 @@ public class CourseBasedCrossover implements Variation {
         }
     }
 
-    private Course getRandomCourse(Timetable t) {
-        Meeting[] meetings = t.getMeetings().toArray(new Meeting[t.getMeetings().size()]);
+    private Course getRandomCourse(TimetableWithRooms t) {
+        MeetingWithRoom[] meetings = t.getMeetings().toArray(new MeetingWithRoom[t.getMeetings().size()]);
         int idx = new SecureRandom().nextInt(meetings.length);
         return meetings[idx].getCourse();
     }

@@ -1,9 +1,9 @@
 package ch.rethab.cbctt.parser;
 
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
@@ -12,8 +12,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -33,7 +31,7 @@ public class RunParser {
         Specification spec = parser.parse();
         System.out.println("Parsed");
         Formulation v = new UD1Formulation(spec);
-        Initializer initializer = new TeacherGreedyInitializer();
+        Initializer initializer = new TeacherGreedyInitializer(roomAssigner);
         List<Timetable> ts = initializer.initialize(spec, 1);
         ts.forEach(t -> {
             boolean feasible = true;

@@ -2,10 +2,8 @@ package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
-import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,15 +47,27 @@ import java.util.stream.IntStream;
  */
 public class TeacherGreedyInitializer implements Initializer {
 
+    private final RoomAssigner roomAssigner;
+
+    private final Specification spec;
+
     private Map<String, Integer> hardness;
 
-    @Override
-    public List<Timetable> initialize(Specification spec, int size) {
-        this.hardness = new HashMap<>();
-        return IntStream.range(0, size).mapToObj(i -> createTimetable(spec)).collect(Collectors.toList());
+    public TeacherGreedyInitializer(Specification spec, RoomAssigner roomAssigner) {
+        this.spec = spec;
+        this.roomAssigner = roomAssigner;
     }
 
-    private static class LectureIterator {
+    @Override
+    public List<TimetableWithRooms> initialize(int size) {
+        this.hardness = new HashMap<>();
+        return IntStream.range(0, size)
+                .mapToObj(i -> createTimetable())
+                .map(roomAssigner::assignRooms)
+                .collect(Collectors.toList());
+    }
+
+    private class LectureIterator {
         private final List<Lecture> lectures;
         public LectureIterator(List<Lecture> lectures) {
             this.lectures = new LinkedList<>(lectures);
@@ -73,9 +83,9 @@ public class TeacherGreedyInitializer implements Initializer {
             lectures.remove(l);
         }
         // distinct: other teacher, other curriculum, feasible for this period
-        public Lecture peekFeasible(Specification spec, FlatTimetable timetable) {
+        public Lecture peekFeasible(FlatTimetable timetable) {
             for (Lecture lec : lectures) {
-                if (timetable.feasiblePeriod(lec, spec)) {
+                if (timetable.feasiblePeriod(lec)) {
                     return lec;
                 }
             }
@@ -84,12 +94,12 @@ public class TeacherGreedyInitializer implements Initializer {
         }
     }
 
-    private Timetable createTimetable(Specification spec) {
-        List<Lecture> lectures = initLectures(spec);
+    private Timetable createTimetable() {
+        List<Lecture> lectures = initLectures();
 
         for (int i = 0; i < 200; i++) {
             LectureIterator it = new LectureIterator(lectures);
-            Timetable t = getTimetable0(spec, it, lectures);
+            Timetable t = getTimetable0(it, lectures);
             if (t != null) {
                 return t;
             } else {
@@ -100,12 +110,12 @@ public class TeacherGreedyInitializer implements Initializer {
         throw new RuntimeException("Failed to find feasible solution");
     }
 
-    private Timetable getTimetable0(Specification spec, LectureIterator it, List<Lecture> originalLectures) {
-        FlatTimetable timetable = new FlatTimetable(spec.getNumberOfDaysPerWeek(), spec.getPeriodsPerDay());
+    private Timetable getTimetable0(LectureIterator it, List<Lecture> originalLectures) {
+        FlatTimetable timetable = new FlatTimetable(spec);
         Lecture l;
         while (it.hasMore()) {
             l = it.peek();
-            if (timetable.feasiblePeriod(l, spec)) {
+            if (timetable.feasiblePeriod(l)) {
 
                 // if period is feasible, it can be schedule directly
                 timetable.add(l);
@@ -118,12 +128,12 @@ public class TeacherGreedyInitializer implements Initializer {
                 } else {
 
                     // still room in period
-                    l = it.peekFeasible(spec, timetable);
+                    l = it.peekFeasible(timetable);
                     while (l != null) {
                         timetable.add(l);
                         it.remove(l);
 
-                        l = it.peekFeasible(spec, timetable);
+                        l = it.peekFeasible(timetable);
                     }
 
                     // nothing can be scheduled in this period
@@ -131,7 +141,7 @@ public class TeacherGreedyInitializer implements Initializer {
                 }
 
             // advance period, if none found, maybe start again (submethod) with tabu list to avoid same fuckup?)
-            } else if (tryToAssignInOtherPeriod(spec, timetable, it)) {
+            } else if (tryToAssignInOtherPeriod(timetable, it)) {
                 // successfully scheduled
                 continue;
             } else {
@@ -148,30 +158,27 @@ public class TeacherGreedyInitializer implements Initializer {
                 return null;
             }
         }
-        return toTimetable(spec, timetable);
+        return toTimetable(timetable);
     }
 
-    private Timetable toTimetable(Specification spec, FlatTimetable timetable) {
-        Set<String> curriculaIds = spec.getCurricula().stream().map(Curriculum::getId).collect(Collectors.toSet());
-        Set<String> roomsIds = spec.getRooms().stream().map(Room::getId).collect(Collectors.toSet());
-        Timetable t = new Timetable(curriculaIds, roomsIds, spec.getNumberOfDaysPerWeek(), spec.getPeriodsPerDay());
+    private Timetable toTimetable(FlatTimetable timetable) {
+        Timetable t = new Timetable(spec);
         
         for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
             for (int period = 0; period < spec.getPeriodsPerDay(); period++) {
-                Iterator<Room> rooms = spec.getRooms().iterator();
                 for (Lecture l : timetable.getLectures(day, period)) {
-                    t.addMeeting(new Meeting(l.c, rooms.next(), day, period));
+                    t.addMeeting(new Meeting(l.c, day, period));
                 }
             }
         }
         return t;
     }
 
-    private boolean tryToAssignInOtherPeriod(Specification spec, FlatTimetable timetable, LectureIterator it) {
+    private boolean tryToAssignInOtherPeriod(FlatTimetable timetable, LectureIterator it) {
         Lecture l = it.peek();
         int x = timetable.getNextX(timetable.getX());
         for (int i = 0; i < timetable.size(); i++) {
-            if (timetable.feasiblePeriod(l, spec, x)) {
+            if (timetable.feasiblePeriod(l, x)) {
                 timetable.add(l, x);
                 it.remove(l);
                 return true;
@@ -181,10 +188,10 @@ public class TeacherGreedyInitializer implements Initializer {
         return false;
     }
 
-    private List<Lecture> initLectures(Specification spec) {
+    private List<Lecture> initLectures() {
         List<Lecture> lectures = new LinkedList<>();
         for (Course c : spec.getCourses()) {
-            int hardness = lookupHardness(c.getTeacher(), spec);
+            int hardness = lookupHardness(c.getTeacher());
             Set<Curriculum> curricula = spec.getByCourse(c);
             IntStream.range(0, c.getNumberOfLectures()).forEach(i ->
                 lectures.add(new Lecture(curricula, c, hardness))
@@ -193,19 +200,19 @@ public class TeacherGreedyInitializer implements Initializer {
         return Collections.unmodifiableList(lectures);
     }
 
-    private int lookupHardness(String teacher, Specification spec) {
+    private int lookupHardness(String teacher) {
         Integer hardness = this.hardness.get(teacher);
         if (hardness == null) {
-            hardness = getHardness(teacher, spec);
+            hardness = getHardness(teacher);
             this.hardness.put(teacher, hardness);
         }
         return hardness;
     }
 
-    private int getHardness(String teacher, Specification spec) {
+    private int getHardness(String teacher) {
         final int[] hardness = {0};
         spec.getCourses().stream().filter(c -> teacher.equals(c.getTeacher())).forEach(c ->
-                        hardness[0] += c.getNumberOfLectures()
+            hardness[0] += c.getNumberOfLectures()
         );
         hardness[0] += spec.getUnavailabilityConstraints().countByTeacher(teacher);
         return hardness[0];
@@ -233,18 +240,18 @@ public class TeacherGreedyInitializer implements Initializer {
         }
     }
 
-    static class FlatTimetable {
-        private List<Lecture>[] lectures;
+    private static class FlatTimetable {
 
-        private final int periodsPerDay;
+        private final Specification spec;
+
+        private List<Lecture>[] lectures;
 
         // this is also the seed we are reusing
         private static int x = 0;
 
-        public FlatTimetable(int daysPerWeek, int periodsPerDay) {
-            int nslots = daysPerWeek * periodsPerDay;
-
-            this.periodsPerDay = periodsPerDay;
+        public FlatTimetable(Specification spec) {
+            this.spec = spec;
+            int nslots = spec.getNumberOfDaysPerWeek() * spec.getPeriodsPerDay();
 
             this.lectures = initLectures(nslots);
 
@@ -294,18 +301,18 @@ public class TeacherGreedyInitializer implements Initializer {
             return x;
         }
 
-        public boolean feasiblePeriod(Lecture l, Specification spec) {
-            return feasiblePeriod(l, spec, x);
+        public boolean feasiblePeriod(Lecture l) {
+            return feasiblePeriod(l, x);
         }
 
-        public boolean feasiblePeriod(Lecture l, Specification spec, int x) {
-            int day = Math.floorDiv(x, periodsPerDay);
-            int period = x % periodsPerDay;
+        public boolean feasiblePeriod(Lecture l, int x) {
+            int day = Math.floorDiv(x, spec.getPeriodsPerDay());
+            int period = x % spec.getPeriodsPerDay();
             if (lecturesInPeriod(x) == spec.getRooms().size()) {
                 return false;
             } else if (!spec.getUnavailabilityConstraints().checkAvailability(l.c, day, period)) {
                 return false;
-            } else if (hasLectureOfSameCurriculum(spec, l, x)) {
+            } else if (hasLectureOfSameCurriculum(l, x)) {
                 return false;
             } else if (hasLectureWithSameTeacher(l, x)) {
                 return false;
@@ -317,7 +324,7 @@ public class TeacherGreedyInitializer implements Initializer {
         /**
          * Returns true if at the same time a lecture of the same curriculum is already scheduled
          */
-        private boolean hasLectureOfSameCurriculum(Specification spec, Lecture l, int slotIdx) {
+        private boolean hasLectureOfSameCurriculum(Lecture l, int slotIdx) {
             Set<Curriculum> cs = spec.getByCourse(l.c);
             for (Lecture lecture : lectures[slotIdx]) {
                 Set<Curriculum> curCurricula = spec.getByCourse(lecture.c);
@@ -343,7 +350,7 @@ public class TeacherGreedyInitializer implements Initializer {
         }
 
         public List<Lecture> getLectures(int day, int period) {
-            return lectures[day * periodsPerDay + period];
+            return lectures[day * spec.getPeriodsPerDay() + period];
         }
     }
 

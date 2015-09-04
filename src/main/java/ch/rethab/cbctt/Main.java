@@ -5,13 +5,14 @@ import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.CourseBasedCrossover;
 import ch.rethab.cbctt.ea.op.Evaluator;
+import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.InitializationFactory;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.parser.ECTTParser;
-import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
@@ -20,13 +21,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.CompoundVariation;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -47,13 +43,14 @@ public class Main {
         // jppfExecutorService.setBatchTimeout(100);
 
         Specification spec = new ECTTParser(new BufferedReader(new FileReader(filename))).parse();
-        Initializer initializer = new TeacherGreedyInitializer();
+        RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
+        Initializer initializer = new TeacherGreedyInitializer(spec, roomAssigner);
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
-        CourseBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, spec);
+        CourseBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
         CompoundVariation variation = new CompoundVariation(cbc);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
-        InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer, spec);
+        InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer);
 
         Instrumenter instrumenter = new Instrumenter()
                 .withProblemClass(CurriculumBasedTimetabling.class, formulation, evaluator)

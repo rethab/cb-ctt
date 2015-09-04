@@ -1,7 +1,9 @@
 package ch.rethab.cbctt.ea.printer;
 
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.ea.phenotype.CurriculumTimetableWithRooms;
+import ch.rethab.cbctt.ea.phenotype.MeetingWithRoom;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.stream.IntStream;
 
@@ -16,8 +18,14 @@ public class PrettyTextPrinter implements Printer {
 
     private static final int cellLen = 10;
 
+    private final Specification spec;
+
+    public PrettyTextPrinter(Specification spec) {
+        this.spec = spec;
+    }
+
     @Override
-    public String print(Timetable t) {
+    public String print(TimetableWithRooms t) {
 
         final StringBuilder sb = new StringBuilder();
 
@@ -30,45 +38,42 @@ public class PrettyTextPrinter implements Printer {
         return sb.toString();
     }
 
-    private String printCurriculumTimetable(Timetable t, Timetable.CurriculumTimetable ctt) {
+    private String printCurriculumTimetable(TimetableWithRooms t, CurriculumTimetableWithRooms ctt) {
         StringBuilder sb = new StringBuilder();
 
-        int lineLen = cellLen * (t.getDays() + 1);
+        int lineLen = cellLen * (spec.getNumberOfDaysPerWeek() + 1);
 
         // headline
         sb.append(padLeft("", cellLen));
-        IntStream.range(0, t.getDays()).forEach(day ->
-                        sb.append(padLeft(String.format("Day %2d", day), cellLen))
+        IntStream.range(0, spec.getNumberOfDaysPerWeek()).forEach(day ->
+            sb.append(padLeft(String.format("Day %2d", day), cellLen))
         );
         sb.append("\n");
 
-        for (int period = 0; period < t.getPeriodsPerDay(); period++) {
+        for (int period = 0; period < spec.getPeriodsPerDay(); period++) {
 
             sb.append(repeat("-", lineLen)).append("\n");
 
             // course
             sb.append(padLeft(String.format("Slot %2d | ", period), cellLen));
-            for (int day = 0; day < t.getDays(); day++) {
-                int slotIdx = day * t.getPeriodsPerDay() + period;
-                Meeting m = ctt.get(slotIdx);
+            for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
+                MeetingWithRoom m = ctt.get(day, period);
                 sb.append(padLeft(m != null ? m.getCourse().getId() : "", cellLen));
             }
             sb.append("\n");
 
             // room
             sb.append(padLeft("| ", cellLen));
-            for (int day = 0; day < t.getDays(); day++) {
-                int slotIdx = day * t.getPeriodsPerDay() + period;
-                Meeting m = ctt.get(slotIdx);
+            for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
+                MeetingWithRoom m = ctt.get(day, period);
                 sb.append(padLeft(m != null ? m.getRoom().getId() : "", cellLen));
             }
             sb.append("\n");
 
             // teacher
             sb.append(padLeft("| ", cellLen));
-            for (int day = 0; day < t.getDays(); day++) {
-                int slotIdx = day * t.getPeriodsPerDay() + period;
-                Meeting m = ctt.get(slotIdx);
+            for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
+                MeetingWithRoom m = ctt.get(day, period);
                 sb.append(padLeft(m != null ? m.getCourse().getTeacher() : "", cellLen));
             }
 

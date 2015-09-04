@@ -1,6 +1,7 @@
 package ch.rethab.cbctt.formulation.constraint;
 
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.CurriculumTimetableWithRooms;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class RoomCapacityConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         return t.getCurriculumTimetables()
                 .values()
                 .stream()
@@ -30,7 +31,7 @@ public class RoomCapacityConstraint implements Constraint {
                 .collect(Collectors.summingInt(Integer::valueOf));
     }
 
-    private int countCurriculumViolations(Timetable.CurriculumTimetable ctt) {
+    private int countCurriculumViolations(CurriculumTimetableWithRooms ctt) {
         return ctt.getAll()
                 .map(m -> Math.max(0, m.getCourse().getNumberOfStudents() - m.getRoom().getCapacity()))
                 .collect(Collectors.summingInt(Integer::valueOf));

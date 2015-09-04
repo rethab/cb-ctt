@@ -2,8 +2,8 @@ package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.MeetingWithRoom;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.stream.Collectors;
 
@@ -31,17 +31,17 @@ public class MinWorkingDaysConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         return spec.getCourses().stream()
                 .map(c -> Math.max(0, c.getMinWorkingDays() - countWorkingDays(c, t)))
                 .collect(Collectors.summingInt(Integer::valueOf));
     }
 
-    private int countWorkingDays(Course c, Timetable t) {
+    private int countWorkingDays(Course c, TimetableWithRooms t) {
         boolean[] days = new boolean[spec.getNumberOfDaysPerWeek()];
 
         int ndays = 0;
-        for (Meeting meeting : t.getMeetingsByCourse(c)) {
+        for (MeetingWithRoom meeting : t.getMeetingsByCourse(c)) {
             if (!days[meeting.getDay()]) {
                 ndays++;
             }

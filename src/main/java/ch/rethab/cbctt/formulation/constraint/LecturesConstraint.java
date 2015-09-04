@@ -2,7 +2,7 @@ package ch.rethab.cbctt.formulation.constraint;
 
 
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.stream.Collectors;
 
@@ -31,7 +31,7 @@ public class LecturesConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         /*
          * the construction of the timetable makes sure no
          * two lectures may be scheduled at the same period

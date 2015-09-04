@@ -2,8 +2,8 @@ package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.MeetingWithRoom;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,10 +33,10 @@ public class RoomOccupancyConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         int count = 0;
         Map<Room, boolean[][]> occupies = new HashMap<>();
-        for (Meeting meeting : t.getMeetings()) {
+        for (MeetingWithRoom meeting : t.getMeetings()) {
             boolean[][] roomOccupancy = occupies.get(meeting.getRoom());
             if (roomOccupancy == null) {
                 roomOccupancy = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];

@@ -1,6 +1,6 @@
 package ch.rethab.cbctt.ea.printer;
 
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 /**
  * Prints the timetable in the format that is accepted by the Udine validator
@@ -12,7 +12,7 @@ import ch.rethab.cbctt.ea.Timetable;
 public class UdinePrinter implements Printer {
 
     @Override
-    public String print(Timetable t) {
+    public String print(TimetableWithRooms t) {
         StringBuilder sb = new StringBuilder();
         t.getMeetings().forEach(m -> {
             sb.append(m.getCourse().getId());

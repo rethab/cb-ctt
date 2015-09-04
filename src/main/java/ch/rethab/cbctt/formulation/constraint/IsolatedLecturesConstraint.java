@@ -1,7 +1,8 @@
 package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.CurriculumTimetableWithRooms;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class IsolatedLecturesConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         return t.getCurriculumTimetables()
                 .values()
                 .stream()
@@ -40,7 +41,7 @@ public class IsolatedLecturesConstraint implements Constraint {
                 .collect(Collectors.summingInt(Integer::valueOf));
     }
 
-    private int countCurriculumViolations (Timetable.CurriculumTimetable ctt) {
+    private int countCurriculumViolations (CurriculumTimetableWithRooms ctt) {
         int violations = 0;
         for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
             int lecturesPerDay = 0;

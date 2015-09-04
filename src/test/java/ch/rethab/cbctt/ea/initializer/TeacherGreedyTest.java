@@ -1,7 +1,7 @@
 package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
@@ -14,8 +14,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +22,7 @@ import static org.junit.Assert.*;
  */
 public class TeacherGreedyTest {
 
-    Initializer teacherGreedyInitializer = new TeacherGreedyInitializer();
+    Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(roomAssigner);
 
     @Test
     public void shouldProduceValidToyTimetable() {

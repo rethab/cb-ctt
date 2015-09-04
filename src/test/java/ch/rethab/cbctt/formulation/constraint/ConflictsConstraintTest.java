@@ -1,8 +1,8 @@
 package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.Meeting;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
 import org.junit.Before;
 import org.junit.Test;
 

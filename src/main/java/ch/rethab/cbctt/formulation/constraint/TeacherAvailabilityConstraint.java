@@ -2,8 +2,8 @@ package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.domain.UnavailabilityConstraints;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.MeetingWithRoom;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 /**
  * From 'Benchmarking Curriculum-Based Course Timetabling:
@@ -30,10 +30,10 @@ public class TeacherAvailabilityConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         int count = 0;
         UnavailabilityConstraints unav = spec.getUnavailabilityConstraints();
-        for (Meeting m : t.getMeetings()) {
+        for (MeetingWithRoom m : t.getMeetings()) {
             if (!unav.checkAvailability(m.getCourse(), m.getDay(), m.getPeriod())) {
                 count++;
             }

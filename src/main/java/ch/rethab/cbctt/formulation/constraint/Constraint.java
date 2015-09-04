@@ -1,6 +1,6 @@
 package ch.rethab.cbctt.formulation.constraint;
 
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.io.Serializable;
 
@@ -25,5 +25,5 @@ public interface Constraint extends Serializable {
     /**
      * Count the number of constraint violations the specified timetable has
      */
-    int violations(Timetable t);
+    int violations(TimetableWithRooms t);
 }

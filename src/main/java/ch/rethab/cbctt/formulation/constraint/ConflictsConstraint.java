@@ -3,8 +3,8 @@ package ch.rethab.cbctt.formulation.constraint;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.MeetingWithRoom;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.Set;
 
@@ -34,18 +34,18 @@ public class ConflictsConstraint implements Constraint {
     }
 
     @Override
-    public int violations(Timetable t) {
+    public int violations(TimetableWithRooms t) {
         return lecturesByCurriculaViolations(t) + teacherViolations(t);
     }
 
-    private int teacherViolations(Timetable t) {
+    private int teacherViolations(TimetableWithRooms t) {
         int count = 0;
         for (String teacher : spec.getTeachers()) {
             // occupied day/periods by teacher
             boolean occupieds[][] = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
 
-            Set<Meeting> meetings = t.getMeetingsByTeacher(teacher);
-            for (Meeting meeting : meetings) {
+            Set<MeetingWithRoom> meetings = t.getMeetingsByTeacher(teacher);
+            for (MeetingWithRoom meeting : meetings) {
                 boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                 if (occupied) {
                     count++;
@@ -57,14 +57,14 @@ public class ConflictsConstraint implements Constraint {
         return count;
     }
 
-    private int lecturesByCurriculaViolations(Timetable t) {
+    private int lecturesByCurriculaViolations(TimetableWithRooms t) {
         int count = 0;
         for (Curriculum curriculum : spec.getCurricula()) {
             // no two lectures within curriculum on same day
             boolean occupieds[][] = new boolean[spec.getNumberOfDaysPerWeek()][spec.getPeriodsPerDay()];
             for (Course course : curriculum.getCourses()) {
-                Set<Meeting> meetings = t.getMeetingsByCourse(course);
-                for (Meeting meeting : meetings) {
+                Set<MeetingWithRoom> meetings = t.getMeetingsByCourse(course);
+                for (MeetingWithRoom meeting : meetings) {
                     boolean occupied = occupieds[meeting.getDay()][meeting.getPeriod()];
                     if (occupied) {
                         count++;

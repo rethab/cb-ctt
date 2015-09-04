@@ -1,6 +1,6 @@
 package ch.rethab.cbctt.moea;
 
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -24,7 +24,7 @@ public class SolutionConverter implements Serializable {
         this.formulation = formulation;
     }
 
-    public Solution toSolution(Timetable t) {
+    public Solution toSolution(TimetableWithRooms t) {
         Solution s = new Solution(
             this.formulation.getNumberOfVariables(),
             this.formulation.getNumberOfObjectives(),
@@ -36,7 +36,7 @@ public class SolutionConverter implements Serializable {
         return new PublicFutureSolution(s);
     }
 
-    public Timetable fromSolution(Solution solution) {
+    public TimetableWithRooms fromSolution(Solution solution) {
         Variable v = solution.getVariable(0);
         return ((VariableAdapter)v).getTimetable();
     }

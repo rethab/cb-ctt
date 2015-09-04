@@ -1,6 +1,6 @@
 package ch.rethab.cbctt.moea;
 
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import org.moeaframework.core.Variable;
 
 /**
@@ -8,18 +8,19 @@ import org.moeaframework.core.Variable;
  */
 public class VariableAdapter implements Variable {
 
-    private Timetable timetable;
+    private TimetableWithRooms timetable;
 
-    public VariableAdapter(Timetable timetable) {
+    public VariableAdapter(TimetableWithRooms timetable) {
         this.timetable = timetable;
     }
 
     @Override
     public Variable copy() {
-        return new VariableAdapter(timetable.copy());
+        // copying the timetable is not required since it is unmodifiable
+        return new VariableAdapter(timetable);
     }
 
-    public Timetable getTimetable() {
+    public TimetableWithRooms getTimetable() {
         return this.timetable;
     }
 }

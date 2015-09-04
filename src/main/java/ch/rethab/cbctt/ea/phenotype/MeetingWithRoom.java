@@ -1,4 +1,4 @@
-package ch.rethab.cbctt.ea;
+package ch.rethab.cbctt.ea.phenotype;
 
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * @author Reto Habluetzel, 2015
  */
-public class Meeting implements Serializable {
+public class MeetingWithRoom implements Serializable {
 
     private final Course course;
 
@@ -19,23 +19,19 @@ public class Meeting implements Serializable {
 
     private final int period;
 
-    public Meeting(Course course, Room room, int day, int period) {
+    public MeetingWithRoom(Course course, Room room, int day, int period) {
         this.course = course;
         this.room = room;
         this.day = day;
         this.period = period;
     }
 
-    public Meeting copy(Room room) {
-        return new Meeting(course, room, day, period);
+    public Room getRoom() {
+        return room;
     }
 
     public Course getCourse() {
         return course;
-    }
-
-    public Room getRoom() {
-        return room;
     }
 
     public int getDay() {
@@ -44,6 +40,10 @@ public class Meeting implements Serializable {
 
     public int getPeriod() {
         return period;
+    }
+
+    public Meeting withoutRoom() {
+        return new Meeting(course, day, period);
     }
 
     @Override
@@ -61,11 +61,11 @@ public class Meeting implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Meeting meeting = (Meeting) o;
+        MeetingWithRoom meeting = (MeetingWithRoom) o;
         return Objects.equals(day, meeting.day) &&
                 Objects.equals(period, meeting.period) &&
-                Objects.equals(course, meeting.course) &&
-                Objects.equals(room, meeting.room);
+                Objects.equals(room, meeting.room) &&
+                Objects.equals(course, meeting.course);
     }
 
     @Override

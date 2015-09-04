@@ -1,8 +1,9 @@
 package ch.rethab.cbctt.formulation.constraint;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
+import ch.rethab.cbctt.ea.phenotype.Meeting;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,11 +59,11 @@ public class RoomOccupancyConstraintTest {
 
     @Test
     public void shouldSucceedWithDifferentRoomsPerPeriod() {
-        Timetable t = new Timetable(curricula, rooms, days, periodsPerDay);
-        t.addMeeting(new Meeting(c1, r1, 0, 1));
-        t.addMeeting(new Meeting(c2, r2, 0, 1));
-        t.addMeeting(new Meeting(c3, r3, 0, 1));
-        assertEquals(0, roomOccupancyConstraint.violations(t));
+        TimetableWithRooms.Builder builder = TimetableWithRooms.Builder.newBuilder(spec);
+        builder.addMeeting(c1, r1, 0, 1);
+        builder.addMeeting(c2, r2, 0, 1);
+        builder.addMeeting(c3, r3, 0, 1);
+        assertEquals(0, roomOccupancyConstraint.violations(builder.build()));
     }
 
 }

@@ -1,9 +1,9 @@
 package ch.rethab.cbctt.ea.op;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.ea.Meeting;
-import ch.rethab.cbctt.ea.Timetable;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
+import ch.rethab.cbctt.ea.phenotype.Meeting;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -303,7 +301,7 @@ public class CourseBasedCrossoverTest {
         ECTTParser parser = new ECTTParser(br);
         Specification spec = parser.parse();
         Formulation v = new UD1Formulation(spec);
-        List<Timetable> ts = new TeacherGreedyInitializer().initialize(spec, 2);
+        List<Timetable> ts = new TeacherGreedyInitializer(roomAssigner).initialize(spec, 2);
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
