@@ -148,8 +148,9 @@ public class TeacherGreedyInitializerTest {
         int a = getUnreachedPeriod();
         int b = getUnreachedPeriod();
         int c = getUnreachedPeriod();
-        if (a != -1 && a == b && b == c) {
-            fail("Three times the same period not reached. Probably buggy!");
+        int d = getUnreachedPeriod();
+        if (a != -1 && a == b && a == c && a == d) {
+            fail("Four times the same period not reached. Probably buggy!");
         }
 
     }
