@@ -41,6 +41,7 @@ public class TimetableWithRooms {
     public MeetingWithRoom getMeeting(Course course, int day, int period) {
         return course.getCurricula().stream()
                 .map(currId -> curriculumTimetables.get(currId).get(day, period))
+                .filter(m -> m != null)
                 .findFirst()
                 .orElse(null);
     }

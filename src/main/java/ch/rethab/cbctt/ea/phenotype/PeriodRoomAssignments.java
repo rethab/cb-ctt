@@ -63,6 +63,12 @@ public class PeriodRoomAssignments {
     }
 
     public boolean tryToSchedule(Course c) {
+
+        // no more free rooms in this period
+        if (nextCourseIdx >= this.spec.getRooms().size()) {
+            return false;
+        }
+
         /*
          * unless we actually increase the instance
          * variable index, the next course will just
