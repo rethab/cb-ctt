@@ -1,9 +1,6 @@
 package ch.rethab.cbctt.ea.phenotype;
 
-import ch.rethab.cbctt.domain.Course;
-import ch.rethab.cbctt.domain.Curriculum;
-import ch.rethab.cbctt.domain.Room;
-import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.domain.*;
 import org.junit.Test;
 
 import java.util.Set;
@@ -14,6 +11,9 @@ import static org.junit.Assert.*;
  * @author Reto Habluetzel, 2015
  */
 public class TimetableTest {
+
+    int days = 5;
+    int periodsPerDay = 8;
 
     Curriculum cur1 = new Curriculum("curr1");
     Curriculum cur2 = new Curriculum("curr2");
@@ -30,7 +30,10 @@ public class TimetableTest {
             .course(c1).course(c2).course(c3).course(c4)
             .room(r1).room(r2)
             .curriculum(cur1).curriculum(cur2)
-            .days(5).periodsPerDay(5)
+            .days(days).periodsPerDay(periodsPerDay)
+            .minLectures(1).maxLectures(8)
+            .unavailabilityConstraints(new UnavailabilityConstraints(days, periodsPerDay))
+            .roomConstraints(new RoomConstraints())
             .build();
 
     @Test

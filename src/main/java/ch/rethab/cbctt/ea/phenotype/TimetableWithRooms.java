@@ -68,16 +68,22 @@ public class TimetableWithRooms {
         public TimetableWithRooms build() {
             Map<String, CurriculumTimetableWithRooms> ctt = new HashMap<>(meetings.size());
             meetings.entrySet().forEach(entry -> {
-                Set<MeetingWithRoom> value = entry.getValue();
-                MeetingWithRoom[] meetings = value.toArray(new MeetingWithRoom[value.size()]);
+                MeetingWithRoom[] meetings = new MeetingWithRoom[spec.getNumberOfDaysPerWeek() * spec.getPeriodsPerDay()];
+                entry.getValue().forEach(mwr -> meetings[toSlotIdx(mwr.getDay(), mwr.getPeriod())] = mwr);
                 ctt.put(entry.getKey(), new CurriculumTimetableWithRooms(spec, meetings));
             });
             return new TimetableWithRooms(spec, ctt);
         }
 
+        private int toSlotIdx(int day, int period) {
+            return day * spec.getPeriodsPerDay() + period;
+        }
+
         public static Builder newBuilder(Specification spec) {
             Builder b = new Builder(spec);
-            spec.getCurricula().stream().forEach(curr -> b.meetings.put(curr.getId(), new LinkedHashSet<>()));
+            spec.getCurricula().stream().forEach(curr -> {
+                b.meetings.put(curr.getId(), new LinkedHashSet<>());
+            });
             return b;
         }
     }

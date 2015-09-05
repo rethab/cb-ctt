@@ -21,7 +21,7 @@ public final class CurriculumTimetableWithRooms implements Serializable {
     }
 
     public Stream<MeetingWithRoom> getAll() {
-        return Arrays.stream(meetings);
+        return Arrays.stream(meetings).filter(m -> m != null);
     }
 
     public MeetingWithRoom get(int day, int period) {

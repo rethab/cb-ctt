@@ -47,7 +47,7 @@ public class IsolatedLecturesConstraintTest {
     }
 
     @Test
-    public void shouldNotAccumulateOverMultipleDaysForSameCurrcilum() {
+    public void shouldNotAccumulateOverMultipleDaysForSameCurriculum() {
         TimetableWithRooms.Builder builder = TimetableWithRooms.Builder.newBuilder(spec);
 
         // c1 and c2 belong to same curriculum

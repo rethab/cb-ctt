@@ -1,9 +1,6 @@
 package ch.rethab.cbctt.formulation.constraint;
 
-import ch.rethab.cbctt.domain.Course;
-import ch.rethab.cbctt.domain.Curriculum;
-import ch.rethab.cbctt.domain.Room;
-import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import org.junit.Test;
 
@@ -35,6 +32,9 @@ public class RoomCapacityConstraintTest {
             .course(c3).course(c7).course(c11)
             .room(r2).room(r7).room(r12)
             .days(days).periodsPerDay(periodsPerDay)
+            .roomConstraints(new RoomConstraints())
+            .unavailabilityConstraints(new UnavailabilityConstraints(days, periodsPerDay))
+            .minLectures(1).maxLectures(5)
             .build();
 
     @Test

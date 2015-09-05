@@ -142,11 +142,12 @@ public class PeriodRoomAssignments {
         // +1 --> exclusive index
         return Arrays.stream(roomAssignments, 0, lastIdx+1)
 
-            // find course that is hardest to schedule (least amount of suitable rooms)
-            .sorted(Comparator.comparingInt(roomViolations -> roomViolations[spec.getRooms().size()].violations))
-
             // course already assigned a room
             .filter(crViolations -> crViolations[spec.getRooms().size()] != null)
+
+            // find course that is hardest to schedule (least amount of suitable rooms)
+            .sorted(Comparator.comparingInt(crViolations -> crViolations[spec.getRooms().size()].violations))
+
             .findFirst();
     }
 
