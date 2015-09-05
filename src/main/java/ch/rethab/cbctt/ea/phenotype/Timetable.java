@@ -87,9 +87,7 @@ public class Timetable implements Serializable {
 
         Meeting toBeScheduled;
         if (toBeRemoved != null) {
-            toBeRemoved.getCourse().getCurricula().stream().forEach(currID ->
-                curriculumTimetables.get(currID).unsetMeeting(day, period)
-            );
+            removeMeeting(toBeRemoved);
 
             // todo why would we take the room of the removed? toBeScheduled = m.copy(toBeRemoved.getRoom());
             toBeScheduled = m;
@@ -98,6 +96,10 @@ public class Timetable implements Serializable {
             toBeScheduled = m;
         }
 
+        PeriodRoomAssignments assignments = periodRoomAssignmentses[toSlotIdx(day, period)];
+        if (!assignments.tryToSchedule(m.getCourse())) {
+            throw new IllegalStateException("not sure if this should happen..");
+        }
 
         m.getCourse().getCurricula().stream().forEach(currID ->
             curriculumTimetables.get(currID).setMeeting(toBeScheduled)
