@@ -291,24 +291,28 @@ public class PeriodRoomAssignments {
     }
 
     public void remove(Course course) {
-        int i = courseIdxMap.get(course.getId());
-
-        // go to the right after
-        i++;
+        int courseIdx = courseIdxMap.get(course.getId());
 
         // move all following one back
-        for (; i < nextCourseIdx; i++) {
+        for (int i = courseIdx + 1; i < nextCourseIdx; i++) {
             roomAssignments[i-1] = roomAssignments[i];
-
-            // update index map
-            courseIdxMap.put(roomAssignments[i][0].course.getId(), i-1);
         }
+
+        // cleanup
+        courseIdxMap.remove(course.getId());
+
+        // move all courses after the one to remove
+        // one index back
+        courseIdxMap.keySet().forEach(cid -> {
+            int cIdx = courseIdxMap.get(cid);
+            if (cIdx > courseIdx) {
+                courseIdxMap.put(cid, cIdx-1);
+            }
+        });
 
         // now we have one free at the end
         nextCourseIdx--;
 
-        // cleanup
-        courseIdxMap.remove(course.getId());
     }
 
     private static class InfeasibilityException extends Exception { }

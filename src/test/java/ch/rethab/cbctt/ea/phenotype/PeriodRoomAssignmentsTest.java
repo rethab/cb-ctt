@@ -111,6 +111,15 @@ public class PeriodRoomAssignmentsTest {
     }
 
     @Test
+    public void shouldBeAbleToRemoveAndReAdd() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        assertTrue(pra.add(c1));
+        pra.remove(c1);
+        assertTrue(pra.add(c1));
+        assertEquals(c1, pra.assignRooms().stream().map(cwr -> cwr.course).findFirst().get());
+    }
+
+    @Test
     public void shouldBeAbleToAddAndRemove() {
         PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
         pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
