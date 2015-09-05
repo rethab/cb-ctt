@@ -48,10 +48,6 @@ public final class CurriculumTimetable implements Serializable {
         return Arrays.stream(meetings).filter(m -> m != null && m.getCourse().getId().equals(c.getId())).collect(Collectors.toSet());
     }
 
-    public Stream<Meeting> getMeetingsByTeacher(String teacher) {
-        return Arrays.stream(meetings).filter(m -> m != null && m.getCourse().getTeacher().equals(teacher));
-    }
-
     public Stream<Meeting> getAll() {
         return Arrays.stream(meetings).filter(m -> m != null);
     }

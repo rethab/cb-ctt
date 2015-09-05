@@ -102,7 +102,9 @@ public class PeriodRoomAssignments {
 
         try {
             // the idx is required during assignment
-            courseIdxMap.put(c.getId(), courseIdx);
+            if (courseIdxMap.put(c.getId(), courseIdx) != null) {
+                throw new Timetable.InfeasibilityException("Same course in same period. Makes no sense");
+            }
 
             assignAll(copy, courseIdx, false);
             nextCourseIdx++;
