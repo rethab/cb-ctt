@@ -7,10 +7,6 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.junit.Assert.*;
 
 /**
@@ -23,7 +19,6 @@ public class RoomCapacityConstraintTest {
 
     Curriculum curr1 = new Curriculum("curr1");
     Curriculum curr2 = new Curriculum("curr2");
-    Set<String> curricula = new HashSet<>(Arrays.asList(curr1.getId(), curr2.getId()));
 
     Course c3 = Course.Builder.id("c3").curriculum(curr1).teacher("t1").nlectures(5).nWorkingDays(5).nStudents(3).doubleLectures(false).build();
     Course c7 = Course.Builder.id("c7").curriculum(curr1).teacher("t2").nlectures(3).nWorkingDays(2).nStudents(7).doubleLectures(false).build();
@@ -32,7 +27,6 @@ public class RoomCapacityConstraintTest {
     Room r2 = new Room("r2", 2, 1);
     Room r7 = new Room("r7", 7, 1);
     Room r12 = new Room("r12", 12, 1);
-    Set<String> rooms = new HashSet<>(Arrays.asList(r2.getId(), r7.getId(), r12.getId()));
 
     RoomCapacityConstraint roomCapacityConstraint = new RoomCapacityConstraint();
 

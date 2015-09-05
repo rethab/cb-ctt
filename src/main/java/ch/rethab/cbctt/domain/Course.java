@@ -88,10 +88,6 @@ public class Course implements Serializable {
         return curricula;
     }
 
-    public void setCurricula(List<String> curricula) {
-        this.curricula = curricula;
-    }
-
     public int getNumberOfStudents() {
         return nStudents;
     }

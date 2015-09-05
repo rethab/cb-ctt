@@ -1,7 +1,8 @@
 package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.*;
-import ch.rethab.cbctt.ea.phenotype.Timetable;
+import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
@@ -22,14 +23,14 @@ import static org.junit.Assert.*;
  */
 public class TeacherGreedyTest {
 
-    Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(roomAssigner);
 
     @Test
     public void shouldProduceValidToyTimetable() {
         Specification toySpec = testData();
+        Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(toySpec, new GreedyRoomAssigner(toySpec));
         Formulation v = new UD1Formulation(toySpec);
 
-        for (Timetable t : teacherGreedyInitializer.initialize(toySpec, 20)) {
+        for (TimetableWithRooms t : teacherGreedyInitializer.initialize(20)) {
             for (Constraint c : v.getConstraints()) {
                 assertEquals(0, c.violations(t));
             }
@@ -44,8 +45,9 @@ public class TeacherGreedyTest {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             ECTTParser parser = new ECTTParser(br);
             Specification spec = parser.parse();
+            Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec));
             Formulation v = new UD1Formulation(spec);
-            Timetable t = teacherGreedyInitializer.initialize(spec, 1).get(0);
+            TimetableWithRooms t = teacherGreedyInitializer.initialize(1).get(0);
             for (Constraint c : v.getConstraints()) {
                 assertEquals(0, c.violations(t));
             }
@@ -59,7 +61,8 @@ public class TeacherGreedyTest {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         ECTTParser parser = new ECTTParser(br);
         Specification spec = parser.parse();
-        List<Timetable> ts = teacherGreedyInitializer.initialize(spec, 10);
+        Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec));
+        List<TimetableWithRooms> ts = teacherGreedyInitializer.initialize(10);
         assertDistinct(ts, 0, 1); assertDistinct(ts, 0, 2); assertDistinct(ts, 0, 3);
         assertDistinct(ts, 0, 4); assertDistinct(ts, 0, 5); assertDistinct(ts, 0, 6);
         assertDistinct(ts, 0, 7); assertDistinct(ts, 0, 8); assertDistinct(ts, 0, 9);
@@ -77,7 +80,7 @@ public class TeacherGreedyTest {
         assertDistinct(ts, 7, 8); assertDistinct(ts, 7, 9); assertDistinct(ts, 8, 9);
     }
 
-    private void assertDistinct(List<Timetable> ts, int i1, int i2) {
+    private void assertDistinct(List<TimetableWithRooms> ts, int i1, int i2) {
         assertTrue(i1 + " and " + i2 + " are the same", ts.get(i1).getMeetings().stream().anyMatch(
                 m1 -> ts.get(i2).getMeeting(m1.getCourse(), m1.getDay(), m1.getPeriod()) == null
         ));
@@ -85,8 +88,10 @@ public class TeacherGreedyTest {
 
     @Test
     public void shouldProduceCorrectAmount() {
-        assertEquals(1, teacherGreedyInitializer.initialize(testData(), 1).size());
-        assertEquals(10, teacherGreedyInitializer.initialize(testData(), 10).size());
+        Specification toySpec = testData();
+        Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(toySpec, new GreedyRoomAssigner(toySpec));
+        assertEquals(1, teacherGreedyInitializer.initialize(1).size());
+        assertEquals(10, teacherGreedyInitializer.initialize(10).size());
     }
 
     private Specification testData() {
@@ -150,16 +155,15 @@ public class TeacherGreedyTest {
     }
 
     private int getUnreachedPeriod() {
-        int ndays = 7;
-        int nperiods = 10;
+        Specification spec = testData();
         TeacherGreedyInitializer.FlatTimetable t;
         boolean reachedPeriods[];
-        for (int days = 2; days <= ndays-1; days++) {
-            for (int periods = 2; periods <= nperiods-1; periods++) {
-                t = new TeacherGreedyInitializer.FlatTimetable(days, periods);
-                reachedPeriods = new boolean[ndays*nperiods];
+        for (int days = 2; days <= spec.getNumberOfDaysPerWeek()-1; days++) {
+            for (int periods = 2; periods <= spec.getPeriodsPerDay()-1; periods++) {
+                t = new TeacherGreedyInitializer.FlatTimetable(spec);
+                reachedPeriods = new boolean[spec.getNumberOfDaysPerWeek()*spec.getPeriodsPerDay()];
 
-                for (int i = 0; i < ndays * nperiods; i++) {
+                for (int i = 0; i < spec.getNumberOfDaysPerWeek() * spec.getPeriodsPerDay(); i++) {
                     int x = t.getX();
                     reachedPeriods[x] = true;
                     t.advancePeriod();

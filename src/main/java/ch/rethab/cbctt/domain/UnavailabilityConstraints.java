@@ -42,9 +42,9 @@ public class UnavailabilityConstraints implements Serializable {
             Course c = courseEntry.getKey();
             if (teacher.equals(c.getTeacher())) {
                 boolean[][] unavailabilities = courseEntry.getValue();
-                for (int day = 0; day < unavailabilities.length; day++) {
-                    for (int period = 0; period < unavailabilities[day].length; period++) {
-                        if (unavailabilities[day][period]) {
+                for (boolean[] unavailability : unavailabilities) {
+                    for (boolean anUnavailability : unavailability) {
+                        if (anUnavailability) {
                             counter++;
                         }
                     }

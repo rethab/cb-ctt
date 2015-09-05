@@ -3,7 +3,10 @@ package ch.rethab.cbctt.ea.initializer;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.phenotype.*;
+import ch.rethab.cbctt.ea.phenotype.Meeting;
+import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -192,9 +195,8 @@ public class TeacherGreedyInitializer implements Initializer {
         List<Lecture> lectures = new LinkedList<>();
         for (Course c : spec.getCourses()) {
             int hardness = lookupHardness(c.getTeacher());
-            Set<Curriculum> curricula = spec.getByCourse(c);
             IntStream.range(0, c.getNumberOfLectures()).forEach(i ->
-                lectures.add(new Lecture(curricula, c, hardness))
+                lectures.add(new Lecture(c, hardness))
             );
         }
         return Collections.unmodifiableList(lectures);
@@ -222,12 +224,9 @@ public class TeacherGreedyInitializer implements Initializer {
     private static class Lecture implements Comparable {
         public final Course c;
 
-        public final Set<Curriculum> curricula;
-
         private int hardness;
 
-        public Lecture(Set<Curriculum> curricula, Course c, int hardness) {
-            this.curricula = curricula;
+        public Lecture(Course c, int hardness) {
             this.c = c;
             this.hardness = hardness;
         }
@@ -240,7 +239,7 @@ public class TeacherGreedyInitializer implements Initializer {
         }
     }
 
-    private static class FlatTimetable {
+    static class FlatTimetable {
 
         private final Specification spec;
 

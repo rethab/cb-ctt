@@ -38,6 +38,13 @@ public class TimetableWithRooms {
                 .collect(Collectors.toSet());
     }
 
+    public MeetingWithRoom getMeeting(Course course, int day, int period) {
+        return course.getCurricula().stream()
+                .map(currId -> curriculumTimetables.get(currId).get(day, period))
+                .findFirst()
+                .orElse(null);
+    }
+
     public Timetable newChild() {
         Timetable t = new Timetable(spec);
         getMeetings().stream().forEach(m -> t.addMeeting(m.withoutRoom()));
@@ -54,9 +61,7 @@ public class TimetableWithRooms {
         }
 
         public Builder addMeeting(Course course, Room room, int day, int period) {
-            course.getCurricula().forEach(currId -> {
-                meetings.get(currId).add(new MeetingWithRoom(course, room, day, period));
-            });
+            course.getCurricula().forEach(currId -> meetings.get(currId).add(new MeetingWithRoom(course, room, day, period)));
             return this;
         }
 
@@ -72,9 +77,7 @@ public class TimetableWithRooms {
 
         public static Builder newBuilder(Specification spec) {
             Builder b = new Builder(spec);
-            spec.getCurricula().stream().forEach(curr -> {
-                b.meetings.put(curr.getId(), new LinkedHashSet<>());
-            });
+            spec.getCurricula().stream().forEach(curr -> b.meetings.put(curr.getId(), new LinkedHashSet<>()));
             return b;
         }
     }

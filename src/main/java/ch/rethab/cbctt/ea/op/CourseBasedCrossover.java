@@ -1,7 +1,6 @@
 package ch.rethab.cbctt.ea.op;
 
 import ch.rethab.cbctt.domain.Course;
-import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.phenotype.*;
 import ch.rethab.cbctt.moea.SolutionConverter;
@@ -179,19 +178,6 @@ public class CourseBasedCrossover implements Variation {
                 }
 
             }
-        }
-    }
-
-    private Room toRoom(String roomID) {
-        if (roomID == null) {
-            return null;
-        } else {
-            for (Room room : spec.getRooms()) {
-                if (room.getId().equals(roomID)) {
-                    return room;
-                }
-            }
-            throw new IllegalStateException("Room " + roomID + " must exist in spec!");
         }
     }
 

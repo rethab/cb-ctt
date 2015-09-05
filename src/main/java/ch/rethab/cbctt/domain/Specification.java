@@ -87,7 +87,7 @@ public class Specification implements Serializable {
     }
 
     public Set<String> getTeachers() {
-        return courses.stream().map(c -> c.getTeacher()).collect(Collectors.toSet());
+        return courses.stream().map(Course::getTeacher).collect(Collectors.toSet());
     }
 
     public Set<Curriculum> getByCourse(Course course) {

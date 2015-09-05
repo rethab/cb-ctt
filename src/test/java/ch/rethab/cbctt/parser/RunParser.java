@@ -3,7 +3,8 @@ package ch.rethab.cbctt.parser;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
-import ch.rethab.cbctt.ea.phenotype.Timetable;
+import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
@@ -19,10 +20,6 @@ import java.util.List;
 public class RunParser {
 
     public static void main(String []args) throws IOException {
-        for (int i = 1; i < 1; i++) {
-            System.out.println(i);
-        }
-
         if (args.length != 1) {
             throw new IllegalArgumentException("Parameter 0 must be filename");
         }
@@ -31,8 +28,8 @@ public class RunParser {
         Specification spec = parser.parse();
         System.out.println("Parsed");
         Formulation v = new UD1Formulation(spec);
-        Initializer initializer = new TeacherGreedyInitializer(roomAssigner);
-        List<Timetable> ts = initializer.initialize(spec, 1);
+        Initializer initializer = new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec));
+        List<TimetableWithRooms> ts = initializer.initialize(1);
         ts.forEach(t -> {
             boolean feasible = true;
             for (Constraint c : v.getConstraints()) {

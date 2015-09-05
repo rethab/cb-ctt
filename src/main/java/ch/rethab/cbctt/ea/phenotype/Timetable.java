@@ -56,32 +56,12 @@ public class Timetable implements Serializable {
         return curriculumTimetables.get(currID).getMeetingsByCourse(c);
     }
 
-    public Set<Meeting> getMeetingsByTeacher(String teacher) {
-        return curriculumTimetables.values().stream().flatMap(ct -> ct.getMeetingsByTeacher(teacher)).collect(Collectors.toSet());
-    }
-
     public Set<Meeting> getMeetings() {
         return curriculumTimetables.values().stream().flatMap(CurriculumTimetable::getAll).collect(Collectors.toSet());
     }
 
     public PeriodRoomAssignments[] getPeriodRoomAssignmentses() {
         return periodRoomAssignmentses;
-    }
-
-    /**
-     * @deprecated how about getting the spec by yourself
-     */
-    @Deprecated()
-    public int getPeriodsPerDay() {
-        return spec.getPeriodsPerDay();
-    }
-
-    /**
-     * @deprecated how about getting the spec by yourself
-     */
-    @Deprecated()
-    public int getDays() {
-        return spec.getNumberOfDaysPerWeek();
     }
 
     public Map<String, CurriculumTimetable> getCurriculumTimetables() {

@@ -40,10 +40,6 @@ public final class CurriculumTimetable implements Serializable {
         return day * spec.getPeriodsPerDay() + period;
     }
 
-    public Meeting get(int slotIdx) {
-        return meetings[slotIdx];
-    }
-
     public Meeting get(int day, int period) {
         return meetings[toSlotIdx(day, period)];
     }
