@@ -50,8 +50,8 @@ public class Course implements Serializable {
         this.nStudents = nStudents;
         this.doubleLectures = doubleLectures;
 
-        // curricula could be empty, but (we hope) it doesn't matter
-        this.hashCache = Objects.hash(id, curricula, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
+        // curricula could change, but (we hope) it doesn't matter
+        this.hashCache = Objects.hash(id, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
     }
 
     @Override
