@@ -66,10 +66,12 @@ public class CourseBasedCrossover implements Variation {
                 Set<MeetingWithRoom> p2Meetings = parent2.getMeetingsByCourse(p2Course);
                 scheduleMeetings(p2Course, p2Meetings, tmpChild1);
 
+                System.out.println("Before Assigning Rooms");
                 child1 = roomAssigner.assignRooms(tmpChild1);
+                System.out.println("After Assigning Rooms");
                 break;
             } catch (CrossoverFailedException cfe) {
-                //System.err.println("Crossover failed ("+i+"). Restarting..");
+                System.err.println("Crossover failed ("+i+"). Restarting..");
             }
         }
 
@@ -87,10 +89,12 @@ public class CourseBasedCrossover implements Variation {
                 Set<MeetingWithRoom> p1Meetings = parent1.getMeetingsByCourse(p1Course);
                 scheduleMeetings(p1Course, p1Meetings, tmpChild2);
 
+                System.out.println("Before Assigning Rooms");
                 child2 = roomAssigner.assignRooms(tmpChild2);
+                System.out.println("After Assigning Rooms");
                 break;
             } catch (CrossoverFailedException cfe) {
-                //System.err.println("Crossover failed ("+i+"). Restarting..");
+                System.err.println("Crossover failed ("+i+"). Restarting..");
             }
         }
 

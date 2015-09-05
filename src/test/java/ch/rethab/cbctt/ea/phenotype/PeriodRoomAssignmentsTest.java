@@ -3,6 +3,7 @@ package ch.rethab.cbctt.ea.phenotype;
 import ch.rethab.cbctt.domain.*;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -98,7 +99,7 @@ public class PeriodRoomAssignmentsTest {
         assertTrue(pra.add(c3));
         assertTrue(pra.add(c4));
 
-        Set<PeriodRoomAssignments.CourseWithRoom> courses = pra.assignRooms();
+        List<PeriodRoomAssignments.CourseWithRoom> courses = pra.assignRooms();
         assertEquals(4, courses.size());
         Optional<PeriodRoomAssignments.CourseWithRoom> c1wr = courses.stream().filter(cwr -> cwr.course.equals(c1)).findFirst();
         Optional<PeriodRoomAssignments.CourseWithRoom> c2wr = courses.stream().filter(cwr -> cwr.course.equals(c2)).findFirst();

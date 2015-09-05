@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -24,6 +26,16 @@ public class Course implements Serializable {
 
     private final boolean doubleLectures;
 
+    /*
+     * cache hashcode for optimization.
+     * note that this is very risky business, since this class is essentially
+     * modifiable. however, whenever we are interested in the hashCode properties
+     * (such as equal objects result in equal hashcodes for sets etc), we only
+     * really care about the id, since it identifies a course uniquely.
+      */
+    private final int hashCache;
+
+
     public Course(String id, String teacher, int nLectures, int nWorkingDays, int nStudents, boolean doubleLectures) {
         this(id, null, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
         this.curricula = new LinkedList<>();
@@ -37,6 +49,9 @@ public class Course implements Serializable {
         this.nWorkingDays = nWorkingDays;
         this.nStudents = nStudents;
         this.doubleLectures = doubleLectures;
+
+        // curricula could be empty, but (we hope) it doesn't matter
+        this.hashCache = Objects.hash(id, curricula, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
     }
 
     @Override
@@ -44,18 +59,12 @@ public class Course implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return Objects.equals(nLectures, course.nLectures) &&
-                Objects.equals(nWorkingDays, course.nWorkingDays) &&
-                Objects.equals(curricula, course.curricula) &&
-                Objects.equals(nStudents, course.nStudents) &&
-                Objects.equals(doubleLectures, course.doubleLectures) &&
-                Objects.equals(id, course.id) &&
-                Objects.equals(teacher, course.teacher);
+        return course.getId().equals(id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, curricula, teacher, nLectures, nWorkingDays, nStudents, doubleLectures);
+        return hashCache;
     }
 
     @Override

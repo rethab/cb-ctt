@@ -66,11 +66,11 @@ public class PeriodRoomAssignments {
         roomAssignments = new RoomViolations[roomIds.size()][roomIds.size()+1];
     }
 
-    public Set<CourseWithRoom> assignRooms() {
+    public List<CourseWithRoom> assignRooms() {
 
         if (nextCourseIdx == 0) {
             // no courses in this period. check required due to -1 below
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
 
         try {
@@ -143,8 +143,8 @@ public class PeriodRoomAssignments {
      * @param lastIdx the last index of the array that is still to be
      *                considered for feasibility
      */
-    private Set<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int lastIdx) throws InfeasibilityException{
-        Set<CourseWithRoom> assignments = new LinkedHashSet<>();
+    private List<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int lastIdx) throws InfeasibilityException{
+        List<CourseWithRoom> assignments = new ArrayList<>(lastIdx+2);
         Optional<RoomViolations[]> mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
         while (mbRoomsForCourse.isPresent()) {
             RoomViolations[] roomsForCourse = mbRoomsForCourse.get();
