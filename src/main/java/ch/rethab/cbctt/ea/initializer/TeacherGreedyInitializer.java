@@ -98,6 +98,7 @@ public class TeacherGreedyInitializer implements Initializer {
     }
 
     private Timetable createTimetable() {
+        System.out.println("createTimetable");
         List<Lecture> lectures = initLectures();
 
         for (int i = 0; i < 300; i++) {

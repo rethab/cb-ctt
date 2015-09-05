@@ -94,6 +94,17 @@ public class TeacherGreedyInitializerTest {
         assertEquals(10, teacherGreedyInitializer.initialize(10).size());
     }
 
+    @Test
+    public void shouldProduceALot() throws IOException {
+        String filename = "comp01.ectt";
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+        Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec));
+        teacherGreedyInitializer.initialize(500);
+    }
+
     private Specification testData() {
 
         Specification.Builder builder = Specification.Builder.name("Toy");

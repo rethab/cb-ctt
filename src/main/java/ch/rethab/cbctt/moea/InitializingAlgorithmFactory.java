@@ -1,6 +1,5 @@
 package ch.rethab.cbctt.moea;
 
-import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Initialization;
@@ -10,8 +9,10 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.distributed.ParallelNSGAII;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 
 
 /**
@@ -21,10 +22,13 @@ public class InitializingAlgorithmFactory extends AlgorithmFactory {
 
     private final InitializationFactory initializationFactory;
     private final Variation variation;
+    private final ExecutorService executorService;
 
-    public InitializingAlgorithmFactory(InitializationFactory initializationFactory, Variation variation) {
+    public InitializingAlgorithmFactory(InitializationFactory initializationFactory, Variation variation,
+                                        ExecutorService executorService) {
         this.initializationFactory = initializationFactory;
         this.variation = variation;
+        this.executorService = executorService;
     }
 
     @Override
@@ -54,6 +58,6 @@ public class InitializingAlgorithmFactory extends AlgorithmFactory {
         Initialization initialization = initializationFactory.create(populationSize);
 
         TournamentSelection selection1 = new TournamentSelection(2, new ParetoDominanceComparator());
-        return new NSGAII(problem, population, null, selection1, variation, initialization);
+        return new ParallelNSGAII(problem, population, null, selection1, variation, initialization, executorService);
     }
 }

@@ -38,23 +38,23 @@ public class PeriodRoomAssignments {
      * we need access to the room and we loos the index in the procedure.
      */
     private class RoomViolations {
-        /* number of violations a certain courses would have in a certain room.
+        /* number of feasibleRooms a certain courses would have in a certain room.
          * the smaller the better. 0 means perfect fit */
-        final int violations;
+        final int feasibleRooms;
         final Room room;
         final Course course;
-        public RoomViolations(Room room, Course c, int violations) {
+        public RoomViolations(Room room, Course c, int feasibleRooms) {
             this.room = room;
             this.course = c;
-            this.violations = violations;
+            this.feasibleRooms = feasibleRooms;
         }
 
         public RoomViolations reduceSuitability() {
             if (room != null || course != null) {
                 throw new IllegalStateException("must only be used in last column");
             }
-            // in this case, the naming 'violations' is a little unfortunate
-            int suitabilityIdx = violations -1;
+            // in this case, the naming 'feasibleRooms' is a little unfortunate
+            int suitabilityIdx = feasibleRooms -1;
             return new RoomViolations(null, null, suitabilityIdx);
         }
     }
@@ -73,9 +73,20 @@ public class PeriodRoomAssignments {
             return Collections.emptyList();
         }
 
+        RoomViolations[][] copy = null;
         try {
+            copy = deepCopy(roomAssignments);
             return assignAll(roomAssignments, nextCourseIdx-1, true);
         } catch (InfeasibilityException e) {
+            for (int cid = 0; cid < copy.length; cid++) {
+                for (int rid = 0; rid < copy[cid].length; rid++) {
+                    RoomViolations rv = copy[cid][rid];
+                    System.out.printf("[%s, %s, %d] ", rv == null || rv.course == null ? null : rv.course.getId(),
+                                                       rv == null || rv.room == null   ? null : rv.room.getId(),
+                                                       rv == null                      ? null : rv.feasibleRooms);
+                }
+                System.out.println();
+            }
             throw new IllegalStateException("Dude, you code is fucked up");
         }
     }
@@ -209,17 +220,17 @@ public class PeriodRoomAssignments {
             .filter(crViolations -> crViolations[spec.getRooms().size()] != null)
 
             // find course that is hardest to assignRooms (least amount of suitable rooms)
-            .sorted(Comparator.comparingInt(crViolations -> crViolations[spec.getRooms().size()].violations))
+            .sorted(Comparator.comparingInt(crViolations -> crViolations[spec.getRooms().size()].feasibleRooms))
 
             .findFirst();
     }
 
     /**
-     * Comparator such that the most preferable number of violations
+     * Comparator such that the most preferable number of feasibleRooms
      * would be first in an ascending ordered list. I.e. perfect would
-     * be 0 violations. After that, negative violations are preferred,
+     * be 0 feasibleRooms. After that, negative feasibleRooms are preferred,
      * with the closer to 0 the better (negative means the room is too big).
-     * After that, we take the positive violations (room is too small) in
+     * After that, we take the positive feasibleRooms (room is too small) in
      * ascending order.
      *
      * E.g: 0, -1, -2, 1, 2
@@ -241,17 +252,17 @@ public class PeriodRoomAssignments {
                 return Double.POSITIVE_INFINITY;
             } else if (rv.room == null) { // last column: constrainedness
                 return Double.POSITIVE_INFINITY;
-            } else if (rv.violations < 0) {
-                return 1 - (1 / (Math.abs(rv.violations)));
+            } else if (rv.feasibleRooms < 0) {
+                return 1 - (1 / (Math.abs(rv.feasibleRooms)));
             } else {
-                return rv.violations;
+                return rv.feasibleRooms;
             }
         });
     }
 
     /**
      * Creates one row for a course with indices per room.
-     * Each cell holds the number of violations, i.e. the
+     * Each cell holds the number of feasibleRooms, i.e. the
      * amount of students, by which the room capacity is
      * exceeded.
      *

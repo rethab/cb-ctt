@@ -1,8 +1,13 @@
 package ch.rethab.cbctt.ea.phenotype;
 
 import ch.rethab.cbctt.domain.*;
+import ch.rethab.cbctt.parser.ECTTParser;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -156,6 +161,40 @@ public class PeriodRoomAssignmentsTest {
         assertTrue(courses.contains(c1));
         assertTrue(courses.contains(c2));
         assertTrue(courses.contains(c3));
+    }
+
+    @Test
+    public void shouldBeAbleToConstructTimetable() throws IOException {
+        /*         rB    rC    rE     rF   rG    rS     feasibleRooms
+         * c0002 = -125   null  66     45   55    45    5
+         * c0066 = -186  -86    null  -16  -6    -16    5
+         * c0059 = -193  -93    null  -23  -13   -23    5
+         * c0061 = -194  -94    null  -24   null -24    4
+         * c0031 = -189  -89    2     -19  -9     null  5
+         * c0058 = -198  -98   -7     -28  -18    null  5
+         */
+
+        InputStream is = getClass().getClassLoader().getResourceAsStream("comp01.ectt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+
+        Course c0002 = spec.getCourses().stream().filter(c -> c.getId().equals("c0002")).findFirst().get();
+        Course c0066 = spec.getCourses().stream().filter(c -> c.getId().equals("c0066")).findFirst().get();
+        Course c0059 = spec.getCourses().stream().filter(c -> c.getId().equals("c0059")).findFirst().get();
+        Course c0061 = spec.getCourses().stream().filter(c -> c.getId().equals("c0061")).findFirst().get();
+        Course c0031 = spec.getCourses().stream().filter(c -> c.getId().equals("c0031")).findFirst().get();
+        Course c0058 = spec.getCourses().stream().filter(c -> c.getId().equals("c0058")).findFirst().get();
+
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        assertTrue(pra.add(c0002));
+        assertTrue(pra.add(c0066));
+        assertTrue(pra.add(c0059));
+        assertTrue(pra.add(c0061));
+        assertTrue(pra.add(c0031));
+        assertTrue(pra.add(c0058));
+
+        assertEquals(6, pra.assignRooms().size());
     }
 
 }

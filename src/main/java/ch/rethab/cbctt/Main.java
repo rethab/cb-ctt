@@ -35,7 +35,7 @@ public class Main {
         }
         String filename = args[0];
 
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
@@ -60,14 +60,16 @@ public class Main {
                 .attachAll();
 
         NondominatedPopulation result = new Executor()
-                .usingAlgorithmFactory(new InitializingAlgorithmFactory(initializationFactory, variation))
+                .usingAlgorithmFactory(new InitializingAlgorithmFactory(initializationFactory, variation, executorService))
                 .withProblemClass(CurriculumBasedTimetabling.class, formulation, evaluator)
                 .withAlgorithm("NSGAIII")
-                .withProperty("populationSize", 40)
-                .withMaxEvaluations(10000)
+                .withProperty("populationSize", 360)
+                .withMaxEvaluations(100000)
                 .withInstrumenter(instrumenter)
-                // .distributeWith(jppfExecutorService)
+                .distributeWith(executorService)
                 .run();
+
+        executorService.shutdown();
 
         // jppfExecutorService.shutdown();
         // jppfClient.close();
