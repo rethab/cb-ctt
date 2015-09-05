@@ -74,7 +74,7 @@ public class PeriodRoomAssignments {
         }
 
         try {
-            return assignAll(roomAssignments, nextCourseIdx-1);
+            return assignAll(roomAssignments, nextCourseIdx-1, true);
         } catch (InfeasibilityException e) {
             throw new IllegalStateException("Dude, you code is fucked up");
         }
@@ -104,7 +104,7 @@ public class PeriodRoomAssignments {
             // the idx is required during assignment
             courseIdxMap.put(c.getId(), courseIdx);
 
-            assignAll(copy, courseIdx);
+            assignAll(copy, courseIdx, false);
             nextCourseIdx++;
             return true;
         } catch (InfeasibilityException e) {
@@ -142,16 +142,18 @@ public class PeriodRoomAssignments {
      *
      * @param lastIdx the last index of the array that is still to be
      *                considered for feasibility
+     * @param real true if we are assigning for real. false if we're just
+     *             checking if the course would fit. purely for optimization
      */
-    private List<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int lastIdx) throws InfeasibilityException{
+    private List<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int lastIdx, boolean real) throws InfeasibilityException{
         List<CourseWithRoom> assignments = new ArrayList<>(lastIdx+2);
         Optional<RoomViolations[]> mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
         while (mbRoomsForCourse.isPresent()) {
             RoomViolations[] roomsForCourse = mbRoomsForCourse.get();
 
-            Arrays.sort(roomsForCourse, violationsComparator());
+            // only do the computationally intensive stuff if we're assigning for real
+            RoomViolations rv = real ? roomWithLeastViolations(roomsForCourse) : greedyFirstRoom(roomsForCourse);
 
-            RoomViolations rv = roomsForCourse[0];
             if (rv == null) {
                 throw new InfeasibilityException();
             }
@@ -178,7 +180,25 @@ public class PeriodRoomAssignments {
 
             mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
         }
+        int tooFew = assignments.size()-(lastIdx+2);
+        if (tooFew > 0) {
+            System.out.println("Too few? " + tooFew);
+        }
         return assignments;
+    }
+
+    private RoomViolations roomWithLeastViolations(RoomViolations[] roomsForCourse) {
+        Arrays.sort(roomsForCourse, violationsComparator());
+        return roomsForCourse[0];
+    }
+
+    private RoomViolations greedyFirstRoom(RoomViolations[] roomsForCourse) {
+        for (RoomViolations aRoomsForCourse : roomsForCourse) {
+            if (aRoomsForCourse != null && aRoomsForCourse.room != null) {
+                return aRoomsForCourse;
+            }
+        }
+        return null;
     }
 
     private Optional<RoomViolations[]> findMostConstrainedCourse(RoomViolations[][] roomAssignments, int lastIdx) {
