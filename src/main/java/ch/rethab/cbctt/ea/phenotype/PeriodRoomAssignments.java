@@ -100,12 +100,12 @@ public class PeriodRoomAssignments {
         // copy since the array values are updated during assignment (occupied rooms are set to null)
         RoomViolations[][] copy = deepCopy(roomAssignments);
 
-        try {
-            // the idx is required during assignment
-            if (courseIdxMap.put(c.getId(), courseIdx) != null) {
-                throw new Timetable.InfeasibilityException("Same course in same period. Makes no sense");
-            }
+        // the idx is required during assignment
+        if (courseIdxMap.put(c.getId(), courseIdx) != null) {
+            throw new Timetable.InfeasibilityException("Same course in same period. Makes no sense");
+        }
 
+        try {
             assignAll(copy, courseIdx, false);
             nextCourseIdx++;
             return true;
@@ -148,7 +148,7 @@ public class PeriodRoomAssignments {
      *             checking if the course would fit. purely for optimization
      */
     private List<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int lastIdx, boolean real) throws InfeasibilityException{
-        List<CourseWithRoom> assignments = new ArrayList<>(lastIdx+2);
+        List<CourseWithRoom> assignments = new ArrayList<>(lastIdx+1);
         Optional<RoomViolations[]> mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
         while (mbRoomsForCourse.isPresent()) {
             RoomViolations[] roomsForCourse = mbRoomsForCourse.get();
@@ -181,10 +181,6 @@ public class PeriodRoomAssignments {
             assignments.add(new CourseWithRoom(rv.course, rv.room));
 
             mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
-        }
-        int tooFew = assignments.size()-(lastIdx+2);
-        if (tooFew > 0) {
-            System.out.println("Too few? " + tooFew);
         }
         return assignments;
     }

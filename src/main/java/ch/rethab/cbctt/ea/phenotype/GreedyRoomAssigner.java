@@ -3,7 +3,6 @@ package ch.rethab.cbctt.ea.phenotype;
 import ch.rethab.cbctt.domain.Specification;
 
 import java.util.List;
-import java.util.Set;
 
 public class GreedyRoomAssigner implements RoomAssigner {
 
@@ -15,7 +14,6 @@ public class GreedyRoomAssigner implements RoomAssigner {
 
     @Override
     public TimetableWithRooms assignRooms(Timetable t) {
-        System.out.println("GreedyRoomAssigner.assignRooms: ENTRY");
         TimetableWithRooms.Builder builder = TimetableWithRooms.Builder.newBuilder(spec);
         PeriodRoomAssignments[] periodRoomAssignments = t.getPeriodRoomAssignmentses();
 
@@ -27,7 +25,6 @@ public class GreedyRoomAssigner implements RoomAssigner {
             courses.forEach(cwr -> builder.addMeeting(cwr.course, cwr.room, day, period));
         }
 
-        System.out.println("GreedyRoomAssigner.assignRooms: EXIT");
         return builder.build();
     }
 

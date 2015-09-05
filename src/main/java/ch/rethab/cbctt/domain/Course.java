@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Reto Habluetzel, 2015

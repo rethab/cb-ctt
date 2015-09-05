@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 /**
  * @author Reto Habluetzel, 2015
  */
-public class TeacherGreedyTest {
+public class TeacherGreedyInitializerTest {
 
 
     @Test

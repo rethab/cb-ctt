@@ -100,14 +100,12 @@ public class TeacherGreedyInitializer implements Initializer {
     private Timetable createTimetable() {
         List<Lecture> lectures = initLectures();
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 300; i++) {
             LectureIterator it = new LectureIterator(lectures);
             Timetable t = getTimetable0(it, lectures);
             if (t != null) {
-                System.out.println("TeacherGreedyInitializer.createTimetable: Feasible");
                 return t;
             } else {
-                System.out.println("TeacherGreedyInitializer.createTimetable: Restarting..");
                 this.hardness = new HashMap<>();
             }
         }
