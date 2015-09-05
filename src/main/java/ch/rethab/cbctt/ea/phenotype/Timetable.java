@@ -36,10 +36,15 @@ public class Timetable implements Serializable {
         PeriodRoomAssignments assignments = periodRoomAssignmentses[toSlotIdx(m.getDay(), m.getPeriod())];
         boolean success = assignments.add(m.getCourse());
         if (success) {
-            m.getCourse().getCurricula().stream().forEach(currID ->
-                curriculumTimetables.get(currID).setMeeting(m)
-            );
-            return true;
+            try {
+                m.getCourse().getCurricula().stream().forEach(currID ->
+                    curriculumTimetables.get(currID).setMeeting(m)
+                );
+                return true;
+            } catch (InfeasibilityException ife) {
+                assignments.remove(m.getCourse());
+                throw ife;
+            }
         } else {
             return false;
         }
