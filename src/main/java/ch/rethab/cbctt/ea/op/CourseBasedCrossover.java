@@ -145,8 +145,15 @@ public class CourseBasedCrossover implements Variation {
                 boolean scheduled = t.addMeeting(m.withoutRoom());
                 if (!scheduled) {
                     // replace one meeting at this period with the new one
-                    Meeting m2 = t.replaceMeeting(m.getDay(), m.getPeriod(), m.withoutRoom());
-                    leftovers.add(m2.getCourse());
+                    Meeting old = t.replaceMeeting(m.getDay(), m.getPeriod(), m.withoutRoom());
+
+                    if (old == null) {
+                        // could not be replaced
+                        leftovers.add(m.getCourse());
+                    } else {
+                        // m is now where old was
+                        leftovers.add(old.getCourse());
+                    }
                 }
             } else {
                 leftovers.add(m.getCourse());

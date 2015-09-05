@@ -60,6 +60,13 @@ public class Timetable implements Serializable {
         return curriculumTimetables.values().stream().flatMap(CurriculumTimetable::getAll).collect(Collectors.toSet());
     }
 
+    public Set<Meeting> getMeetingsByPeriod(int day, int period) {
+        return curriculumTimetables.values().stream()
+                .map(ctt -> ctt.get(day, period))
+                .filter(ctt -> ctt != null)
+                .collect(Collectors.toSet());
+    }
+
     public PeriodRoomAssignments[] getPeriodRoomAssignmentses() {
         return periodRoomAssignmentses;
     }
@@ -78,6 +85,9 @@ public class Timetable implements Serializable {
     /**
      * Schedules the specified meeting at the specified day and period
      * and returns the existing meeting if there is one.
+     * @return the meeting that was removed or null if scheduling the new
+     *         meeting was not possible. In the latter case, the old
+     *         meeting is added again.
      */
     public Meeting replaceMeeting(int day, int period, Meeting m) {
         /*
@@ -86,31 +96,28 @@ public class Timetable implements Serializable {
          * steps are required since the two meetings may not belong to the
          * same curricula
          */
-        Meeting toBeRemoved = getMeetings().stream()
-                .filter(m1 -> m1.getDay() == day && m1.getPeriod() == period)
-                .findFirst().orElse(null);
 
-        Meeting toBeScheduled;
-        if (toBeRemoved != null) {
-            removeMeeting(toBeRemoved);
+        // find candidates to be replaced
+        Set<Meeting> candidates = getMeetingsByPeriod(day, period);
 
-            // todo why would we take the room of the removed? toBeScheduled = m.copy(toBeRemoved.getRoom());
-            toBeScheduled = m;
+        for (Meeting candidate : candidates) {
 
-        } else {
-            toBeScheduled = m;
+            removeMeeting(candidate);
+
+            // try to add new meeting. if not possible (maybe it is more constraiend)
+            // add the old one back
+            if (!addMeeting(m)) {
+                if (!addMeeting(candidate)) {
+                    throw new IllegalStateException("Should be able to re-add meeting");
+                }
+                // keep on searching
+            } else {
+                // replace
+                return candidate;
+            }
         }
 
-        PeriodRoomAssignments assignments = periodRoomAssignmentses[toSlotIdx(day, period)];
-        if (!assignments.add(m.getCourse())) {
-            throw new IllegalStateException("not sure if this should happen..");
-        }
-
-        m.getCourse().getCurricula().stream().forEach(currID ->
-            curriculumTimetables.get(currID).setMeeting(toBeScheduled)
-        );
-
-        return toBeRemoved;
+        return null;
     }
 
     public void removeMeeting(Meeting m) {
