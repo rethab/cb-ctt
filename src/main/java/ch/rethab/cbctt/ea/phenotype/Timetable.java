@@ -18,9 +18,6 @@ public class Timetable implements Serializable {
     /** the curriculum timetables */
     private final Map<String, CurriculumTimetable> curriculumTimetables = new HashMap<>();
 
-    /** RoomID -> OccupiedTimeslots for room. true means occupied */
-    private final Map<String, boolean[]> roomOccupancy = new HashMap<>();
-
     private final PeriodRoomAssignments[] periodRoomAssignmentses;
 
     private final Specification spec;
@@ -29,8 +26,6 @@ public class Timetable implements Serializable {
         this.spec = spec;
 
         spec.getCurricula().forEach(c -> curriculumTimetables.put(c.getId(), new CurriculumTimetable(spec)));
-        int totalSlots = spec.getNumberOfDaysPerWeek() * spec.getPeriodsPerDay();
-        spec.getRooms().forEach(r -> roomOccupancy.put(r.getId(), new boolean[totalSlots]));
         periodRoomAssignmentses = new PeriodRoomAssignments[spec.getNumberOfDaysPerWeek() * spec.getPeriodsPerDay()];
         for (int period = 0; period < periodRoomAssignmentses.length; period++) {
             periodRoomAssignmentses[period] = new PeriodRoomAssignments(spec);
@@ -115,6 +110,7 @@ public class Timetable implements Serializable {
         m.getCourse().getCurricula().stream().forEach(currID ->
             curriculumTimetables.get(currID).unsetMeeting(m.getDay(), m.getPeriod())
         );
+        periodRoomAssignmentses[toSlotIdx(m.getDay(), m.getPeriod())].remove(m.getCourse());
     }
 
     public boolean hasLectureOfSameCurriculum(List<String> curricula, int day, int period) {

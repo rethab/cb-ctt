@@ -17,7 +17,8 @@ public final class CurriculumTimetableWithRooms implements Serializable {
 
     public CurriculumTimetableWithRooms(Specification spec, MeetingWithRoom[] meetings) {
         this.spec = spec;
-        this.meetings = meetings;
+        this.meetings = new MeetingWithRoom[meetings.length];
+        System.arraycopy(meetings, 0, this.meetings, 0, meetings.length);
     }
 
     public Stream<MeetingWithRoom> getAll() {
@@ -33,11 +34,14 @@ public final class CurriculumTimetableWithRooms implements Serializable {
     }
 
     public Set<MeetingWithRoom> getMeetingsByCourse(Course c) {
-        return Arrays.stream(meetings).filter(m -> m != null && m.getCourse().getId().equals(c.getId())).collect(Collectors.toSet());
+        return Arrays.stream(meetings)
+                .filter(m -> m != null && m.getCourse().getId().equals(c.getId()))
+                .collect(Collectors.toSet());
     }
 
     public Stream<MeetingWithRoom> getMeetingsByTeacher(String teacher) {
-        return Arrays.stream(meetings).filter(m -> m != null && m.getCourse().getTeacher().equals(teacher));
+        return Arrays.stream(meetings)
+                .filter(m -> m != null && m.getCourse().getTeacher().equals(teacher));
     }
 }
 

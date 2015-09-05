@@ -55,6 +55,12 @@ public class PeriodRoomAssignments {
     }
 
     public Set<CourseWithRoom> schedule() {
+
+        if (nextCourseIdx == 0) {
+            // no courses in this period. check required due to -1 below
+            return Collections.emptySet();
+        }
+
         try {
             return assignAll(roomAssignments, nextCourseIdx-1);
         } catch (InfeasibilityException e) {
@@ -73,14 +79,16 @@ public class PeriodRoomAssignments {
          * unless we actually increase the instance
          * variable index, the next course will just
          * override this one.
+         *
+         * lastIdx is inclusive.
          */
-        int idx = nextCourseIdx;
-        roomAssignments[idx] = fillRooms(c);
+        int lastIdx = nextCourseIdx;
+        roomAssignments[lastIdx] = fillRooms(c);
 
         RoomViolations[][] copy = deepCopy(roomAssignments);
 
         try {
-            assignAll(copy, idx);
+            assignAll(copy, lastIdx);
             nextCourseIdx++;
             return true;
         } catch (InfeasibilityException e) {
@@ -145,8 +153,9 @@ public class PeriodRoomAssignments {
 
     private Optional<RoomViolations[]> findMostConstrainedCourse(RoomViolations[][] roomAssignments, int lastIdx) {
 
-        // +1 --> exclusive index
-        return Arrays.stream(roomAssignments, 0, lastIdx+1)
+        // lastIdx = 0 means we also want the 0 to be considered, but Arrays.stream uses an exclusive upper index
+        int exclusiveLastIdx = lastIdx + 1;
+        return Arrays.stream(roomAssignments, 0, exclusiveLastIdx)
 
             // course already assigned a room
             .filter(crViolations -> crViolations[spec.getRooms().size()] != null)
@@ -183,7 +192,7 @@ public class PeriodRoomAssignments {
             if (rv == null) {
                 return Double.POSITIVE_INFINITY;
             } else if (rv.violations < 0) {
-                return 1 - (1/(Math.abs(rv.violations)));
+                return 1 - (1 / (Math.abs(rv.violations)));
             } else {
                 return rv.violations;
             }
@@ -226,6 +235,23 @@ public class PeriodRoomAssignments {
         }
         roomViolations[spec.getRooms().size()] = new RoomViolations(null, null, suitable);
         return roomViolations;
+    }
+
+    public void remove(Course course) {
+        int i = 0;
+
+        // seek index of course
+        while(!roomAssignments[i][0].course.getId().equals(course.getId())) {
+            i++;
+        }
+
+        // move all following one back
+        for (i++; i < nextCourseIdx; i++) {
+            roomAssignments[i-1] = roomAssignments[i];
+        }
+
+        // now we have one free at the end
+        nextCourseIdx--;
     }
 
     private static class InfeasibilityException extends Exception { }
