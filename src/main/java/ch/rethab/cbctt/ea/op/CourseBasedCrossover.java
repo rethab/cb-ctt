@@ -16,7 +16,7 @@ import java.util.Set;
  * Inspired by 'New Crossover Algorithms for Timetabling with
  * Evolutionary Algorithms' (Lewis and Paechter), this crossover
  * operator takes one course from the second parent and tries to
- * schedule it at the same periods in a copy of the first parent.
+ * assignRooms it at the same periods in a copy of the first parent.
  * That copy is the first child. The course is selected at random.
  * The second child is constructed by reversing the roles.
  *
@@ -61,7 +61,7 @@ public class CourseBasedCrossover implements Variation {
         for (int i = 0; i < ATTEMPTS_AFTER_FAIL; i++) {
             try {
                 Timetable tmpChild1 = parent1.newChild();
-                // schedule course from p2 in p1's offspring
+                // assignRooms course from p2 in p1's offspring
                 Course p2Course = getRandomCourse(parent2);
                 Set<MeetingWithRoom> p2Meetings = parent2.getMeetingsByCourse(p2Course);
                 scheduleMeetings(p2Course, p2Meetings, tmpChild1);
@@ -82,7 +82,7 @@ public class CourseBasedCrossover implements Variation {
         for (int i = 0; i < ATTEMPTS_AFTER_FAIL; i++) {
             try {
                 Timetable tmpChild2 = parent2.newChild();
-                // schedule course from p1 in p2's offspring
+                // assignRooms course from p1 in p2's offspring
                 Course p1Course = getRandomCourse(parent1);
                 Set<MeetingWithRoom> p1Meetings = parent1.getMeetingsByCourse(p1Course);
                 scheduleMeetings(p1Course, p1Meetings, tmpChild2);
@@ -108,10 +108,10 @@ public class CourseBasedCrossover implements Variation {
          * 1. For each meeting m1 in meetings:
          *   a) try to set m at m1.day/m1.period.
          *   b) if already occupied by m2 but place would be feasible:
-         *     I)  schedule m1 in that slot
+         *     I)  assignRooms m1 in that slot
          *     II) add m2 to the list of to_be_scheduled
          *   c) if feasible and not occupied:
-         *     I) schedule m1 in that slot
+         *     I) assignRooms m1 in that slot
          *   d) otherwise:
          *     I) add m1 to to_be_scheduled
          * 2. Greedy insert all from to_be_scheduled
@@ -173,7 +173,7 @@ public class CourseBasedCrossover implements Variation {
                         day++;
                         period = 0;
                     } else {
-                        throw new CrossoverFailedException("Failed to schedule Course " + c.getId());
+                        throw new CrossoverFailedException("Failed to assignRooms Course " + c.getId());
                     }
                 }
 

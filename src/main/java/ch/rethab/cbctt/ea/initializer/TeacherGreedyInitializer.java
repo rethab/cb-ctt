@@ -26,10 +26,10 @@ import java.util.stream.IntStream;
  * 2. For each Lecture l:
  *   a. Schedule l at first feasible period in any free room (feasible = teacher is available, has free rooms)
  *   b. All rooms of period scheduled? --> Advance period, goto 2.
- *   c. Otherwise --> Take next lecture of next curriculum with different teacher, schedule in same period
- *   d. Nothing to schedule? (e.g. no more curricula, no feasible lecture) --> Advance period, goto 2.
- *   e. Otherwise: goto c (schedule next lecture in same period)
- *   f. Cannot schedule lecture? Increase hardness manually and start all over again
+ *   c. Otherwise --> Take next lecture of next curriculum with different teacher, assignRooms in same period
+ *   d. Nothing to assignRooms? (e.g. no more curricula, no feasible lecture) --> Advance period, goto 2.
+ *   e. Otherwise: goto c (assignRooms next lecture in same period)
+ *   f. Cannot assignRooms lecture? Increase hardness manually and start all over again
  * 3. Assign rooms per period. Cant produce constraint violations
  *
  * Technical Notes.
@@ -41,7 +41,7 @@ import java.util.stream.IntStream;
  *                                 want to construct several distinct timetables based on the same
  *                                 specification. To achieve this, the lectures are not scheduled
  *                                 to the periods in increasing order starting from 0 (try to
- *                                 schedule lecture on first period of first day, then second period
+ *                                 assignRooms lecture on first period of first day, then second period
  *                                 on first day, etc), but with a linear congruential generator
  *                                 (Lehmer, 1951). Every time a new timetable is to be constructed,
  *                                 a new seed is used.
@@ -120,14 +120,14 @@ public class TeacherGreedyInitializer implements Initializer {
             l = it.peek();
             if (timetable.feasiblePeriod(l)) {
 
-                // if period is feasible, it can be schedule directly
+                // if period is feasible, it can be assignRooms directly
                 timetable.add(l);
                 it.remove(l);
 
                 // all rooms are assigned, advance period
                 if (timetable.lecturesInPeriod() == spec.getRooms().size()) {
                     timetable.advancePeriod();
-                    continue; // schedule next lecture
+                    continue; // assignRooms next lecture
                 } else {
 
                     // still room in period

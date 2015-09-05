@@ -22,6 +22,9 @@ public class PeriodRoomAssignments {
     /* everything is an array, so we need to know at which index each room is stored */
     private final Map<String, Integer> roomIdxMap = new HashMap<>();
 
+    /* everything is an array, so we need to know at which index each room is stored */
+    private final Map<String, Integer> courseIdxMap = new HashMap<>();
+
     /* the course array is built gradually. this is the index where the next is to be
      * scheduled. Note that while checking if a course is suitable to be scheduled
      * at a certain period, a course may be added without incrementing the index after
@@ -45,6 +48,15 @@ public class PeriodRoomAssignments {
             this.course = c;
             this.violations = violations;
         }
+
+        public RoomViolations reduceSuitability() {
+            if (room != null || course != null) {
+                throw new IllegalStateException("must only be used in last column");
+            }
+            // in this case, the naming 'violations' is a little unfortunate
+            int suitabilityIdx = violations -1;
+            return new RoomViolations(null, null, suitabilityIdx);
+        }
     }
 
     public PeriodRoomAssignments(Specification spec) {
@@ -54,7 +66,7 @@ public class PeriodRoomAssignments {
         roomAssignments = new RoomViolations[roomIds.size()][roomIds.size()+1];
     }
 
-    public Set<CourseWithRoom> schedule() {
+    public Set<CourseWithRoom> assignRooms() {
 
         if (nextCourseIdx == 0) {
             // no courses in this period. check required due to -1 below
@@ -68,7 +80,7 @@ public class PeriodRoomAssignments {
         }
     }
 
-    public boolean tryToSchedule(Course c) {
+    public boolean add(Course c) {
 
         // no more free rooms in this period
         if (nextCourseIdx >= this.spec.getRooms().size()) {
@@ -82,16 +94,23 @@ public class PeriodRoomAssignments {
          *
          * lastIdx is inclusive.
          */
-        int lastIdx = nextCourseIdx;
-        roomAssignments[lastIdx] = fillRooms(c);
+        int courseIdx = nextCourseIdx;
+        roomAssignments[courseIdx] = fillRooms(c);
 
+        // copy since the array values are updated during assignment (occupied rooms are set to null)
         RoomViolations[][] copy = deepCopy(roomAssignments);
 
         try {
-            assignAll(copy, lastIdx);
+            // the idx is required during assignment
+            courseIdxMap.put(c.getId(), courseIdx);
+
+            assignAll(copy, courseIdx);
             nextCourseIdx++;
             return true;
         } catch (InfeasibilityException e) {
+            // it only had to be in there for the assignment
+            courseIdxMap.remove(c.getId());
+
             return false;
         }
     }
@@ -136,13 +155,24 @@ public class PeriodRoomAssignments {
             if (rv == null) {
                 throw new InfeasibilityException();
             }
+
             int roomIdx = roomIdxMap.get(rv.room.getId());
 
-            Arrays.stream(roomAssignments, 0, lastIdx + 1).forEach(crViolations -> {
-                crViolations[roomIdx] = null;
-                // set last to null as an indicator that this course is scheduled
-                crViolations[spec.getRooms().size()] = null;
+            // update room and constrainedness for other courses
+            int exclusiveLastIdx = lastIdx + 1;
+            Arrays.stream(roomAssignments, 0, exclusiveLastIdx).forEach(crViolations -> {
+                int constrainednessIdx = spec.getRooms().size();
+                // course has not yet been assigned and room was free before
+                if (crViolations[roomIdx] != null && crViolations[constrainednessIdx] != null) {
+                    crViolations[constrainednessIdx] = crViolations[constrainednessIdx].reduceSuitability();
+                    // room is no longer available
+                    crViolations[roomIdx] = null;
+                }
             });
+
+            // set last element in course row to null as an indicator that this course is scheduled
+            int courseIdx = courseIdxMap.get(rv.course.getId());
+            roomAssignments[courseIdx][spec.getRooms().size()] = null;
 
             assignments.add(new CourseWithRoom(rv.course, rv.room));
 
@@ -160,7 +190,7 @@ public class PeriodRoomAssignments {
             // course already assigned a room
             .filter(crViolations -> crViolations[spec.getRooms().size()] != null)
 
-            // find course that is hardest to schedule (least amount of suitable rooms)
+            // find course that is hardest to assignRooms (least amount of suitable rooms)
             .sorted(Comparator.comparingInt(crViolations -> crViolations[spec.getRooms().size()].violations))
 
             .findFirst();
@@ -189,7 +219,9 @@ public class PeriodRoomAssignments {
      */
     private Comparator<RoomViolations> violationsComparator() {
         return Comparator.comparingDouble(rv -> {
-            if (rv == null) {
+            if (rv == null) { // constraint or already assigned
+                return Double.POSITIVE_INFINITY;
+            } else if (rv.room == null) { // last column: constrainedness
                 return Double.POSITIVE_INFINITY;
             } else if (rv.violations < 0) {
                 return 1 - (1 / (Math.abs(rv.violations)));
@@ -218,7 +250,10 @@ public class PeriodRoomAssignments {
      */
     private RoomViolations[] fillRooms(Course c) {
         RoomViolations[] roomViolations = new RoomViolations[spec.getRooms().size() + 1];
+
+        // number of rooms this course could be scheduled
         int suitable = 0;
+
         int i = 0;
         for (Room r : spec.getRooms()) {
 
@@ -238,20 +273,21 @@ public class PeriodRoomAssignments {
     }
 
     public void remove(Course course) {
-        int i = 0;
+        int i = courseIdxMap.get(course.getId());
 
-        // seek index of course
-        while(!roomAssignments[i][0].course.getId().equals(course.getId())) {
-            i++;
-        }
+        // go to the right after
+        i++;
 
         // move all following one back
-        for (i++; i < nextCourseIdx; i++) {
+        for (; i < nextCourseIdx; i++) {
             roomAssignments[i-1] = roomAssignments[i];
         }
 
         // now we have one free at the end
         nextCourseIdx--;
+
+        // cleanup
+        courseIdxMap.remove(course.getId());
     }
 
     private static class InfeasibilityException extends Exception { }

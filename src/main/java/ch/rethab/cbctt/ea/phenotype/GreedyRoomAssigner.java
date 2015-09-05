@@ -21,7 +21,7 @@ public class GreedyRoomAssigner implements RoomAssigner {
             int day = Math.floorDiv(slotIdx, spec.getPeriodsPerDay());
             int period = slotIdx % spec.getPeriodsPerDay();
             PeriodRoomAssignments periodRoomAssignment = periodRoomAssignments[slotIdx];
-            Set<PeriodRoomAssignments.CourseWithRoom> courses = periodRoomAssignment.schedule();
+            Set<PeriodRoomAssignments.CourseWithRoom> courses = periodRoomAssignment.assignRooms();
             courses.forEach(cwr -> builder.addMeeting(cwr.course, cwr.room, day, period));
         }
 

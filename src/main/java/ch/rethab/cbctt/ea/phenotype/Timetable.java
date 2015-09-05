@@ -34,7 +34,7 @@ public class Timetable implements Serializable {
 
     public boolean addMeeting(Meeting m) {
         PeriodRoomAssignments assignments = periodRoomAssignmentses[toSlotIdx(m.getDay(), m.getPeriod())];
-        boolean success = assignments.tryToSchedule(m.getCourse());
+        boolean success = assignments.add(m.getCourse());
         if (success) {
             m.getCourse().getCurricula().stream().forEach(currID ->
                 curriculumTimetables.get(currID).setMeeting(m)
@@ -97,7 +97,7 @@ public class Timetable implements Serializable {
         }
 
         PeriodRoomAssignments assignments = periodRoomAssignmentses[toSlotIdx(day, period)];
-        if (!assignments.tryToSchedule(m.getCourse())) {
+        if (!assignments.add(m.getCourse())) {
             throw new IllegalStateException("not sure if this should happen..");
         }
 
