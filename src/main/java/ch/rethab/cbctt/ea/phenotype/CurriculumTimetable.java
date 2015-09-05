@@ -52,7 +52,7 @@ public final class CurriculumTimetable implements Serializable {
         return Arrays.stream(meetings).filter(m -> m != null);
     }
 
-    public void unsetMeeting(int day, int period) { // todo checkj
+    public void unsetMeeting(int day, int period) {
         meetings[toSlotIdx(day, period)] = null;
     }
 }

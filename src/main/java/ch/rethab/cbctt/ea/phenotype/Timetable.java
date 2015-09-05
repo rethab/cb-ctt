@@ -35,18 +35,21 @@ public class Timetable implements Serializable {
     public boolean addMeeting(Meeting m) {
         PeriodRoomAssignments assignments = periodRoomAssignmentses[toSlotIdx(m.getDay(), m.getPeriod())];
         boolean success = assignments.add(m.getCourse());
-        if (success) {
-            try {
-                m.getCourse().getCurricula().stream().forEach(currID ->
-                    curriculumTimetables.get(currID).setMeeting(m)
-                );
-                return true;
-            } catch (InfeasibilityException ife) {
-                assignments.remove(m.getCourse());
-                throw ife;
-            }
-        } else {
+        if (!success) {
             return false;
+        }
+
+        try {
+            m.getCourse().getCurricula().stream().forEach(currID -> curriculumTimetables.get(currID).setMeeting(m) );
+            return true;
+        } catch (InfeasibilityException ife) {
+            assignments.remove(m.getCourse());
+            m.getCourse().getCurricula().stream().forEach(currID ->
+                // unset meeting again. could be that meeting was already set in some
+                // curricula and only then the exception was thrown
+                curriculumTimetables.get(currID).unsetMeeting(m.getDay(), m.getPeriod())
+            );
+            throw ife;
         }
     }
 
@@ -104,7 +107,7 @@ public class Timetable implements Serializable {
 
             removeMeeting(candidate);
 
-            // try to add new meeting. if not possible (maybe it is more constraiend)
+            // try to add new meeting. if not possible (maybe it is more constrained)
             // add the old one back
             if (!addMeeting(m)) {
                 if (!addMeeting(candidate)) {

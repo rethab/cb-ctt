@@ -299,6 +299,9 @@ public class PeriodRoomAssignments {
         // move all following one back
         for (; i < nextCourseIdx; i++) {
             roomAssignments[i-1] = roomAssignments[i];
+
+            // update index map
+            courseIdxMap.put(roomAssignments[i][0].course.getId(), i-1);
         }
 
         // now we have one free at the end

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -107,6 +108,45 @@ public class PeriodRoomAssignmentsTest {
         assertEquals(r3, c2wr.get().room);
         assertEquals(r2, c4wr.get().room);
         assertEquals(r1, c3wr.get().room);
+    }
+
+    @Test
+    public void shouldBeAbleToAddAndRemove() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
+        pra.remove(c1);
+        List<Course> courses = pra.assignRooms().stream().map(cwr -> cwr.course).collect(Collectors.toList());
+        assertEquals(3, courses.size());
+        assertTrue(courses.contains(c2));
+        assertTrue(courses.contains(c3));
+        assertTrue(courses.contains(c4));
+
+        pra = new PeriodRoomAssignments(spec);
+        pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
+        pra.remove(c2);
+        courses = pra.assignRooms().stream().map(cwr -> cwr.course).collect(Collectors.toList());
+        assertEquals(3, courses.size());
+        assertTrue(courses.contains(c1));
+        assertTrue(courses.contains(c3));
+        assertTrue(courses.contains(c4));
+
+        pra = new PeriodRoomAssignments(spec);
+        pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
+        pra.remove(c3);
+        courses = pra.assignRooms().stream().map(cwr -> cwr.course).collect(Collectors.toList());
+        assertEquals(3, courses.size());
+        assertTrue(courses.contains(c1));
+        assertTrue(courses.contains(c2));
+        assertTrue(courses.contains(c4));
+
+        pra = new PeriodRoomAssignments(spec);
+        pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
+        pra.remove(c4);
+        courses = pra.assignRooms().stream().map(cwr -> cwr.course).collect(Collectors.toList());
+        assertEquals(3, courses.size());
+        assertTrue(courses.contains(c1));
+        assertTrue(courses.contains(c2));
+        assertTrue(courses.contains(c3));
     }
 
 }
