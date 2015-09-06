@@ -28,11 +28,11 @@ public class RoomConstraints implements Serializable {
     }
 
     public boolean isUnsuitable(Course c, Room r) {
+        return this.isUnsuitable(c, r.getId());
+    }
+
+    public boolean isUnsuitable(Course c, String roomId) {
         Set<String> roomIds = constraints.get(c);
-        if (roomIds == null) {
-            return false;
-        } else {
-            return roomIds.contains(r.getId());
-        }
+        return roomIds != null && roomIds.contains(roomId);
     }
 }

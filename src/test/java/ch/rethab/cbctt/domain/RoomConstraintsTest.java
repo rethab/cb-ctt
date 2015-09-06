@@ -34,6 +34,20 @@ public class RoomConstraintsTest {
     }
 
     @Test
+    public void shouldReportRoomAsUnsuitableIfAddedWithId() {
+        RoomConstraints roomConstraints = new RoomConstraints();
+        roomConstraints.addRoomConstraint(c1, r1);
+        assertTrue(roomConstraints.isUnsuitable(c1, r1.getId()));
+    }
+
+    @Test
+    public void shouldReportRoomAsSuitableIfNotAddedWithId() {
+        RoomConstraints roomConstraints = new RoomConstraints();
+        roomConstraints.addRoomConstraint(c1, r1);
+        assertFalse(roomConstraints.isUnsuitable(c1, r2.getId()));
+    }
+
+    @Test
     public void shouldReportRoomAsUnsuitableIfAddedMultiple() {
         RoomConstraints roomConstraints = new RoomConstraints();
         roomConstraints.addRoomConstraint(c1, r1);
