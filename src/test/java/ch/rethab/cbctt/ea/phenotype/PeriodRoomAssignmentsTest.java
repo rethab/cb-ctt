@@ -165,7 +165,7 @@ public class PeriodRoomAssignmentsTest {
 
     @Test
     public void shouldBeAbleToConstructTimetable() throws IOException {
-        /*         rB    rC    rE     rF   rG    rS     feasibleRooms
+        /*         rB    rC    rE     rF   rG    rS     violations
          * c0002 = -125   null  66     45   55    45    5
          * c0066 = -186  -86    null  -16  -6    -16    5
          * c0059 = -193  -93    null  -23  -13   -23    5

@@ -3,6 +3,7 @@ package ch.rethab.cbctt.ea.phenotype;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
+import edu.princeton.cs.Hungarian;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,32 +39,30 @@ public class PeriodRoomAssignments {
      * we need access to the room and we loos the index in the procedure.
      */
     private class RoomViolations {
-        /* number of feasibleRooms a certain courses would have in a certain room.
+        /* number of violations a certain courses would have in a certain room.
          * the smaller the better. 0 means perfect fit */
-        final int feasibleRooms;
+        final int violations;
         final Room room;
         final Course course;
-        public RoomViolations(Room room, Course c, int feasibleRooms) {
+        public RoomViolations(Room room, Course c, int violations) {
             this.room = room;
             this.course = c;
-            this.feasibleRooms = feasibleRooms;
+            this.violations = violations;
         }
 
-        public RoomViolations reduceSuitability() {
-            if (room != null || course != null) {
-                throw new IllegalStateException("must only be used in last column");
-            }
-            // in this case, the naming 'feasibleRooms' is a little unfortunate
-            int suitabilityIdx = feasibleRooms -1;
-            return new RoomViolations(null, null, suitabilityIdx);
+        public RoomViolations fixedViolations(int newViolations) {
+            return new RoomViolations(room, course, newViolations);
+        }
+
+        public RoomViolations subtract(int x) {
+            return new RoomViolations(room, course, violations - x);
         }
     }
 
     public PeriodRoomAssignments(Specification spec) {
         this.spec = spec;
         Set<String> roomIds = spec.getRooms().stream().map(Room::getId).collect(Collectors.toSet());
-        // +1 because the last one counts the number of suitable rooms per course
-        roomAssignments = new RoomViolations[roomIds.size()][roomIds.size()+1];
+        roomAssignments = new RoomViolations[roomIds.size()][roomIds.size()];
     }
 
     public List<CourseWithRoom> assignRooms() {
@@ -83,7 +82,7 @@ public class PeriodRoomAssignments {
                     RoomViolations rv = copy[cid][rid];
                     System.out.printf("[%s, %s, %d] ", rv == null || rv.course == null ? null : rv.course.getId(),
                                                        rv == null || rv.room == null   ? null : rv.room.getId(),
-                                                       rv == null                      ? null : rv.feasibleRooms);
+                                                       rv == null                      ? null : rv.violations);
                 }
                 System.out.println();
             }
@@ -153,116 +152,109 @@ public class PeriodRoomAssignments {
      * If one course cannot be assigned to a room, the method returns
      * false.
      *
-     * @param lastIdx the last index of the array that is still to be
-     *                considered for feasibility
+     * @param inclusiveLastIdx the last index of the array that is still to be
+     *                         considered for feasibility
      * @param real true if we are assigning for real. false if we're just
      *             checking if the course would fit. purely for optimization
      */
-    private List<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int lastIdx, boolean real) throws InfeasibilityException{
-        List<CourseWithRoom> assignments = new ArrayList<>(lastIdx+1);
-        Optional<RoomViolations[]> mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
-        while (mbRoomsForCourse.isPresent()) {
-            RoomViolations[] roomsForCourse = mbRoomsForCourse.get();
+    private List<CourseWithRoom> assignAll(RoomViolations[][] roomAssignments, int inclusiveLastIdx, boolean real) throws InfeasibilityException{
+        // todo this algorithm muss not be used for checking if the assignment
+        //      is feasible, since it always will be. the constraints would
+        //      also be selected!
 
-            // only do the computationally intensive stuff if we're assigning for real
-            RoomViolations rv = real ? roomWithLeastViolations(roomsForCourse) : greedyFirstRoom(roomsForCourse);
+        // make sure nothing is negative, set constraints to high numbers
+        calibrate(roomAssignments, inclusiveLastIdx);
 
-            if (rv == null) {
-                throw new InfeasibilityException();
+        // hungarian algorithm
+        // source: slide 13 of http://www.math.harvard.edu/archive/20_spring_05/handouts/assignment_overheads.pdf
+        hungarian(roomAssignments, inclusiveLastIdx);
+
+    }
+
+    private void hungarian(RoomViolations[][] roomAssignments, int inclusiveLastIdx) {
+        // todo do we need a square? wikihow says we can fill it with dummy-highest numbers
+        double[][] weights = toDouble(roomAssignments, inclusiveLastIdx);
+        Hungarian hungarian = new Hungarian(weights);
+    }
+
+    private double[][] toDouble(RoomViolations[][] roomAssignments, int inclusiveLastIdx) {
+        double[][] weights = new double[inclusiveLastIdx+1][roomAssignments[0].length];
+        for (int i = 0; i < weights.length; i++) {
+            for (int j = 0; j < weights[i].length; j++) {
+                weights[i][j] = roomAssignments[i][j].violations;
             }
+        }
+        return weights;
+    }
 
-            int roomIdx = roomIdxMap.get(rv.room.getId());
 
-            // update room and constrainedness for other courses
-            int exclusiveLastIdx = lastIdx + 1;
-            Arrays.stream(roomAssignments, 0, exclusiveLastIdx).forEach(crViolations -> {
-                int constrainednessIdx = spec.getRooms().size();
-                // course has not yet been assigned and room was free before
-                if (crViolations[roomIdx] != null && crViolations[constrainednessIdx] != null) {
-                    crViolations[constrainednessIdx] = crViolations[constrainednessIdx].reduceSuitability();
-                    // room is no longer available
-                    crViolations[roomIdx] = null;
+    private void calibrate(RoomViolations[][] roomAssignments, int inclusiveLastIdx) {
+        /*
+         * conversion:
+         * 1. all values are require to be positive. preference is as follows:
+         *    0, -1, -2, .., 1, 2, ..
+         *    whereas in the hungarian method, lower numbers are preferable.
+         *    therefore the following formula is used to convert the numbers:
+         *
+         *    i <= 0 = |i|              the absolute value will make numbers
+         *                              closer to zero smaller
+         *
+         *    i >  0 = |min_i| + i      adding the absolute value of the
+         *                              smallest number to the number, makes
+         *                              sure the positive numbers are coming
+         *                              right after the (originally) negative
+         *                              numbers.
+         *
+         * 2. set all room constraints to a very high number that will make
+         *    it impossible for the hungarian method to select them. We
+         *    set them to the following value:
+         *
+         *    i = (|min_i| + max_i + 1) * 10   the plus one is to make sure
+         *                                     it can never be null even if
+         *                                     all others are zero. the
+         *                                     multiplication is just some
+         *                                     constant threshold factor.
+         *                                     the only thing we need to make
+         *                                     sure is that it does not over-
+         *                                     flow, but that should be a
+         *                                     problem in the current setting
+         *                                     where room violations are
+         *                                     usually below 500.
+         */
+
+        // first round, collect min and max values
+        int min_i = 0;
+        int max_i = 0;
+        for (int r = 0; r <= inclusiveLastIdx; r++) {
+            for (int c = 0; c < roomAssignments[r].length-1; c++) {
+
+                int violations = roomAssignments[r][c].violations;
+
+                if (violations < min_i) { min_i = violations; }
+                if (violations > max_i) { max_i = violations; }
+            }
+        }
+
+        // second round, convert our scheme to a hungarian method compatible scheme
+        int constraint_i = (Math.abs(min_i) + max_i + 1) * 10;
+        for (int r = 0; r <= inclusiveLastIdx; r++) {
+            for (int c = 0; c < roomAssignments[r].length - 1; c++) {
+                RoomViolations rv = roomAssignments[r][c];
+
+                if (spec.getRoomConstraints().isUnsuitable(rv.course, rv.room)) {
+                    roomAssignments[r][c] = rv.fixedViolations(constraint_i);
+                } else if (rv.violations <= 0) {
+                    roomAssignments[r][c] = rv.fixedViolations(Math.abs(rv.violations));
+                } else {
+                    roomAssignments[r][c] = rv.fixedViolations(Math.abs(rv.violations) + rv.violations);
                 }
-            });
-
-            // set last element in course row to null as an indicator that this course is scheduled
-            int courseIdx = courseIdxMap.get(rv.course.getId());
-            roomAssignments[courseIdx][spec.getRooms().size()] = null;
-
-            assignments.add(new CourseWithRoom(rv.course, rv.room));
-
-            mbRoomsForCourse = findMostConstrainedCourse(roomAssignments, lastIdx);
-        }
-        return assignments;
-    }
-
-    private RoomViolations roomWithLeastViolations(RoomViolations[] roomsForCourse) {
-        Arrays.sort(roomsForCourse, violationsComparator());
-        return roomsForCourse[0];
-    }
-
-    private RoomViolations greedyFirstRoom(RoomViolations[] roomsForCourse) {
-        for (RoomViolations aRoomsForCourse : roomsForCourse) {
-            if (aRoomsForCourse != null && aRoomsForCourse.room != null) {
-                return aRoomsForCourse;
             }
         }
-        return null;
-    }
-
-    private Optional<RoomViolations[]> findMostConstrainedCourse(RoomViolations[][] roomAssignments, int lastIdx) {
-
-        // lastIdx = 0 means we also want the 0 to be considered, but Arrays.stream uses an exclusive upper index
-        int exclusiveLastIdx = lastIdx + 1;
-        return Arrays.stream(roomAssignments, 0, exclusiveLastIdx)
-
-            // course already assigned a room
-            .filter(crViolations -> crViolations[spec.getRooms().size()] != null)
-
-            // find course that is hardest to assignRooms (least amount of suitable rooms)
-            .sorted(Comparator.comparingInt(crViolations -> crViolations[spec.getRooms().size()].feasibleRooms))
-
-            .findFirst();
-    }
-
-    /**
-     * Comparator such that the most preferable number of feasibleRooms
-     * would be first in an ascending ordered list. I.e. perfect would
-     * be 0 feasibleRooms. After that, negative feasibleRooms are preferred,
-     * with the closer to 0 the better (negative means the room is too big).
-     * After that, we take the positive feasibleRooms (room is too small) in
-     * ascending order.
-     *
-     * E.g: 0, -1, -2, 1, 2
-     *
-     * For that, negative numbers are transformed like the following so they
-     * will be between 0 and 1:
-     *
-     *      1
-     * 1 - ----
-     *     |i|
-     *
-     * Null entries indicate a constraint. By assigning them positive
-     * infinity, we can make sure they get last in the sort.
-     *
-     */
-    private Comparator<RoomViolations> violationsComparator() {
-        return Comparator.comparingDouble(rv -> {
-            if (rv == null) { // constraint or already assigned
-                return Double.POSITIVE_INFINITY;
-            } else if (rv.room == null) { // last column: constrainedness
-                return Double.POSITIVE_INFINITY;
-            } else if (rv.feasibleRooms < 0) {
-                return 1 - (1 / (Math.abs(rv.feasibleRooms)));
-            } else {
-                return rv.feasibleRooms;
-            }
-        });
     }
 
     /**
      * Creates one row for a course with indices per room.
-     * Each cell holds the number of feasibleRooms, i.e. the
+     * Each cell holds the number of violations, i.e. the
      * amount of students, by which the room capacity is
      * exceeded.
      *
@@ -278,26 +270,18 @@ public class PeriodRoomAssignments {
      * to a assign to a room.
      */
     private RoomViolations[] fillRooms(Course c) {
-        RoomViolations[] roomViolations = new RoomViolations[spec.getRooms().size() + 1];
-
-        // number of rooms this course could be scheduled
-        int suitable = 0;
+        RoomViolations[] roomViolations = new RoomViolations[spec.getRooms().size()];
 
         int i = 0;
         for (Room r : spec.getRooms()) {
 
             roomIdxMap.put(r.getId(), i);
 
-            if (spec.getRoomConstraints().isUnsuitable(c, r)) {
-                roomViolations[i] = null;
-            } else {
-                int violations = c.getNumberOfStudents() - r.getCapacity();
-                roomViolations[i] = new RoomViolations(r, c, violations);
-                suitable++;
-            }
+            int violations = c.getNumberOfStudents() - r.getCapacity();
+            roomViolations[i] = new RoomViolations(r, c, violations);
+
             i++;
         }
-        roomViolations[spec.getRooms().size()] = new RoomViolations(null, null, suitable);
         return roomViolations;
     }
 
