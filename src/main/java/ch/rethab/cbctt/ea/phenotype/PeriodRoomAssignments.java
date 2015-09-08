@@ -1,9 +1,9 @@
 package ch.rethab.cbctt.ea.phenotype;
 
+import blogspot.software_and_algorithms.stern_library.optimization.HungarianAlgorithm;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
-import edu.princeton.cs.Hungarian;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -167,14 +167,21 @@ public class PeriodRoomAssignments {
 
         // hungarian algorithm
         // source: slide 13 of http://www.math.harvard.edu/archive/20_spring_05/handouts/assignment_overheads.pdf
-        hungarian(roomAssignments, inclusiveLastIdx);
+        int[] courseIndices = hungarian(roomAssignments, inclusiveLastIdx);
 
+        List<CourseWithRoom> assignments = new LinkedList<>();
+        for (int courseIdx = 0; courseIdx < courseIndices.length; courseIdx++) {
+            RoomViolations rv = roomAssignments[courseIdx][courseIndices[courseIdx]];
+            assignments.add(new CourseWithRoom(rv.course, rv.room));
+        }
+        return assignments;
     }
 
-    private void hungarian(RoomViolations[][] roomAssignments, int inclusiveLastIdx) {
+    private int[] hungarian(RoomViolations[][] roomAssignments, int inclusiveLastIdx) {
         // todo do we need a square? wikihow says we can fill it with dummy-highest numbers
         double[][] weights = toDouble(roomAssignments, inclusiveLastIdx);
-        Hungarian hungarian = new Hungarian(weights);
+        HungarianAlgorithm hungarian = new HungarianAlgorithm(weights);
+        return hungarian.execute();
     }
 
     private double[][] toDouble(RoomViolations[][] roomAssignments, int inclusiveLastIdx) {
