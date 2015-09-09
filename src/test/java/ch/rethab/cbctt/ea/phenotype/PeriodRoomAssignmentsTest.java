@@ -151,7 +151,7 @@ public class PeriodRoomAssignmentsTest {
         List<PeriodRoomAssignments.CourseWithRoom> cwr = pra.assignRooms();
         assertEquals(1, cwr.size());
         assertEquals(c1, cwr.get(0).course);
-        assertEquals(c4, cwr.get(0).room);
+        assertEquals(r4, cwr.get(0).room);
     }
 
     @Test
@@ -195,13 +195,13 @@ public class PeriodRoomAssignmentsTest {
         roomConstraints.addRoomConstraint(c2, r2);
         roomConstraints.addRoomConstraint(c2, r4);
         // c3 can only be assigned to r2
-        roomConstraints.addRoomConstraint(c2, r1);
-        roomConstraints.addRoomConstraint(c2, r3);
-        roomConstraints.addRoomConstraint(c2, r4);
+        roomConstraints.addRoomConstraint(c3, r1);
+        roomConstraints.addRoomConstraint(c3, r3);
+        roomConstraints.addRoomConstraint(c3, r4);
         // c4 can only be assigned to r1
-        roomConstraints.addRoomConstraint(c2, r2);
-        roomConstraints.addRoomConstraint(c2, r3);
-        roomConstraints.addRoomConstraint(c2, r4);
+        roomConstraints.addRoomConstraint(c4, r2);
+        roomConstraints.addRoomConstraint(c4, r3);
+        roomConstraints.addRoomConstraint(c4, r4);
 
         assertTrue(pra.add(c1));
         assertTrue(pra.add(c2));
@@ -209,16 +209,19 @@ public class PeriodRoomAssignmentsTest {
         assertTrue(pra.add(c4));
 
         List<PeriodRoomAssignments.CourseWithRoom> cwr = pra.assignRooms();
-        assertEquals(r4, cwr.stream().filter(_cwr -> _cwr.course.equals(c1)).findFirst().get());
-        assertEquals(r3, cwr.stream().filter(_cwr -> _cwr.course.equals(c2)).findFirst().get());
-        assertEquals(r2, cwr.stream().filter(_cwr -> _cwr.course.equals(c3)).findFirst().get());
-        assertEquals(r1, cwr.stream().filter(_cwr -> _cwr.course.equals(c4)).findFirst().get());
+        assertEquals(r4, cwr.stream().filter(_cwr -> _cwr.course.equals(c1)).findFirst().get().room);
+        assertEquals(r3, cwr.stream().filter(_cwr -> _cwr.course.equals(c2)).findFirst().get().room);
+        assertEquals(r2, cwr.stream().filter(_cwr -> _cwr.course.equals(c3)).findFirst().get().room);
+        assertEquals(r1, cwr.stream().filter(_cwr -> _cwr.course.equals(c4)).findFirst().get().room);
     }
 
     @Test
     public void shouldBeAbleToAddAndRemove() {
         PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
-        pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
+        assertTrue(pra.add(c1));
+        assertTrue(pra.add(c2));
+        assertTrue(pra.add(c3));
+        assertTrue(pra.add(c4));
         pra.remove(c1);
         List<Course> courses = pra.assignRooms().stream().map(cwr -> cwr.course).collect(Collectors.toList());
         assertEquals(3, courses.size());

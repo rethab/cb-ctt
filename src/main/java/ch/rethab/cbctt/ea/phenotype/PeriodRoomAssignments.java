@@ -155,9 +155,9 @@ public class PeriodRoomAssignments {
                 RoomViolations rv = roomAssignments[c][r];
                 if (spec.getRoomConstraints().isUnsuitable(rv.course, rv.room)) {
                     assignments[c][r] = -1;
-                    availableRooms++;
                 } else {
                     assignments[c][r] = 0;
+                    availableRooms++;
                 }
             }
 
