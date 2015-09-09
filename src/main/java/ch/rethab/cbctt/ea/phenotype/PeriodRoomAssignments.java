@@ -54,9 +54,6 @@ public class PeriodRoomAssignments {
             return new RoomViolations(room, course, newViolations);
         }
 
-        public RoomViolations subtract(int x) {
-            return new RoomViolations(room, course, violations - x);
-        }
     }
 
     public PeriodRoomAssignments(Specification spec) {
@@ -107,22 +104,16 @@ public class PeriodRoomAssignments {
         int courseIdx = nextCourseIdx;
         roomAssignments[courseIdx] = fillRooms(c);
 
-        // copy since the array values are updated during assignment (occupied rooms are set to null)
-        RoomViolations[][] copy = deepCopy(roomAssignments);
-
         // the idx is required during assignment
         if (courseIdxMap.put(c.getId(), courseIdx) != null) {
             throw new Timetable.InfeasibilityException("Same course in same period. Makes no sense");
         }
 
-        try {
-            assignAll(copy, courseIdx, false);
+        if (checkFeasibility(roomAssignments, courseIdx)) {
             nextCourseIdx++;
             return true;
-        } catch (InfeasibilityException e) {
-            // it only had to be in there for the assignment
+        } else {
             courseIdxMap.remove(c.getId());
-
             return false;
         }
     }
@@ -133,6 +124,106 @@ public class PeriodRoomAssignments {
             System.arraycopy(roomAssignments[i], 0, copy[i], 0, roomAssignments[i].length);
         }
         return copy;
+    }
+
+    private boolean checkFeasibility(RoomViolations[][] roomAssignments, int inclusiveLastIndex) {
+        /*
+         * Check if we can construct a feasible timetable with the
+         * specified room assignments. feasible means we can assign
+         * all without violation any room constraints.
+         *
+         * Give the most constrained course a room first (ie. the
+         * course with the most room constraints is first assigned
+         * a room.
+         *
+         *     r1  r2  r3  r4
+         * c1  c   f   c   c
+         * c2  f   c   f   f
+         * c3  f   c   c   f
+         * c4  c   f   c   f
+         */
+
+        // the number of available rooms per course is saved in each last column
+        int availableRoomIdx = spec.getRooms().size();
+
+        // save occupied and constrained rooms as -1 in the matrix. the last
+        // column contains the number of constraints per course.
+        int[][] assignments = new int[inclusiveLastIndex+1][availableRoomIdx+1];
+        for (int c = 0; c < inclusiveLastIndex+1; c++) {
+            int availableRooms = 0;
+            for (int r = 0; r < roomAssignments[c].length; r++) {
+                RoomViolations rv = roomAssignments[c][r];
+                if (spec.getRoomConstraints().isUnsuitable(rv.course, rv.room)) {
+                    assignments[c][r] = -1;
+                    availableRooms++;
+                } else {
+                    assignments[c][r] = 0;
+                }
+            }
+
+            // early exit
+            if (availableRooms == 0) {
+                return false;
+            }
+            assignments[c][availableRoomIdx] = availableRooms;
+        }
+
+        return assignGreedy(assignments);
+    }
+
+    private boolean assignGreedy(int assignments[][]) {
+        // the number of available rooms per course is saved in each last column
+        int availableRoomIdx = spec.getRooms().size();
+
+        // sorts ascending - ie. least available rooms first
+        // those that are already assigned (-1) are set to a bigger
+        // number that the available rooms, which means they certainly
+        // come last
+        Arrays.sort(assignments, Comparator.comparingInt(rs ->
+            rs[availableRoomIdx] == -1 ? availableRoomIdx + 2 : rs[availableRoomIdx])
+        );
+
+        // we don't have to iterate further, once we've found one that has already
+        // been assigned (-1) since the courses are ordered and after that one only
+        // assigned courses would follow
+        for (int c = 0; c < assignments.length && assignments[c][availableRoomIdx] != -1; c++) {
+
+            // search through available rooms
+            for (int r = 0; r < assignments[c].length; r++) {
+                // room still free
+                if (assignments[c][r] == -1) {
+                    continue;
+                }
+
+                // set course to assigned
+                assignments[c][r] = -1;
+                assignments[c][availableRoomIdx] = -1;
+
+                // set course to occupied for other rooms
+                for (int c2 = 0; c2 < assignments.length; c2++) {
+                    // if room is not a constraint for other course and course is not assigned a room
+                    // yet, update the available rooms
+                    if (assignments[c2][r] != -1 && assignments[c2][availableRoomIdx] != -1) {
+                        assignments[c2][r] = -1;
+                        assignments[c2][availableRoomIdx]--;
+
+                        // this course cannot be assigned anymore
+                        if (assignments[c2][availableRoomIdx] < 1) {
+                            return false;
+                        }
+                    }
+                }
+
+                // after assignment, sort again and assign
+                return assignGreedy(assignments);
+            }
+
+            // this means we have no assignable rooms for a course, although it has not
+            // previously been set to a number less than 1 (see exit condition above).
+            throw new IllegalArgumentException("This should not happen");
+        }
+
+        return true;
     }
 
     /**

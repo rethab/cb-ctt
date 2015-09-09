@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -125,6 +126,96 @@ public class PeriodRoomAssignmentsTest {
     }
 
     @Test
+    public void shouldNotBeAbletoAddCourseWithRoomConstraint() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        roomConstraints.addRoomConstraint(c1, r1);
+        roomConstraints.addRoomConstraint(c1, r2);
+        roomConstraints.addRoomConstraint(c1, r3);
+        roomConstraints.addRoomConstraint(c1, r4);
+        assertFalse(pra.add(c1));
+        assertTrue(pra.assignRooms().isEmpty());
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddSecondCourseWithRoomConstraint() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        roomConstraints.addRoomConstraint(c1, r1);
+        roomConstraints.addRoomConstraint(c2, r1);
+        roomConstraints.addRoomConstraint(c1, r2);
+        roomConstraints.addRoomConstraint(c2, r2);
+        roomConstraints.addRoomConstraint(c1, r3);
+        roomConstraints.addRoomConstraint(c2, r3);
+        assertTrue(pra.add(c1)); // will be assigned to r4
+        assertFalse(pra.add(c2)); // no more are free now
+
+        List<PeriodRoomAssignments.CourseWithRoom> cwr = pra.assignRooms();
+        assertEquals(1, cwr.size());
+        assertEquals(c1, cwr.get(0).course);
+        assertEquals(c4, cwr.get(0).room);
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddTooManyCourses() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        assertTrue(pra.add(c1));
+        assertTrue(pra.add(c2));
+        assertTrue(pra.add(c3));
+        assertTrue(pra.add(c4));
+
+        Course c5 = Course.Builder.id("c5").curriculum(cur1).doubleLectures(false)
+            .nlectures(1).nStudents(3).nWorkingDays(3).teacher("t5").build();
+        assertFalse(pra.add(c5)); // we have only four rooms
+    }
+
+    @Test
+    public void shouldAssignAllCourses() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        assertTrue(pra.add(c1));
+        assertTrue(pra.add(c2));
+        assertTrue(pra.add(c3));
+        assertTrue(pra.add(c4));
+
+        List<PeriodRoomAssignments.CourseWithRoom> cwr = pra.assignRooms();
+        Set<Room> rooms = cwr.stream().map(_cwr -> _cwr.room).collect(Collectors.toSet());
+        for (Room room : spec.getRooms()) {
+            assertTrue(rooms.contains(room));
+        }
+    }
+
+    @Test
+    public void shouldNotAssignToConstraints() {
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+
+        // c1 can only be assigned to r4
+        roomConstraints.addRoomConstraint(c1, r1);
+        roomConstraints.addRoomConstraint(c1, r2);
+        roomConstraints.addRoomConstraint(c1, r3);
+        // c2 can only be assigned to r3
+        roomConstraints.addRoomConstraint(c2, r1);
+        roomConstraints.addRoomConstraint(c2, r2);
+        roomConstraints.addRoomConstraint(c2, r4);
+        // c3 can only be assigned to r2
+        roomConstraints.addRoomConstraint(c2, r1);
+        roomConstraints.addRoomConstraint(c2, r3);
+        roomConstraints.addRoomConstraint(c2, r4);
+        // c4 can only be assigned to r1
+        roomConstraints.addRoomConstraint(c2, r2);
+        roomConstraints.addRoomConstraint(c2, r3);
+        roomConstraints.addRoomConstraint(c2, r4);
+
+        assertTrue(pra.add(c1));
+        assertTrue(pra.add(c2));
+        assertTrue(pra.add(c3));
+        assertTrue(pra.add(c4));
+
+        List<PeriodRoomAssignments.CourseWithRoom> cwr = pra.assignRooms();
+        assertEquals(r4, cwr.stream().filter(_cwr -> _cwr.course.equals(c1)).findFirst().get());
+        assertEquals(r3, cwr.stream().filter(_cwr -> _cwr.course.equals(c2)).findFirst().get());
+        assertEquals(r2, cwr.stream().filter(_cwr -> _cwr.course.equals(c3)).findFirst().get());
+        assertEquals(r1, cwr.stream().filter(_cwr -> _cwr.course.equals(c4)).findFirst().get());
+    }
+
+    @Test
     public void shouldBeAbleToAddAndRemove() {
         PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
         pra.add(c1); pra.add(c2); pra.add(c3); pra.add(c4);
@@ -164,7 +255,7 @@ public class PeriodRoomAssignmentsTest {
     }
 
     @Test
-    public void shouldBeAbleToConstructTimetable() throws IOException {
+    public void shouldBeAbleToConstructTimetableRegressionTest() throws IOException {
         /*         rB    rC    rE     rF   rG    rS     violations
          * c0002 = -125   null  66     45   55    45    5
          * c0066 = -186  -86    null  -16  -6    -16    5
