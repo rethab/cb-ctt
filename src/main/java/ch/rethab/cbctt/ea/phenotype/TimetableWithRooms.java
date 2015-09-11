@@ -48,7 +48,9 @@ public class TimetableWithRooms {
 
     public Timetable newChild() {
         Timetable t = new Timetable(spec);
-        getMeetings().stream().forEach(m -> t.addMeeting(m.withoutRoom()));
+        for (Meeting m : getMeetings()) {
+            t.addMeeting(m.withoutRoom())
+        }
         return t;
     }
 
