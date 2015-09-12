@@ -4,6 +4,7 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.CourseBasedCrossover;
+import ch.rethab.cbctt.ea.op.CourseBasedMutation;
 import ch.rethab.cbctt.ea.op.Evaluator;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
@@ -35,7 +36,7 @@ public class Main {
         }
         String filename = args[0];
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
 
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
@@ -48,7 +49,8 @@ public class Main {
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         CourseBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
-        CompoundVariation variation = new CompoundVariation(cbc);
+        CourseBasedMutation cbm = new CourseBasedMutation(solutionConverter, roomAssigner);
+        CompoundVariation variation = new CompoundVariation(cbc, cbm);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
         InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer);
 

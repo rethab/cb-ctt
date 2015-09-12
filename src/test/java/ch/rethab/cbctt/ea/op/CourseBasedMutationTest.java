@@ -74,6 +74,38 @@ public class CourseBasedMutationTest {
     }
 
     @Test
+    public void shouldExchangeOnlyTwoCourses() {
+        TimetableWithRooms t = TimetableWithRooms.Builder
+                .newBuilder(spec)
+                .addMeeting(c1, r1, 0, 0)
+                .addMeeting(c2, r1, 0, 1)
+                .addMeeting(c3, r1, 0, 2)
+                .build();
+
+        Solution sol = courseBasedMutation.evolve(new Solution[] {solutionConverter.toSolution(t)})[0];
+        TimetableWithRooms mutated = solutionConverter.fromSolution(sol);
+
+        if (mutated.getMeeting(c1, 0, 0) != null) {
+            // c1 stayed, so the others must have moved
+            assertNull(mutated.getMeeting(c2, 0, 1));
+            assertNull(mutated.getMeeting(c3, 0, 2));
+        } else if (mutated.getMeeting(c2, 0, 1) != null) {
+            // c2 stayed, so the others must have moved
+            assertNull(mutated.getMeeting(c1, 0, 0));
+            assertNull(mutated.getMeeting(c3, 0, 2));
+        } else if (mutated.getMeeting(c3, 0, 2) != null) {
+            // c3 stayed, so the others must have moved
+            assertNull(mutated.getMeeting(c1, 0, 0));
+            assertNull(mutated.getMeeting(c2, 0, 1));
+        } else {
+            fail("Something should have moved!");
+        }
+
+        // total size should not have changed
+        assertEquals(3, mutated.getMeetings().size());
+    }
+
+    @Test
     public void shouldNotModifyOriginal() {
         TimetableWithRooms t = TimetableWithRooms.Builder
                 .newBuilder(spec)
