@@ -45,9 +45,15 @@ public class CourseBasedMutation implements Variation {
 
         TimetableWithRooms mutated;
         int attempts = ATTEMPTS_AFTER_FAIL;
-        while ((mutated = mutation(original)) == null && attempts-- >= 0);
+        while (attempts-- >= 0) {
+            mutated = mutation(original);
+            if (mutated != null) {
+                return new Solution[]{solutionConverter.toSolution(mutated)};
+            }
+        }
 
-        return new Solution[]{solutionConverter.toSolution(mutated)};
+        System.err.printf("Mutation failed after %d attempts\n", ATTEMPTS_AFTER_FAIL);
+        return new Solution[0];
     }
 
     private TimetableWithRooms mutation(TimetableWithRooms original) {
@@ -57,6 +63,10 @@ public class CourseBasedMutation implements Variation {
 
         // get the two meetings to be exchanged
         ExchangeMeetings exchangeMeetings = getIdx(meetings);
+
+        if (exchangeMeetings == null) {
+            return null;
+        }
 
         Meeting a = exchangeMeetings.a;
         Meeting b = exchangeMeetings.b;
@@ -75,11 +85,19 @@ public class CourseBasedMutation implements Variation {
     private ExchangeMeetings getIdx(Set<Meeting> meetings) {
         int idxA = rand.nextInt(meetings.size());
         int idxB;
-        while ((idxB = rand.nextInt(meetings.size())) != idxA);
 
-        // convert for index-access
-        List<Meeting> list = new ArrayList<>(meetings);
-        return new ExchangeMeetings(list.get(idxA), list.get(idxB));
+        int attempts = ATTEMPTS_AFTER_FAIL;
+        while (attempts-- >= 0) {
+            idxB = rand.nextInt(meetings.size());
+            if (idxB != idxA) {
+                // convert for index-access
+                List<Meeting> list = new ArrayList<>(meetings);
+                return new ExchangeMeetings(list.get(idxA), list.get(idxB));
+            }
+        }
+
+        System.err.printf("Failed to find a distinct index after %d attempts\n", ATTEMPTS_AFTER_FAIL);
+        return null;
     }
 
     // help class to return which two meetings are to be exchanged

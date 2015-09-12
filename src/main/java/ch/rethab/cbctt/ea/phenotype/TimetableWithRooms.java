@@ -48,8 +48,8 @@ public class TimetableWithRooms {
 
     public Timetable newChild() {
         Timetable t = new Timetable(spec);
-        for (Meeting m : getMeetings()) {
-            t.addMeeting(m.withoutRoom())
+        for (MeetingWithRoom m : getMeetings()) {
+            t.addMeeting(m.withoutRoom());
         }
         return t;
     }

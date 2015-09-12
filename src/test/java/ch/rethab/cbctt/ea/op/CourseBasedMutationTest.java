@@ -75,6 +75,18 @@ public class CourseBasedMutationTest {
 
     @Test
     public void shouldNotModifyOriginal() {
-        fail("impleement me");
+        TimetableWithRooms t = TimetableWithRooms.Builder
+                .newBuilder(spec)
+                .addMeeting(c1, r1, 0, 0)
+                .addMeeting(c2, r1, 0, 1)
+                .build();
+
+        courseBasedMutation.evolve(new Solution[] {solutionConverter.toSolution(t)});
+
+        assertNotNull(t.getMeeting(c1, 0, 0));
+        assertNotNull(t.getMeeting(c2, 0, 1));
+
+        // total size should not have changed
+        assertEquals(2, t.getMeetings().size());
     }
 }
