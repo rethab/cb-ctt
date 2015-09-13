@@ -3,6 +3,7 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
+import ch.rethab.cbctt.ea.op.AbstractLessonBasedCrossover;
 import ch.rethab.cbctt.ea.op.CourseBasedCrossover;
 import ch.rethab.cbctt.ea.op.CourseBasedMutation;
 import ch.rethab.cbctt.ea.op.Evaluator;
@@ -48,7 +49,7 @@ public class Main {
         Initializer initializer = new TeacherGreedyInitializer(spec, roomAssigner);
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
-        CourseBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
+        AbstractLessonBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
         CourseBasedMutation cbm = new CourseBasedMutation(solutionConverter, roomAssigner);
         CompoundVariation variation = new CompoundVariation(cbc, cbm);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);

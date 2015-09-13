@@ -63,7 +63,7 @@ public class CourseBasedCrossoverTest {
     SolutionConverter solutionConverter = new SolutionConverter(new UD1Formulation(spec));
 
     RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
-    CourseBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
+    AbstractLessonBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
 
     @Before
     public void init() {
@@ -316,7 +316,7 @@ public class CourseBasedCrossoverTest {
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
-        CourseBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
+        AbstractLessonBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
         Solution kids[] = courseBasedCrossover.evolve(parents);
         TimetableWithRooms offspring1 = solutionConverter.fromSolution(kids[0]);
         TimetableWithRooms offspring2 = solutionConverter.fromSolution(kids[1]);
