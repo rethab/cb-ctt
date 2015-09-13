@@ -8,10 +8,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
 import java.security.SecureRandom;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -118,16 +115,32 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
     }
 
     private Set<Period> unscheduleLessons(Timetable t, Set<MeetingWithRoom> meetings) {
+
+        // this is where we take meetings from. we want to place the leftovers here
+        // afterwards to avoid too much randomness
+        Set<Period> preferredPeriods = new LinkedHashSet<>(meetings.size());
+
         for (MeetingWithRoom meeting : meetings) {
             // take a random lesson of the course and remove it
             Set<Meeting> meetingsByCourse = t.getMeetingsByCourse(meeting.getCourse());
             int nMeetings = meetingsByCourse.size();
-            Meeting m = meetingsByCourse.toArray(new Meeting[nMeetings])[rand.nextInt(nMeetings)];
+
+            if (nMeetings == 0) {
+                String msg = "Not meetings found to unschedule. Data inconsistency: " +
+                             "This has previously happened when the two parents had a different set of lessons";
+                throw new IllegalStateException(msg);
+            }
+
+            // if there is only one left. need no randomness
+            int removeIdx = nMeetings == 1 ? 0 : rand.nextInt(nMeetings);
+
+            Meeting m = meetingsByCourse.toArray(new Meeting[nMeetings])[removeIdx];
             t.removeMeeting(m);
+
+            preferredPeriods.add(new Period(m.getDay(), m.getPeriod()));
         }
-        return meetings.stream()
-                .map(m -> new Period(m.getDay(), m.getPeriod()))
-                .collect(Collectors.toSet());
+
+        return preferredPeriods;
     }
 
     private List<Course> scheduleAtSpecifiedPeriods(Timetable t, Set<MeetingWithRoom> meetings) {
@@ -169,37 +182,20 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
     /** Places the specified courses wherever they fit */
     private void scheduleGreedy(Timetable t, Set<Period> preferredPeriods, List<Course> toBeScheduled) throws CrossoverFailedException {
 
-        int cIdx = 0; // the index of the course we want to schedule
-
-        LinkedList<Course> courses = new LinkedList<>(toBeScheduled);
-
-        // try to schedule in preferred periods (where other lessons were)
-        for (Period p : preferredPeriods) {
-
-            while (!courses.isEmpty()) {
-                // take first
-                Course c = courses.pop();
-
-                // try to schedule
+        nextCourse: for (Course c : toBeScheduled) {
+            // try to schedule in preferred periods
+            for (Period p : preferredPeriods) {
                 if (isFeasible(t, c, p.day, p.period) && t.addMeeting(new Meeting(c, p.day, p.period))) {
-                    break;
-                }
-
-                // failed, add last
-                else {
-                    courses.addLast(c);
+                    preferredPeriods.remove(p);
+                    continue nextCourse;
                 }
             }
-        }
 
-        // note that the above code truncates the list, while this one only iterates over it
-        nextCourse: for (Course c : courses) {
+            // try to schedule at a random period
             int attempts = ATTEMPTS_AFTER_FAIL;
             while (attempts-- >= 0) {
-
                 int day = rand.nextInt(spec.getNumberOfDaysPerWeek());
                 int period = rand.nextInt(spec.getPeriodsPerDay());
-
                 if (isFeasible(t, c, day, period) && t.addMeeting(new Meeting(c, day, period))) {
                     continue nextCourse;
                 }

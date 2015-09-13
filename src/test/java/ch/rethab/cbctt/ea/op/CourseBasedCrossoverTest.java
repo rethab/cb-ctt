@@ -63,7 +63,7 @@ public class CourseBasedCrossoverTest {
     SolutionConverter solutionConverter = new SolutionConverter(new UD1Formulation(spec));
 
     RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
-    AbstractLessonBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
+    CourseBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
 
     @Before
     public void init() {
@@ -75,8 +75,6 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldCopyFromTheSecond() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p1Builder.addMeeting(c1, r1, 0, 0);
-        p1Builder.addMeeting(c1, r1, 0, 1);
         p1Builder.addMeeting(c2, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
@@ -96,77 +94,95 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldPlaceInSamePeriodWithOtherCourseIfDifferentCurriculum() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p1Builder.addMeeting(c1, r1, 0, 0); // c2 will be scheduled here, but it should stay
-        p1Builder.addMeeting(c1, r1, 0, 1);
-        p1Builder.addMeeting(c2, r2, 1, 0); // this should be removed
+        p1Builder.addMeeting(c1, r1, 0, 0);
+        p1Builder.addMeeting(c2, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
+        p2Builder.addMeeting(c1, r1, 1, 0);
         p2Builder.addMeeting(c2, r2, 0, 0);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child1 = solutionConverter.fromSolution(kids[0]);
 
-        // the old and the new meeting should be at the same period
-        assertEquals(c1, child1.getMeeting(c1, 0, 0).getCourse());
-        assertEquals(c2, child1.getMeeting(c2, 0, 0).getCourse());
-        // two meetings for c1, one for c2
-        assertEquals(3, child1.getMeetings().size());
+        // either c2 is moved to the same period as c1 or c1 is moved to the same as c2
+        boolean c2Moved = child1.getMeeting(c1, 0, 0) != null && child1.getMeeting(c2, 0, 0) != null;
+        boolean c1Moved = child1.getMeeting(c1, 1, 0) != null && child1.getMeeting(c2, 1, 0) != null;
+
+        // either has has moved, but not both
+        assertTrue(c1Moved || c2Moved);
+        assertFalse(c1Moved && c2Moved);
+
+        // total number should stay
+        assertEquals(2, child1.getMeetings().size());
     }
 
     @Test
     public void shouldNotPlaceIfOtherCourseFromSameCurriculumIsThere() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
         p1Builder.addMeeting(c1, r1, 0, 0);
-        p1Builder.addMeeting(c1, r1, 0, 1);
         p1Builder.addMeeting(c4, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p2Builder.addMeeting(c4, r2, 0, 0); // c4 and c1 are in in same curriculum
+        p2Builder.addMeeting(c1, r1, 1, 0);
+        p2Builder.addMeeting(c4, r2, 0, 0);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child1 = solutionConverter.fromSolution(kids[0]);
 
-        // original meeting should still be there
-        assertNotNull(child1.getMeeting(c1, 0, 0));
-        // new meeting should be not have been scheduled here
-        assertNull(child1.getMeeting(c4, 0, 0));
-        // should not override other existing either..
-        assertNull(child1.getMeeting(c4, 0, 1));
-        // ..but should be placed somewhere (two from c1, one from c4)
-        assertEquals(3, child1.getMeetings().size());
+        // regardless of which one is picked for replication,
+        // there will already be a conflicting lesson in that spot.
+
+        // if it moved, it was unscheduled first, so it cannot be in the original spot anymore
+        boolean c1Moved = child1.getMeeting(c1, 0, 0) == null;
+        boolean c4Moved = child1.getMeeting(c4, 1, 0) == null;
+
+        if (c1Moved && c4Moved) {
+            fail("Both cannot move");
+        } else if (c1Moved) {
+            assertNotNull(child1.getMeeting(c4, 1 ,0));
+        } else if (c4Moved) {
+            assertNotNull(child1.getMeeting(c1, 0 ,0));
+        } else {
+            fail("Either of them should have moved");
+        }
+
+        // other one should be somewhere
+        assertEquals(2, child1.getMeetings().size());
     }
 
     @Test
     public void shouldNotPlaceInViolationOfRoomConstraints() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
         p1Builder.addMeeting(c1, r1, 0, 0);
-        p1Builder.addMeeting(c1, r1, 0, 1);
-        p1Builder.addMeeting(c4, r2, 1, 0);
+        p1Builder.addMeeting(c2, r1, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p2Builder.addMeeting(c4, r1, 0, 0);
+        p2Builder.addMeeting(c1, r1, 1, 0); // if picked: fail to put in 1/0 where c2 already is
+        p2Builder.addMeeting(c2, r1, 0, 0); // if picked: fail to put in 0/0 where c1 already is
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
-        // usually c4 could be scheduled in r1 at 0/0, but now c1 occupies r1 and c4 cannot happen in r2
-        roomConstraints.addRoomConstraint(c4, r2);
+        // usually both could be scheduled with the other
+        roomConstraints.addRoomConstraint(c2, r2);
+        roomConstraints.addRoomConstraint(c1, r2);
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child1 = solutionConverter.fromSolution(kids[0]);
 
-        // original meetings should still be there
-        assertNotNull(child1.getMeeting(c1, 0, 0));
-        assertNotNull(child1.getMeeting(c1, 0, 1));
+        // regardless of which one is picked for replication, they will
+        // be exchanged, because they cannot be placed alongside each
+        // other which means whichever is picked replaces the old
+        // meeting and then the other one is scheduled at the preferred
+        // period
+        assertNotNull(child1.getMeeting(c2, 0 ,0));
+        assertNotNull(child1.getMeeting(c1, 1, 0));
 
-        // c4 must not be here due to room constraint
-        assertNull(child1.getMeeting(c4, 0, 0));
-
-        // ..but should be placed somewhere (two from c1, one from c4)
-        assertEquals(3, child1.getMeetings().size());
+        // no others should be here
+        assertEquals(2, child1.getMeetings().size());
     }
 
     @Test
