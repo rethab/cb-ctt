@@ -275,6 +275,35 @@ public class CourseBasedCrossoverTest {
     }
 
     @Test
+    public void shouldPlaceLeftoversAtPositionOfOriginal() {
+        TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
+        p1Builder.addMeeting(c1, r1, 0, 0);
+        p1Builder.addMeeting(c2, r2, 0, 0);
+        p1Builder.addMeeting(c3, r1, 1, 0);
+
+        TimetableWithRooms parent1 = p1Builder.build();
+        Solution s1 = solutionConverter.toSolution(parent1);
+
+        TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
+        // this is also where c1 and c2 are already scheduled. Therefore, it will have to
+        // replace one of them
+        p2Builder.addMeeting(c3, r1, 0, 0);
+        TimetableWithRooms parent2 = p2Builder.build();
+        Solution s2 = solutionConverter.toSolution(parent2);
+
+        Solution[] kids = courseBasedCrossover.evolve(new Solution[]{s1, s2});
+        TimetableWithRooms kid1 = solutionConverter.fromSolution(kids[0]);
+
+        // either c1 or c2 must now be in the position of c3..
+        assertTrue(kid1.getMeeting(c1, 1, 0) != null || kid1.getMeeting(c2, 1, 0) != null);
+        // ..but not both
+        assertFalse(kid1.getMeeting(c1, 1, 0) != null && kid1.getMeeting(c2, 1, 0) != null);
+
+        // overall amount stays
+        assertEquals(3, kid1.getMeetings().size());
+    }
+
+    @Test
     public void shouldProduceFeasibleOffspringsFromRealSample() throws Exception {
         String filename = String.format("comp%02d.ectt", 19);
         InputStream is = getClass().getClassLoader().getResourceAsStream(filename);

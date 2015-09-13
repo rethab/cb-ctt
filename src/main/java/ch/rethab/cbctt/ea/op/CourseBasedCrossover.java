@@ -10,7 +10,9 @@ import org.moeaframework.core.Variation;
 import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Inspired by 'New Crossover Algorithms for Timetabling with
@@ -26,6 +28,8 @@ public class CourseBasedCrossover implements Variation {
 
     // if a crossover fails, it is restarted this many times
     private static final int ATTEMPTS_AFTER_FAIL = 100;
+
+    private final SecureRandom rand = new SecureRandom();
 
     private final SolutionConverter solutionConverter;
 
@@ -69,7 +73,7 @@ public class CourseBasedCrossover implements Variation {
                 child1 = roomAssigner.assignRooms(tmpChild1);
                 break;
             } catch (CrossoverFailedException cfe) {
-                // System.err.println("Crossover failed ("+i+"). Restarting..");
+                System.err.println("Crossover failed ("+i+"). Restarting..");
             }
         }
 
@@ -90,7 +94,7 @@ public class CourseBasedCrossover implements Variation {
                 child2 = roomAssigner.assignRooms(tmpChild2);
                 break;
             } catch (CrossoverFailedException cfe) {
-                // System.err.println("Crossover failed ("+i+"). Restarting..");
+                System.err.println("Crossover failed ("+i+"). Restarting..");
             }
         }
 
@@ -117,14 +121,17 @@ public class CourseBasedCrossover implements Variation {
          * 2. Greedy insert all from to_be_scheduled
          */
 
-        unscheduleMeetingsByCourse(t, course);
+        Set<Period> preferredPeriods = unscheduleMeetingsByCourse(t, course);
         List<Course> leftovers = scheduleAtSpecifiedPeriods(t, meetings);
-        scheduleGreedy(t, leftovers);
+        scheduleGreedy(t, preferredPeriods, leftovers);
     }
 
-    private void unscheduleMeetingsByCourse(Timetable t, Course course) {
+    private Set<Period> unscheduleMeetingsByCourse(Timetable t, Course course) {
         Set<Meeting> meetings = t.getMeetingsByCourse(course);
         meetings.stream().forEach(t::removeMeeting);
+        return meetings.stream()
+                .map(m -> new Period(m.getDay(), m.getPeriod()))
+                .collect(Collectors.toSet());
     }
 
     private List<Course> scheduleAtSpecifiedPeriods(Timetable t, Set<MeetingWithRoom> meetings) {
@@ -164,33 +171,52 @@ public class CourseBasedCrossover implements Variation {
     }
 
     /** Places the specified courses wherever they fit */
-    private void scheduleGreedy(Timetable t, List<Course> toBeScheduled) throws CrossoverFailedException {
-        for (Course c : toBeScheduled) {
+    private void scheduleGreedy(Timetable t, Set<Period> preferredPeriods, List<Course> toBeScheduled) throws CrossoverFailedException {
 
-            int day = 0;
-            int period = 0;
-            while (true) {
+        int cIdx = 0; // the index of the course we want to schedule
 
-                if (isFeasible(t, c, day, period) && t.addMeeting(new Meeting(c, day, period))) {
+        LinkedList<Course> courses = new LinkedList<>(toBeScheduled);
+
+        // try to schedule in preferred periods (where other lessons were)
+        for (Period p : preferredPeriods) {
+
+            while (!courses.isEmpty()) {
+                // take first
+                Course c = courses.pop();
+
+                // try to schedule
+                if (isFeasible(t, c, p.day, p.period) && t.addMeeting(new Meeting(c, p.day, p.period))) {
                     break;
-                } else {
-                    if (period < spec.getPeriodsPerDay() - 1) {
-                        period++;
-                    } else if (day < spec.getNumberOfDaysPerWeek() - 1) {
-                        day++;
-                        period = 0;
-                    } else {
-                        throw new CrossoverFailedException("Failed to assignRooms Course " + c.getId());
-                    }
                 }
 
+                // failed, add last
+                else {
+                    courses.addLast(c);
+                }
             }
+        }
+
+        // note that the above code truncates the list, while this one only iterates over it
+        nextCourse: for (Course c : courses) {
+            int attempts = ATTEMPTS_AFTER_FAIL;
+            while (attempts-- >= 0) {
+
+                int day = rand.nextInt(spec.getNumberOfDaysPerWeek());
+                int period = rand.nextInt(spec.getPeriodsPerDay());
+
+                if (isFeasible(t, c, day, period) && t.addMeeting(new Meeting(c, day, period))) {
+                    continue nextCourse;
+                }
+            }
+
+            String msg = String.format("Failed to schedule meeting after %d attempts\n", ATTEMPTS_AFTER_FAIL);
+            throw new CrossoverFailedException(msg);
         }
     }
 
     private Course getRandomCourse(TimetableWithRooms t) {
         MeetingWithRoom[] meetings = t.getMeetings().toArray(new MeetingWithRoom[t.getMeetings().size()]);
-        int idx = new SecureRandom().nextInt(meetings.length);
+        int idx = rand.nextInt(meetings.length);
         return meetings[idx].getCourse();
     }
     /**
@@ -212,6 +238,29 @@ public class CourseBasedCrossover implements Variation {
     private static class CrossoverFailedException extends Exception {
         public CrossoverFailedException(String message) {
             super(message);
+        }
+    }
+
+    private static class Period {
+        final int day;
+        final int period;
+        public Period(int day, int period) {
+            this.day = day;
+            this.period = period;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Period period1 = (Period) o;
+            return Objects.equals(day, period1.day) &&
+                    Objects.equals(period, period1.period);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(day, period);
         }
     }
 
