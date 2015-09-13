@@ -118,15 +118,13 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldNotPlaceIfOtherCourseFromSameCurriculumIsThere() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom m = new MeetingWithRoom(c1, r1, 0, 0);
-        p1Builder.addMeeting(m.getCourse(), m.getRoom(), m.getDay(), m.getPeriod());
+        p1Builder.addMeeting(c1, r1, 0, 0);
         p1Builder.addMeeting(c1, r1, 0, 1);
         p1Builder.addMeeting(c4, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom parent2Meeting = new MeetingWithRoom(c4, r2, 0, 0);
-        p2Builder.addMeeting(parent2Meeting.getCourse(), parent2Meeting.getRoom(), parent2Meeting.getDay(), parent2Meeting.getPeriod());
+        p2Builder.addMeeting(c4, r2, 0, 0); // c4 and c1 are in in same curriculum
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
@@ -145,16 +143,13 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldNotPlaceInViolationOfRoomConstraints() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom m1 = new MeetingWithRoom(c1, r1, 0, 0);
-        p1Builder.addMeeting(m1.getCourse(), m1.getRoom(), m1.getDay(), m1.getPeriod());
-        MeetingWithRoom m2 = new MeetingWithRoom(c1, r1, 0, 1);
-        p1Builder.addMeeting(m2.getCourse(), m2.getRoom(), m2.getDay(), m2.getPeriod());
+        p1Builder.addMeeting(c1, r1, 0, 0);
+        p1Builder.addMeeting(c1, r1, 0, 1);
         p1Builder.addMeeting(c4, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom parent2Meeting = new MeetingWithRoom(c4, r1, 0, 0);
-        p2Builder.addMeeting(parent2Meeting.getCourse(), parent2Meeting.getRoom(), parent2Meeting.getDay(), parent2Meeting.getPeriod());
+        p2Builder.addMeeting(c4, r1, 0, 0);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         // usually c4 could be scheduled in r1 at 0/0, but now c1 occupies r1 and c4 cannot happen in r2
@@ -177,16 +172,13 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldNotPlaceInViolationOfUnavailabilityConstraints() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom m1 = new MeetingWithRoom(c1, r1, 0, 0);
-        p1Builder.addMeeting(m1.getCourse(), m1.getRoom(), m1.getDay(), m1.getPeriod());
-        MeetingWithRoom m2 = new MeetingWithRoom(c1, r1, 0, 1);
-        p1Builder.addMeeting(m2.getCourse(), m2.getRoom(), m2.getDay(), m2.getPeriod());
+        p1Builder.addMeeting(c1, r1, 0, 0);
+        p1Builder.addMeeting(c1, r1, 0, 1);
         p1Builder.addMeeting(c4, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom parent2Meeting = new MeetingWithRoom(c4, r1, 0, 0);
-        p2Builder.addMeeting(parent2Meeting.getCourse(), parent2Meeting.getRoom(), parent2Meeting.getDay(), parent2Meeting.getPeriod());
+        p2Builder.addMeeting(c4, r1, 0, 0);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         // usually c4 could be scheduled in r1 at 0/0, but now t4 cannot teach at 0/0
@@ -209,21 +201,18 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldReplaceExistingMeetingIfFeasible() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom m1 = new MeetingWithRoom(c1, r1, 0, 0);
-        p1Builder.addMeeting(m1.getCourse(), m1.getRoom(), m1.getDay(), m1.getPeriod());
-        MeetingWithRoom m2 = new MeetingWithRoom(c2, r2, 0, 0);
-        p1Builder.addMeeting(m2.getCourse(), m2.getRoom(), m2.getDay(), m2.getPeriod());
+        p1Builder.addMeeting(c1, r1, 0, 0);
+        p1Builder.addMeeting(c2, r2, 0, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom parent2Meeting = new MeetingWithRoom(c3, r1, 0, 0);
-        p2Builder.addMeeting(parent2Meeting.getCourse(), parent2Meeting.getRoom(), parent2Meeting.getDay(), parent2Meeting.getPeriod());
+        p2Builder.addMeeting(c3, r1, 0, 0);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child1 = solutionConverter.fromSolution(kids[0]);
 
-        // new meeting should exist at 0/0. cannot compare entire meeting due to room change
+        // new meeting should exist at 0/0
         assertEquals(c3, child1.getMeeting(c3, 0, 0).getCourse());
         // one old meeting should also still be there..
         assertTrue(child1.getMeeting(c1, 0, 0) != null || child1.getMeeting(c2, 0, 0) != null);
@@ -237,21 +226,18 @@ public class CourseBasedCrossoverTest {
     @Test
     public void shouldPlaceFromFirstParentInSecondChild() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom p1Meeting = new MeetingWithRoom(c3, r1, 0, 0);
-        p1Builder.addMeeting(p1Meeting.getCourse(), p1Meeting.getRoom(), p1Meeting.getDay(), p1Meeting.getPeriod());
+        p1Builder.addMeeting(c3, r1, 0, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom m1 = new MeetingWithRoom(c1, r1, 0, 0);
-        p2Builder.addMeeting(m1.getCourse(), m1.getRoom(), m1.getDay(), m1.getPeriod());
-        MeetingWithRoom m2 = new MeetingWithRoom(c2, r2, 0, 0);
-        p2Builder.addMeeting(m2.getCourse(), m2.getRoom(), m2.getDay(), m2.getPeriod());
+        p2Builder.addMeeting(c1, r1, 0, 0);
+        p2Builder.addMeeting(c2, r2, 0, 0);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child2 = solutionConverter.fromSolution(kids[1]);
 
-        // new meeting should exist at 0/0. cannot compare entire meeting due to room change
+        // new meeting should exist at 0/0
         assertEquals(c3, child2.getMeeting(c3, 0, 0).getCourse());
         // one old meeting should also still be there..
         assertTrue(child2.getMeeting(c1, 0, 0) != null || child2.getMeeting(c2, 0, 0) != null);
