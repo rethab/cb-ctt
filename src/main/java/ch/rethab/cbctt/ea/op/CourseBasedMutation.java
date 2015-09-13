@@ -1,6 +1,9 @@
 package ch.rethab.cbctt.ea.op;
 
-import ch.rethab.cbctt.ea.phenotype.*;
+import ch.rethab.cbctt.ea.phenotype.Meeting;
+import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;

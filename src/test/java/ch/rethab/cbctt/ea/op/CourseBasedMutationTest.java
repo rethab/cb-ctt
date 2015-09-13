@@ -3,7 +3,6 @@ package ch.rethab.cbctt.ea.op;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
-import ch.rethab.cbctt.ea.phenotype.Timetable;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.moea.SolutionConverter;
