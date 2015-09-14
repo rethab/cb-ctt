@@ -3,7 +3,6 @@ package ch.rethab.cbctt.ea.op;
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
-import ch.rethab.cbctt.ea.phenotype.MeetingWithRoom;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
@@ -135,20 +134,10 @@ public class CourseBasedCrossoverTest {
 
         // regardless of which one is picked for replication,
         // there will already be a conflicting lesson in that spot.
+        // so it will be inserted into a preferred period, which is the one it was before
 
-        // if it moved, it was unscheduled first, so it cannot be in the original spot anymore
-        boolean c1Moved = child1.getMeeting(c1, 0, 0) == null;
-        boolean c4Moved = child1.getMeeting(c4, 1, 0) == null;
-
-        if (c1Moved && c4Moved) {
-            fail("Both cannot move");
-        } else if (c1Moved) {
-            assertNotNull(child1.getMeeting(c4, 1 ,0));
-        } else if (c4Moved) {
-            assertNotNull(child1.getMeeting(c1, 0 ,0));
-        } else {
-            fail("Either of them should have moved");
-        }
+        assertNotNull(child1.getMeeting(c1, 0, 0));
+        assertNotNull(child1.getMeeting(c4, 1, 0));
 
         // other one should be somewhere
         assertEquals(2, child1.getMeetings().size());
@@ -189,135 +178,86 @@ public class CourseBasedCrossoverTest {
     public void shouldNotPlaceInViolationOfUnavailabilityConstraints() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
         p1Builder.addMeeting(c1, r1, 0, 0);
-        p1Builder.addMeeting(c1, r1, 0, 1);
-        p1Builder.addMeeting(c4, r2, 1, 0);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p2Builder.addMeeting(c4, r1, 0, 0);
+        p2Builder.addMeeting(c1, r1, 1, 1);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
-        // usually c4 could be scheduled in r1 at 0/0, but now t4 cannot teach at 0/0
-        unavailabilityConstraints.addUnavailability(c4, 0, 0);
+        // c1 should be replicated in child1 at 1/1, but it's unavailable there
+        unavailabilityConstraints.addUnavailability(c1, 1, 1);
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child1 = solutionConverter.fromSolution(kids[0]);
 
-        // original meetings should still be there
-        assertNotNull(child1.getMeeting(c1, 0, 0));
-        assertNotNull(child1.getMeeting(c1, 0, 1));
-
-        // c4 must not be here, because teacher is unavailable
-        assertNull(child1.getMeeting(c4, 0, 0));
-
-        // ..but should be placed somewhere (two from c1, one from c4)
-        assertEquals(3, child1.getMeetings().size());
+        // c1 should not have been placed at the unavailable period
+        assertNull(child1.getMeeting(c1, 1, 1));
+        // but it should be somewhere
+        assertTrue(child1.getMeetings().stream()
+                .filter(m -> m.getCourse().equals(c1))
+                .findAny().isPresent());
     }
 
     @Test
-    public void shouldReplaceExistingMeetingIfFeasible() {
+    public void shouldReplicateAllBothSides() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
         p1Builder.addMeeting(c1, r1, 0, 0);
-        p1Builder.addMeeting(c2, r2, 0, 0);
+        p1Builder.addMeeting(c1, r2, 0, 1);
+        p1Builder.addMeeting(c1, r1, 0, 2);
         Solution s1 = solutionConverter.toSolution(p1Builder.build());
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p2Builder.addMeeting(c3, r1, 0, 0);
+        p2Builder.addMeeting(c1, r1, 1, 0);
+        p2Builder.addMeeting(c1, r2, 1, 1);
+        p2Builder.addMeeting(c1, r1, 1, 2);
         Solution s2 = solutionConverter.toSolution(p2Builder.build());
 
         Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child1 = solutionConverter.fromSolution(kids[0]);
-
-        // new meeting should exist at 0/0
-        assertEquals(c3, child1.getMeeting(c3, 0, 0).getCourse());
-        // one old meeting should also still be there..
-        assertTrue(child1.getMeeting(c1, 0, 0) != null || child1.getMeeting(c2, 0, 0) != null);
-        // ..but not both
-        assertFalse(child1.getMeeting(c1, 0, 0) != null && child1.getMeeting(c2, 0, 0) != null);
-
-        // ..all should be scheduled somewhere
-        assertEquals(3, child1.getMeetings().size());
-    }
-
-    @Test
-    public void shouldPlaceFromFirstParentInSecondChild() {
-        TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p1Builder.addMeeting(c3, r1, 0, 0);
-        Solution s1 = solutionConverter.toSolution(p1Builder.build());
-
-        TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p2Builder.addMeeting(c1, r1, 0, 0);
-        p2Builder.addMeeting(c2, r2, 0, 0);
-        Solution s2 = solutionConverter.toSolution(p2Builder.build());
-
-        Solution kids[] = courseBasedCrossover.evolve(new Solution[]{s1, s2});
         TimetableWithRooms child2 = solutionConverter.fromSolution(kids[1]);
 
-        // new meeting should exist at 0/0
-        assertEquals(c3, child2.getMeeting(c3, 0, 0).getCourse());
-        // one old meeting should also still be there..
-        assertTrue(child2.getMeeting(c1, 0, 0) != null || child2.getMeeting(c2, 0, 0) != null);
-        // ..but not both
-        assertFalse(child2.getMeeting(c1, 0, 0) != null && child2.getMeeting(c2, 0, 0) != null);
+        // all from p2 should now be in child1
+        assertEquals(3, child1.getMeetings().size());
+        assertNotNull(child1.getMeeting(c1, 1, 0));
+        assertNotNull(child1.getMeeting(c1, 1, 1));
+        assertNotNull(child1.getMeeting(c1, 1, 2));
 
-        // ..all should be scheduled somewhere
+        // all from p1 should now be in child2
         assertEquals(3, child2.getMeetings().size());
+        assertNotNull(child2.getMeeting(c1, 0, 0));
+        assertNotNull(child2.getMeeting(c1, 0, 1));
+        assertNotNull(child2.getMeeting(c1, 0, 2));
     }
 
     @Test
     public void shouldNotModifyParents() {
         TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom m1 = new MeetingWithRoom(c1, r1, 0, 0);
-        p1Builder.addMeeting(m1.getCourse(), m1.getRoom(), m1.getDay(), m1.getPeriod());
-        MeetingWithRoom m2 = new MeetingWithRoom(c2, r2, 0, 0);
-        p1Builder.addMeeting(m2.getCourse(), m2.getRoom(), m2.getDay(), m2.getPeriod());
+        p1Builder.addMeeting(c1, r1, 0, 0);
+        p1Builder.addMeeting(c2, r2, 0, 0);
+        p1Builder.addMeeting(c3, r1, 0, 1);
         TimetableWithRooms parent1 = p1Builder.build();
         Solution s1 = solutionConverter.toSolution(parent1);
 
         TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        MeetingWithRoom parent2Meeting = new MeetingWithRoom(c3, r1, 0, 0);
-        p2Builder.addMeeting(parent2Meeting.getCourse(), parent2Meeting.getRoom(), parent2Meeting.getDay(), parent2Meeting.getPeriod());
+        p2Builder.addMeeting(c1, r2, 1, 1);
+        p2Builder.addMeeting(c2, r1, 1, 0);
+        p2Builder.addMeeting(c3, r1, 0, 1);
         TimetableWithRooms parent2 = p2Builder.build();
         Solution s2 = solutionConverter.toSolution(parent2);
 
         courseBasedCrossover.evolve(new Solution[]{s1, s2});
 
-        assertEquals(2, parent1.getMeetings().size());
-        assertEquals(m1, parent1.getMeeting(c1, 0, 0));
-        assertEquals(m2, parent1.getMeeting(c2, 0, 0));
+        assertEquals(3, parent1.getMeetings().size());
+        assertNotNull(parent1.getMeeting(c1, 0, 0));
+        assertNotNull(parent1.getMeeting(c2, 0, 0));
+        assertNotNull(parent1.getMeeting(c3, 0, 1));
 
-        assertEquals(1, parent2.getMeetings().size());
-        assertEquals(parent2Meeting, parent2.getMeeting(c3, 0, 0));
+        assertEquals(3, parent2.getMeetings().size());
+        assertNotNull(parent2.getMeeting(c1, 1, 1));
+        assertNotNull(parent2.getMeeting(c2, 1, 0));
+        assertNotNull(parent2.getMeeting(c3, 0, 1));
     }
 
-    @Test
-    public void shouldPlaceLeftoversAtPositionOfOriginal() {
-        TimetableWithRooms.Builder p1Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        p1Builder.addMeeting(c1, r1, 0, 0);
-        p1Builder.addMeeting(c2, r2, 0, 0);
-        p1Builder.addMeeting(c3, r1, 1, 0);
-
-        TimetableWithRooms parent1 = p1Builder.build();
-        Solution s1 = solutionConverter.toSolution(parent1);
-
-        TimetableWithRooms.Builder p2Builder = TimetableWithRooms.Builder.newBuilder(spec);
-        // this is also where c1 and c2 are already scheduled. Therefore, it will have to
-        // replace one of them
-        p2Builder.addMeeting(c3, r1, 0, 0);
-        TimetableWithRooms parent2 = p2Builder.build();
-        Solution s2 = solutionConverter.toSolution(parent2);
-
-        Solution[] kids = courseBasedCrossover.evolve(new Solution[]{s1, s2});
-        TimetableWithRooms kid1 = solutionConverter.fromSolution(kids[0]);
-
-        // either c1 or c2 must now be in the position of c3..
-        assertTrue(kid1.getMeeting(c1, 1, 0) != null || kid1.getMeeting(c2, 1, 0) != null);
-        // ..but not both
-        assertFalse(kid1.getMeeting(c1, 1, 0) != null && kid1.getMeeting(c2, 1, 0) != null);
-
-        // overall amount stays
-        assertEquals(3, kid1.getMeetings().size());
-    }
 
     @Test
     public void shouldProduceFeasibleOffspringsFromRealSample() throws Exception {
