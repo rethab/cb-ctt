@@ -9,7 +9,6 @@ import org.moeaframework.core.Variation;
 
 import java.security.SecureRandom;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Reto Habluetzel, 2015
