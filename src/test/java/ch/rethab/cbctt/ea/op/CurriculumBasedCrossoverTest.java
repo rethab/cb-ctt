@@ -1,13 +1,22 @@
 package ch.rethab.cbctt.ea.op;
 
 import ch.rethab.cbctt.domain.*;
+import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
+import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
+import ch.rethab.cbctt.formulation.constraint.Constraint;
 import ch.rethab.cbctt.moea.SolutionConverter;
+import ch.rethab.cbctt.parser.ECTTParser;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -112,6 +121,32 @@ public class CurriculumBasedCrossoverTest {
         assertTrue(c1Moved || c2Moved || c3Moved);
         // ..but not all
         assertFalse(c1Moved && c2Moved && c3Moved);
+    }
+
+    @Test
+    public void shouldProduceFeasibleOffspringsFromRealSample() throws Exception {
+        String filename = String.format("comp%02d.ectt", 19);
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+        Formulation v = new UD1Formulation(spec);
+        RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
+        List<TimetableWithRooms> ts = new TeacherGreedyInitializer(spec, roomAssigner).initialize(2);
+
+        SolutionConverter solutionConverter = new SolutionConverter(v);
+        Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
+        AbstractLessonBasedCrossover crossover = new CurriculumBasedCrossover(solutionConverter, roomAssigner, spec);
+        Solution kids[] = crossover.evolve(parents);
+        TimetableWithRooms offspring1 = solutionConverter.fromSolution(kids[0]);
+        TimetableWithRooms offspring2 = solutionConverter.fromSolution(kids[1]);
+
+        for (Constraint c : v.getConstraints()) {
+            assertEquals(0, c.violations(offspring1));
+        }
+        for (Constraint c : v.getConstraints()) {
+            assertEquals(0, c.violations(offspring2));
+        }
     }
 
 }

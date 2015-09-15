@@ -49,7 +49,9 @@ public class TimetableWithRooms {
     public Timetable newChild() {
         Timetable t = new Timetable(spec);
         for (MeetingWithRoom m : getMeetings()) {
-            t.addMeeting(m.withoutRoom());
+            if (!t.addMeeting(m.withoutRoom())) {
+                throw new IllegalStateException("Cannot recreate timetable");
+            }
         }
         return t;
     }

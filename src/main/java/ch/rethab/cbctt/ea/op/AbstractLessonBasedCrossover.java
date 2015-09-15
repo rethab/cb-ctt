@@ -119,7 +119,18 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
         // afterwards to avoid too much randomness
         Set<Period> preferredPeriods = new LinkedHashSet<>(meetings.size());
 
-        for (MeetingWithRoom meeting : meetings) {
+        Iterator<MeetingWithRoom> iterator = meetings.iterator();
+        while (iterator.hasNext()) {
+            MeetingWithRoom meeting = iterator.next();
+
+            // if the course is already scheduled at this period,
+            // we don't have to unschedule it here just re-add
+            // it later
+            if (t.getMeeting(meeting.getCourse(), meeting.getDay(), meeting.getPeriod()) != null) {
+                iterator.remove();
+                continue;
+            }
+
             // take a random lesson of the course and remove it
             Set<Meeting> meetingsByCourse = t.getMeetingsByCourse(meeting.getCourse());
             int nMeetings = meetingsByCourse.size();
