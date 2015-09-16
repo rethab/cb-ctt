@@ -1,9 +1,7 @@
 package ch.rethab.cbctt.ea.op;
 
-import ch.rethab.cbctt.ea.phenotype.Meeting;
-import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
-import ch.rethab.cbctt.ea.phenotype.Timetable;
-import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
+import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.ea.phenotype.*;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -32,9 +30,12 @@ public class CourseBasedMutation implements Variation {
 
     private final RoomAssigner roomAssigner;
 
-    public CourseBasedMutation(SolutionConverter solutionConverter, RoomAssigner roomAssigner) {
+    private final Specification spec;
+
+    public CourseBasedMutation(SolutionConverter solutionConverter, RoomAssigner roomAssigner, Specification spec) {
         this.solutionConverter = solutionConverter;
         this.roomAssigner = roomAssigner;
+        this.spec = spec;
     }
 
     @Override
@@ -64,12 +65,30 @@ public class CourseBasedMutation implements Variation {
         Timetable mutated = original.newChild();
         Set<Meeting> meetings = mutated.getMeetings();
 
-        // get the two meetings to be exchanged
-        ExchangeMeetings exchangeMeetings = getIdx(meetings);
 
-        if (exchangeMeetings == null) {
-            return null;
+        int attempts = ATTEMPTS_AFTER_FAIL;
+        while (attempts-- >= 0) {
+
+            // get the two meetings to be exchanged from the same curriculum
+            ExchangeMeetings exchangeMeetings = getIdx(meetings);
+
+            // could not find distinct meeting.
+            if (exchangeMeetings == null) {
+                // returns directly since this should only happen if there are no two distinct meetings
+                System.err.println("Returned exchangeMeetings==null");
+                return null;
+            }
+
+            if (exchange(mutated, exchangeMeetings)) {
+                return roomAssigner.assignRooms(mutated);
+            }
+
         }
+
+        return null;
+    }
+
+    private boolean exchange(Timetable mutated, ExchangeMeetings exchangeMeetings) {
 
         Meeting a = exchangeMeetings.a;
         Meeting b = exchangeMeetings.b;
@@ -78,10 +97,62 @@ public class CourseBasedMutation implements Variation {
 
         Meeting aNew = new Meeting(a.getCourse(), b.getDay(), b.getPeriod());
         Meeting bNew = new Meeting(b.getCourse(), a.getDay(), a.getPeriod());
-        if (!mutated.addMeeting(aNew) || !mutated.addMeeting(bNew)) {
-            return null;
+
+        if (!isReduceFeasible(mutated, aNew)) {
+            restore(mutated, a, b);
+            return false;
+        } else if (!isReduceFeasible(mutated, bNew)) {
+            restore(mutated, a, b);
+            return false;
+        }
+
+        // add checks for: rooms-per-period and not-other-course-of-same-curriculum-in-smae-period
+        try {
+            if (!mutated.addMeeting(aNew)) {
+                restore(mutated, a, b);
+                return false;
+            }
+        } catch (Timetable.InfeasibilityException efe) {
+            restore(mutated, a, b);
+            return false;
+        }
+
+        try {
+            if (!mutated.addMeeting(bNew)) {
+                mutated.removeMeeting(aNew);
+                restore(mutated, a, b);
+                return false;
+            }
+        } catch (Timetable.InfeasibilityException ife) {
+            mutated.removeMeeting(aNew);
+            restore(mutated, a, b);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void restore(Timetable mutated, Meeting a, Meeting b) {
+        if (!mutated.addMeeting(a)) throw new IllegalStateException("should be able to re-add a");
+        if (!mutated.addMeeting(b)) throw new IllegalStateException("should be able to re-add b");
+    }
+
+    /**
+     * Makes a reduced feasibility check for the meeting if it was scheduled in the
+     * specified timetable.
+     *
+     * Reduced means: There are other checks necessary to make sure adding this
+     *                meeting actually results in a feasible timetable.
+     *
+     * This checks: Unavailability Constraint, Same Teacher in Period Constraint
+     */
+    private boolean isReduceFeasible(Timetable timetable, Meeting m) {
+        if (!spec.getUnavailabilityConstraints().checkAvailability(m.getCourse(), m.getDay(), m.getPeriod())) {
+            return false;
+        } else if (timetable.hasLectureWithSameTeacher(m.getCourse().getTeacher(), m.getDay(), m.getPeriod())) {
+            return false;
         } else {
-            return roomAssigner.assignRooms(mutated);
+            return true;
         }
     }
 

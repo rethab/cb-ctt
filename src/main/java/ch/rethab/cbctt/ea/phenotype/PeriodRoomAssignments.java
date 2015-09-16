@@ -21,9 +21,6 @@ public class PeriodRoomAssignments {
     private final RoomViolations[][] roomAssignments;
 
     /* everything is an array, so we need to know at which index each room is stored */
-    private final Map<String, Integer> roomIdxMap = new HashMap<>();
-
-    /* everything is an array, so we need to know at which index each room is stored */
     private final Map<String, Integer> courseIdxMap = new HashMap<>();
 
     /* the course array is built gradually. this is the index where the next is to be
@@ -69,20 +66,9 @@ public class PeriodRoomAssignments {
             return Collections.emptyList();
         }
 
-        RoomViolations[][] copy = null;
         try {
-            copy = deepCopy(roomAssignments);
             return assignAll(roomAssignments, nextCourseIdx-1, true);
         } catch (InfeasibilityException e) {
-            for (int cid = 0; cid < copy.length; cid++) {
-                for (int rid = 0; rid < copy[cid].length; rid++) {
-                    RoomViolations rv = copy[cid][rid];
-                    System.out.printf("[%s, %s, %d] ", rv == null || rv.course == null ? null : rv.course.getId(),
-                                                       rv == null || rv.room == null   ? null : rv.room.getId(),
-                                                       rv == null                      ? null : rv.violations);
-                }
-                System.out.println();
-            }
             throw new IllegalStateException("Dude, you code is fucked up");
         }
     }
@@ -105,7 +91,10 @@ public class PeriodRoomAssignments {
         roomAssignments[courseIdx] = fillRooms(c);
 
         // the idx is required during assignment
-        if (courseIdxMap.put(c.getId(), courseIdx) != null) {
+        Integer previousValue = courseIdxMap.put(c.getId(), courseIdx);
+        if (previousValue != null) {
+            // restore old state
+            courseIdxMap.put(c.getId(), previousValue);
             throw new Timetable.InfeasibilityException("Same course in same period. Makes no sense");
         }
 
@@ -116,14 +105,6 @@ public class PeriodRoomAssignments {
             courseIdxMap.remove(c.getId());
             return false;
         }
-    }
-
-    private RoomViolations[][] deepCopy(RoomViolations[][] roomAssignments) {
-        RoomViolations[][] copy = new RoomViolations[roomAssignments.length][roomAssignments[0].length];
-        for (int i = 0; i < roomAssignments.length; i++) {
-            System.arraycopy(roomAssignments[i], 0, copy[i], 0, roomAssignments[i].length);
-        }
-        return copy;
     }
 
     private boolean checkFeasibility(RoomViolations[][] roomAssignments, int inclusiveLastIndex) {
@@ -373,8 +354,6 @@ public class PeriodRoomAssignments {
         int i = 0;
         for (Room r : spec.getRooms()) {
 
-            roomIdxMap.put(r.getId(), i);
-
             int violations = c.getNumberOfStudents() - r.getCapacity();
             roomViolations[i] = new RoomViolations(r, c, violations);
 
@@ -384,7 +363,10 @@ public class PeriodRoomAssignments {
     }
 
     public void remove(Course course) {
-        int courseIdx = courseIdxMap.get(course.getId());
+        Integer courseIdx = courseIdxMap.get(course.getId());
+        if (courseIdx == null) {
+            throw new IllegalStateException("Tried to remove course " + course.getId() + " but wasn't there");
+        }
 
         // move all following one back
         for (int i = courseIdx + 1; i < nextCourseIdx; i++) {

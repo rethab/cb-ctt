@@ -50,7 +50,7 @@ public class Main {
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         AbstractLessonBasedCrossover cbc = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
-        CourseBasedMutation cbm = new CourseBasedMutation(solutionConverter, roomAssigner);
+        CourseBasedMutation cbm = new CourseBasedMutation(solutionConverter, roomAssigner, spec);
         CompoundVariation variation = new CompoundVariation(cbc, cbm);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
         InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer);
