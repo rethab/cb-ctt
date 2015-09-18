@@ -34,7 +34,8 @@ public class Curriculum implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, courses);
+        // one day I am going to die for not including the courses here, but that days is not yet
+        return id.hashCode();
     }
 
     @Override

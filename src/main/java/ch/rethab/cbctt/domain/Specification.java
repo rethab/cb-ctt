@@ -1,9 +1,9 @@
 package ch.rethab.cbctt.domain;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +31,8 @@ public class Specification implements Serializable {
 
     private final RoomConstraints roomConstraints;
 
+    private final Map<String, Set<Curriculum>> curriculaByCourseCache;
+
     private Specification(String name, int numberOfDaysPerWeek, int periodsPerDay, int minLectures, int maxLectures,
                          List<Course> courses, List<Room> rooms, List<Curriculum> curricula,
                          UnavailabilityConstraints unavailabilityConstraints, RoomConstraints roomConstraints) {
@@ -44,6 +46,12 @@ public class Specification implements Serializable {
         this.curricula = curricula;
         this.unavailabilityConstraints = unavailabilityConstraints;
         this.roomConstraints = roomConstraints;
+
+        // build cache
+        curriculaByCourseCache = new HashMap<>();
+        courses.forEach(c ->
+            curriculaByCourseCache.put(c.getId(), curricula.stream().filter(eachCourse -> eachCourse.getCourses().contains(c)).collect(Collectors.toSet()))
+        );
     }
 
     public UnavailabilityConstraints getUnavailabilityConstraints() {
@@ -91,7 +99,7 @@ public class Specification implements Serializable {
     }
 
     public Set<Curriculum> getByCourse(Course course) {
-        return curricula.stream().filter(c -> c.getCourses().contains(course)).collect(Collectors.toSet());
+        return curriculaByCourseCache.get(course.getId());
     }
 
     public static class Builder {
