@@ -62,12 +62,10 @@ public class CourseBasedMutation implements Variation {
 
     private TimetableWithRooms mutation(TimetableWithRooms original) {
 
-        Timetable mutated = original.newChild();
-        Set<Meeting> meetings = mutated.getMeetings();
-
-
         int attempts = ATTEMPTS_AFTER_FAIL;
         while (attempts-- >= 0) {
+            Timetable offspring = original.newChild();
+            Set<Meeting> meetings = offspring.getMeetings();
 
             // get the two meetings to be exchanged from the same curriculum
             ExchangeMeetings exchangeMeetings = getIdx(meetings);
@@ -79,8 +77,8 @@ public class CourseBasedMutation implements Variation {
                 return null;
             }
 
-            if (exchange(mutated, exchangeMeetings)) {
-                return roomAssigner.assignRooms(mutated);
+            if (exchange(offspring, exchangeMeetings)) {
+                return roomAssigner.assignRooms(offspring);
             }
 
         }
@@ -98,43 +96,16 @@ public class CourseBasedMutation implements Variation {
         Meeting aNew = new Meeting(a.getCourse(), b.getDay(), b.getPeriod());
         Meeting bNew = new Meeting(b.getCourse(), a.getDay(), a.getPeriod());
 
-        if (!isReduceFeasible(mutated, aNew)) {
-            restore(mutated, a, b);
-            return false;
-        } else if (!isReduceFeasible(mutated, bNew)) {
-            restore(mutated, a, b);
+        if (!isReduceFeasible(mutated, aNew) || !isReduceFeasible(mutated, bNew)) {
             return false;
         }
 
         // add checks for: rooms-per-period and not-other-course-of-same-curriculum-in-smae-period
         try {
-            if (!mutated.addMeeting(aNew)) {
-                restore(mutated, a, b);
-                return false;
-            }
+            return mutated.addMeeting(aNew) && mutated.addMeeting(bNew);
         } catch (Timetable.InfeasibilityException efe) {
-            restore(mutated, a, b);
             return false;
         }
-
-        try {
-            if (!mutated.addMeeting(bNew)) {
-                mutated.removeMeeting(aNew);
-                restore(mutated, a, b);
-                return false;
-            }
-        } catch (Timetable.InfeasibilityException ife) {
-            mutated.removeMeeting(aNew);
-            restore(mutated, a, b);
-            return false;
-        }
-
-        return true;
-    }
-
-    private void restore(Timetable mutated, Meeting a, Meeting b) {
-        if (!mutated.addMeeting(a)) throw new IllegalStateException("should be able to re-add a");
-        if (!mutated.addMeeting(b)) throw new IllegalStateException("should be able to re-add b");
     }
 
     /**
