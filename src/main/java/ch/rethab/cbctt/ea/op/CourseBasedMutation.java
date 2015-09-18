@@ -61,6 +61,7 @@ public class CourseBasedMutation implements Variation {
     }
 
     private TimetableWithRooms mutation(TimetableWithRooms original) {
+        System.err.println("Start mutation");
 
         Timetable mutated = original.newChild();
         Set<Meeting> meetings = mutated.getMeetings();

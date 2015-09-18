@@ -291,4 +291,55 @@ public class PeriodRoomAssignmentsTest {
         assertEquals(6, pra.assignRooms().size());
     }
 
+    @Test
+    public void shouldBeAbleToConstructTimetableRegressionTest2() throws Exception {
+        /*
+         * Constructing the timetable with the first ordering works, but the second doesnt
+         * FIRST VERSION (works)
+         *  Add Course=c0024 @ 0/1
+         *  Add Course=c0064 @ 0/1
+         *  Add Course=c0015 @ 0/1
+         *  Add Course=c0069 @ 0/1
+         *  Add Course=c0059 @ 0/1
+         *  Add Course=c0058 @ 0/1
+         *
+         * SECOND VERSION (fails)
+         *  Add Course=c0015 @ 0/1
+         *  Add Course=c0059 @ 0/1
+         *  Add Course=c0064 @ 0/1
+         *  Add Course=c0058 @ 0/1
+         *  Add Course=c0024 @ 0/1
+         *  Add Course=c0069 @ 0/1
+         *  Failed for Course=c0069 @ 0/1
+         *  Cannot add C=c0069 @ 0/1
+         */
+        InputStream is = getClass().getClassLoader().getResourceAsStream("comp01.ectt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+
+        Course c0015 = spec.getCourses().stream().filter(c -> c.getId().equals("c0015")).findFirst().get();
+        Course c0024 = spec.getCourses().stream().filter(c -> c.getId().equals("c0024")).findFirst().get();
+        Course c0058 = spec.getCourses().stream().filter(c -> c.getId().equals("c0058")).findFirst().get();
+        Course c0059 = spec.getCourses().stream().filter(c -> c.getId().equals("c0059")).findFirst().get();
+        Course c0064 = spec.getCourses().stream().filter(c -> c.getId().equals("c0064")).findFirst().get();
+        Course c0069 = spec.getCourses().stream().filter(c -> c.getId().equals("c0069")).findFirst().get();
+
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+        assertTrue(pra.add(c0024));
+        assertTrue(pra.add(c0064));
+        assertTrue(pra.add(c0015));
+        assertTrue(pra.add(c0069));
+        assertTrue(pra.add(c0059));
+        assertTrue(pra.add(c0058));
+
+        pra = new PeriodRoomAssignments(spec);
+        assertTrue(pra.add(c0015));
+        assertTrue(pra.add(c0059));
+        assertTrue(pra.add(c0064));
+        assertTrue(pra.add(c0058));
+        assertTrue(pra.add(c0024));
+        assertTrue(pra.add(c0069));
+    }
+
 }

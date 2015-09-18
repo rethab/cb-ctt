@@ -2,6 +2,7 @@ package ch.rethab.cbctt.moea;
 
 import org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.SPEA2;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
@@ -34,7 +35,9 @@ public class InitializingAlgorithmFactory extends AlgorithmFactory {
     @Override
     public synchronized Algorithm getAlgorithm(String name, Properties properties, Problem problem) {
         TypedProperties typedProps = new TypedProperties(properties);
-        if (name.equals("NSGAIII"))  {
+        if (name.equals("SPEA2")) {
+            return newSPEA2(typedProps, problem);
+        } else if (name.equals("NSGAIII"))  {
             return newNSGAIII(typedProps, problem);
         } else {
             throw new IllegalArgumentException("Unhandled Algorithm: " + name);
@@ -59,5 +62,14 @@ public class InitializingAlgorithmFactory extends AlgorithmFactory {
 
         TournamentSelection selection1 = new TournamentSelection(2, new ParetoDominanceComparator());
         return new ParallelNSGAII(problem, population, null, selection1, variation, initialization, executorService);
+    }
+
+    private Algorithm newSPEA2(TypedProperties properties, Problem problem) {
+        int populationSize = properties.getInt("populationSize", 100);
+        int numberOfOffspring =  properties.getInt("numberOfOffspring", populationSize);
+        int k = properties.getInt("kNearestNeighbour", 1);
+
+        Initialization initialization = initializationFactory.create(populationSize);
+        return new SPEA2(problem, initialization, variation, numberOfOffspring, k);
     }
 }

@@ -10,11 +10,7 @@ import java.util.List;
  */
 public class StaticParameters {
 
-    public static final String ALGORITHM_NAME = "SPEA2-PAR";
-
-    public static final String META_ALGORITHM_NAME = "SPEA2";
-
-    public static final int MAX_EVALUATIONS = 20000;
+    public static final int MAX_EVALUATIONS = 2000;
 
     public final List<Variation> crossover;
 

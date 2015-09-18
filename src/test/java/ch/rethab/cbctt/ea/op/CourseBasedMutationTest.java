@@ -129,7 +129,33 @@ public class CourseBasedMutationTest {
     }
 
     @Test
-    public void shouldProduceFeasibleOffspringsFromRealSample() throws Exception {
+    public void shouldProduceFeasibleOffspringsFromRealSample1() throws Exception {
+        String filename = String.format("comp%02d.ectt", 1);
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+        Formulation v = new UD1Formulation(spec);
+        RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
+        List<TimetableWithRooms> ts = new TeacherGreedyInitializer(spec, roomAssigner).initialize(2);
+
+        SolutionConverter solutionConverter = new SolutionConverter(v);
+        CourseBasedMutation mutation = new CourseBasedMutation(solutionConverter, roomAssigner, spec);
+
+        TimetableWithRooms tt = ts.get(0);
+
+        int rounds = 40;
+        do {
+            Solution kid = mutation.evolve(new Solution[]{ solutionConverter.toSolution(tt) })[0];
+            tt = solutionConverter.fromSolution(kid);
+            for (Constraint c : v.getConstraints()) {
+                assertEquals(0, c.violations(tt));
+            }
+        } while (rounds-- >= 0);
+    }
+
+    @Test
+    public void shouldProduceFeasibleOffspringsFromRealSample19() throws Exception {
         String filename = String.format("comp%02d.ectt", 19);
         InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -144,7 +170,7 @@ public class CourseBasedMutationTest {
 
         TimetableWithRooms tt = ts.get(0);
 
-        int rounds = 20;
+        int rounds = 40;
         do {
             Solution kid = mutation.evolve(new Solution[]{ solutionConverter.toSolution(tt) })[0];
             tt = solutionConverter.fromSolution(kid);

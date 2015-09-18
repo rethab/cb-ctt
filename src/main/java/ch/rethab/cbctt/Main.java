@@ -1,6 +1,8 @@
 package ch.rethab.cbctt;
 
 import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.ea.CbcttRunner;
+import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.initializer.Initializer;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.*;
@@ -38,7 +40,7 @@ public class Main {
         int populationSize = 100;
         int archiveSize = 30;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
         // jppfExecutorService.setBatchSize(100);
@@ -67,15 +69,19 @@ public class Main {
 
         Initializer initializer = new TeacherGreedyInitializer(spec, roomAssigner);
         InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer);
-        CompoundVariation variation = new CompoundVariation(mutators.get(0), crossovers.get(0), crossovers.get(1), crossovers.get(2));
+        // crossover operators must be applied first, only then the mutation is applied to the offsprings
+        // individually. see documentation of CompoundVariation
+        CompoundVariation variation = new CompoundVariation(/*crossovers.get(0), crossovers.get(1), crossovers.get(2),*/ mutators.get(0));
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(initializationFactory, variation, executorService);
 
         CbcttStaticParameters staticParameters = new CbcttStaticParameters(crossovers, mutators, algorithmFactory, formulation, evaluator);
 
         CbcttRunner cbcttRunner = new CbcttRunner(executorService, staticParameters, params);
-        cbcttRunner.run();
-
-
+        try {
+            cbcttRunner.run();
+        } finally {
+            executorService.shutdown();
+        }
 
 //        Instrumenter instrumenter = new Instrumenter()
 //                .withProblemClass(CurriculumBasedTimetabling.class, formulation, evaluator)
@@ -85,7 +91,6 @@ public class Main {
 //                .attachAll();
 
 
-        executorService.shutdown();
 
         // jppfExecutorService.shutdown();
         // jppfClient.close();

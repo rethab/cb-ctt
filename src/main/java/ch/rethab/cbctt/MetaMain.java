@@ -8,8 +8,8 @@ import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
-import ch.rethab.cbctt.meta.MetaEvaluator;
-import ch.rethab.cbctt.meta.ParametrizationPhenotype;
+import ch.rethab.cbctt.meta.MetaCurriculumBasedTimetabling;
+import ch.rethab.cbctt.meta.MetaStaticParameters;
 import ch.rethab.cbctt.moea.InitializationFactory;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
 import ch.rethab.cbctt.moea.SolutionConverter;
@@ -51,7 +51,11 @@ public class MetaMain {
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
-        MetaEvaluator metaEvaluator = new MetaEvaluator();
+
+        // TODO SPEA2 parameters
+        // int populationSize = properties.getInt("populationSize", 100);
+        // int numberOfOffspring =  properties.getInt("numberOfOffspring", populationSize);
+        // int k = properties.getInt("kNearestNeighbour", 1);
 
         List<Variation> crossovers = Arrays.asList(
                 new CourseBasedCrossover(solutionConverter, roomAssigner, spec),
@@ -68,11 +72,13 @@ public class MetaMain {
         CompoundVariation variation = new CompoundVariation(mutators.get(0), crossovers.get(0), crossovers.get(1), crossovers.get(2));
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(initializationFactory, variation, executorService);
 
-        StaticParameters metaStaticParameters = new MetaStaticParameters(crossovers, mutators, algorithmFactory, formulation, evaluator, metaEvaluator);
+        StaticParameters metaStaticParameters = new MetaStaticParameters(
+                crossovers, mutators, algorithmFactory, formulation, evaluator
+        );
 
         NondominatedPopulation result = new Executor()
                 .withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters)
-                .withAlgorithm(StaticParameters.META_ALGORITHM_NAME)
+                .withAlgorithm(MetaStaticParameters.META_ALGORITHM_NAME)
                 .withProperty("populationSize", 20)
                 .withMaxEvaluations(100000)
                 // .withInstrumenter(instrumenter)

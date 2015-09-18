@@ -7,6 +7,7 @@ import ch.rethab.cbctt.domain.Specification;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Represents the room assignments during timetable construction. This is
@@ -170,22 +171,26 @@ public class PeriodRoomAssignments {
         for (int c = 0; c < assignments.length && assignments[c][availableRoomIdx] != -1; c++) {
 
             // search through available rooms
-            for (int r = 0; r < assignments[c].length; r++) {
-                // room still free
-                if (assignments[c][r] == -1) {
+            Integer[] roomIndices = getSortedRoomIndices(assignments, c);
+            for (int i = 0; i < roomIndices.length; i++) {
+                int rid = roomIndices[i];
+
+                // room occupied free
+                if (assignments[c][rid] == -1) {
                     continue;
                 }
 
+                // set room to occupied for this course
+                assignments[c][rid] = -1;
                 // set course to assigned
-                assignments[c][r] = -1;
                 assignments[c][availableRoomIdx] = -1;
 
                 // set course to occupied for other rooms
                 for (int c2 = 0; c2 < assignments.length; c2++) {
                     // if room is not a constraint for other course and course is not assigned a room
                     // yet, update the available rooms
-                    if (assignments[c2][r] != -1 && assignments[c2][availableRoomIdx] != -1) {
-                        assignments[c2][r] = -1;
+                    if (assignments[c2][rid] != -1 && assignments[c2][availableRoomIdx] != -1) {
+                        assignments[c2][rid] = -1;
                         assignments[c2][availableRoomIdx]--;
 
                         // this course cannot be assigned anymore
@@ -205,6 +210,29 @@ public class PeriodRoomAssignments {
         }
 
         return true;
+    }
+
+    /**
+     * Gets the room indices for this course such that the
+     * room is first returned that could be assigned to the
+     * least courses.
+     */
+    private Integer[] getSortedRoomIndices(int[][] assignments, int c) {
+        Integer[] indices = new Integer[assignments[c].length-1];
+        // the values are the indices we need later
+        for (int i = 0; i < indices.length; i++) {
+            indices[i] = i;
+        }
+        // in the comparator, we get an index / ie. a room index.
+        // we then search vertically for the number of 0 occurances
+        // because the sort will be ascending the the less 0 a room
+        // has, the sooner it should be assigned (less 0 --> more -1 --> more constrained)
+        Arrays.sort(indices, Comparator.comparingInt(rid ->
+            IntStream.range(0, assignments.length)
+                     .map(cid -> assignments[cid][rid] == 0 ? 1 : 0)
+                     .sum()
+        ));
+        return indices;
     }
 
     /**
