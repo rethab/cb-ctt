@@ -273,15 +273,21 @@ public class CourseBasedCrossoverTest {
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
         AbstractLessonBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
-        Solution kids[] = courseBasedCrossover.evolve(parents);
-        TimetableWithRooms offspring1 = solutionConverter.fromSolution(kids[0]);
-        TimetableWithRooms offspring2 = solutionConverter.fromSolution(kids[1]);
 
-        for (Constraint c : v.getConstraints()) {
-            assertEquals(0, c.violations(offspring1));
-        }
-        for (Constraint c : v.getConstraints()) {
-            assertEquals(0, c.violations(offspring2));
+        int runs = 160; // repeated, because crossover involves randomness
+        while (runs-- >= 0) {
+            Solution kids[] = courseBasedCrossover.evolve(parents);
+            TimetableWithRooms offspring1 = solutionConverter.fromSolution(kids[0]);
+            TimetableWithRooms offspring2 = solutionConverter.fromSolution(kids[1]);
+
+            for (Constraint c : v.getConstraints()) {
+                assertEquals(0, c.violations(offspring1));
+            }
+            for (Constraint c : v.getConstraints()) {
+                assertEquals(0, c.violations(offspring2));
+            }
+
+            parents = kids;
         }
     }
 }

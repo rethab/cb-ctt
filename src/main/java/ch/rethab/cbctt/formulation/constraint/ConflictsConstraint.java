@@ -35,7 +35,13 @@ public class ConflictsConstraint implements Constraint {
 
     @Override
     public int violations(TimetableWithRooms t) {
-        return lecturesByCurriculaViolations(t) + teacherViolations(t);
+        int currVio = lecturesByCurriculaViolations(t);
+        int teachVio = teacherViolations(t);
+        int sum = currVio + teachVio;
+        if (sum != 0) {
+            System.err.printf("Curr=%d, Teach=%d\n", currVio, teachVio);
+        }
+        return currVio + teachVio;
     }
 
     private int teacherViolations(TimetableWithRooms t) {

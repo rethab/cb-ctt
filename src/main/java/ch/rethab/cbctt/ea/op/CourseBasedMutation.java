@@ -61,11 +61,10 @@ public class CourseBasedMutation implements Variation {
     }
 
     private TimetableWithRooms mutation(TimetableWithRooms original) {
-        System.err.println("Start mutation");
-
         Timetable mutated = original.newChild();
         Set<Meeting> meetings = mutated.getMeetings();
 
+        System.err.printf("START MUTATION\n");
 
         int attempts = ATTEMPTS_AFTER_FAIL;
         while (attempts-- >= 0) {
@@ -76,11 +75,11 @@ public class CourseBasedMutation implements Variation {
             // could not find distinct meeting.
             if (exchangeMeetings == null) {
                 // returns directly since this should only happen if there are no two distinct meetings
-                System.err.println("Returned exchangeMeetings==null");
                 return null;
             }
 
             if (exchange(mutated, exchangeMeetings)) {
+                System.err.printf("END MUTATION\n");
                 return roomAssigner.assignRooms(mutated);
             }
 
@@ -129,6 +128,11 @@ public class CourseBasedMutation implements Variation {
             restore(mutated, a, b);
             return false;
         }
+
+        System.err.printf("Moved %s from %d/%d to %d/%d and %s from %d/%d to %d/%d\n",
+                a.getCourse().getId(), a.getDay(), a.getPeriod(), aNew.getDay(), aNew.getPeriod(),
+                b.getCourse().getId(), b.getDay(), b.getPeriod(), bNew.getDay(), bNew.getPeriod()
+        );
 
         return true;
     }

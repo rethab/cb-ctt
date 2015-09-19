@@ -40,19 +40,26 @@ public final class SectorBasedCrossover extends AbstractLessonBasedCrossover {
     @Override
     protected Set<MeetingWithRoom> getMeetingsFromParent(TimetableWithRooms parent) {
         List<MeetingWithRoom> meetings = getSortedMeetings(parent);
+        System.err.printf("A= %s @ %d/%d, B=%s @ %d/%d\n",
+                meetings.get(0).getCourse().getId(), meetings.get(0).getDay(), meetings.get(0).getPeriod(),
+                meetings.get(1).getCourse().getId(), meetings.get(1).getDay(), meetings.get(1).getPeriod());
         int maxStartIdx = meetings.size() - sectorSize;
         int startIdx = maxStartIdx <= 0 ? 0 : rand.nextInt(maxStartIdx);
         int endIdx = startIdx + sectorSize;
         if (endIdx > meetings.size()) {
             endIdx = meetings.size();
         }
+
+        System.err.printf("startIdx=%d, endIdx=%d (meetingSize=%d)\n", startIdx, endIdx, meetings.size());
         return meetings.subList(startIdx, endIdx).stream().collect(Collectors.toSet());
     }
 
     private List<MeetingWithRoom> getSortedMeetings(TimetableWithRooms parent) {
+        // need to sort so we can create proper sectors
         int nCurricula = spec.getCurricula().size();
         int idx = rand.nextInt(nCurricula);
         String currId = spec.getCurricula().get(idx).getId();
+        System.err.printf("Moving Curr %s\n", currId);
         return parent.getCurriculumTimetables().get(currId).getAll()
                 .sorted(Comparator.comparing(mwr -> toSlotIdx(mwr.getDay(), mwr.getPeriod())))
                 .collect(Collectors.toList());

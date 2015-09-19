@@ -144,12 +144,12 @@ public class CourseBasedMutationTest {
 
         TimetableWithRooms tt = ts.get(0);
 
-        int rounds = 40;
+        int rounds = 320;
         do {
             Solution kid = mutation.evolve(new Solution[]{ solutionConverter.toSolution(tt) })[0];
             tt = solutionConverter.fromSolution(kid);
             for (Constraint c : v.getConstraints()) {
-                assertEquals(0, c.violations(tt));
+                assertEquals(c.name() + " has violations", 0, c.violations(tt));
             }
         } while (rounds-- >= 0);
     }
@@ -170,12 +170,12 @@ public class CourseBasedMutationTest {
 
         TimetableWithRooms tt = ts.get(0);
 
-        int rounds = 40;
+        int rounds = 320;
         do {
             Solution kid = mutation.evolve(new Solution[]{ solutionConverter.toSolution(tt) })[0];
             tt = solutionConverter.fromSolution(kid);
             for (Constraint c : v.getConstraints()) {
-                assertEquals(0, c.violations(tt));
+                assertEquals(c.name() + " has violations", 0, c.violations(tt));
             }
         } while (rounds-- >= 0);
     }

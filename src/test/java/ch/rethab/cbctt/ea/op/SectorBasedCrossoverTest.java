@@ -66,9 +66,9 @@ public class SectorBasedCrossoverTest {
         SectorBasedCrossover sectorBasedCrossover = new SectorBasedCrossover(solutionConverter, roomAssigner, spec, sectorSize);
 
         Solution parent1 = solutionConverter.toSolution(TimetableWithRooms.Builder.newBuilder(spec)
-                .addMeeting(c1, r1, 0, 0).addMeeting(c1, r2, 0, 1)
+                .addMeeting(c1, r1, 0, 0).addMeeting(c1, r1, 0, 1)
                 .addMeeting(c2, r1, 1, 1).addMeeting(c2, r1, 1, 2)
-                .addMeeting(c3, r1, 0, 0).addMeeting(c3, r2, 0, 1)
+                .addMeeting(c3, r2, 0, 0).addMeeting(c3, r2, 0, 1)
                 .build()
         );
 
@@ -79,17 +79,22 @@ public class SectorBasedCrossoverTest {
                 .build()
         );
 
-        Solution[] kids = sectorBasedCrossover.evolve(new Solution[]{parent1, parent2});
-        TimetableWithRooms kid1 = solutionConverter.fromSolution(kids[0]);
+        // in the past, this has only failed occasionally, so we leave the loop
+        for (int i = 0; i < 100; i++) {
+            Solution[] kids = sectorBasedCrossover.evolve(new Solution[]{parent1, parent2});
+            TimetableWithRooms kid1 = solutionConverter.fromSolution(kids[0]);
+            assertEquals(6, kid1.getMeetings().size());
 
-        boolean curr1Moved = kid1.getMeeting(c1, 1, 2) != null && kid1.getMeeting(c1, 2, 2) != null;
-        boolean curr2Moved = kid1.getMeeting(c2, 1, 1) != null && kid1.getMeeting(c2, 2, 2) != null;
-        boolean curr3Moved = kid1.getMeeting(c3, 2, 0) != null && kid1.getMeeting(c3, 2, 1) != null;
-        // one should have moved..
-        assertTrue(curr1Moved || curr2Moved || curr3Moved);
-        // ..but not both
-        assertFalse(curr1Moved && curr2Moved && curr3Moved);
-        assertEquals(6, kid1.getMeetings().size());
+            boolean curr1Moved = kid1.getMeeting(c1, 1, 2) != null && kid1.getMeeting(c1, 2, 2) != null;
+            boolean curr2Moved = kid1.getMeeting(c2, 1, 1) != null && kid1.getMeeting(c2, 2, 2) != null;
+            boolean curr3Moved = kid1.getMeeting(c3, 2, 0) != null && kid1.getMeeting(c3, 2, 1) != null;
+            System.err.printf("Moved %b/%b/%b\n\n", curr1Moved, curr2Moved, curr3Moved);
+            // one should have moved..
+            assertTrue(curr1Moved || curr2Moved || curr3Moved);
+            // ..but not both
+            assertFalse(curr1Moved && curr2Moved && curr3Moved);
+            assertEquals(6, kid1.getMeetings().size());
+        }
     }
 
     @Test

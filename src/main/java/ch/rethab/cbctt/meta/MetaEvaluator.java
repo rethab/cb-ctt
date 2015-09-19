@@ -21,9 +21,9 @@ public class MetaEvaluator {
 
     public MetaEvaluator(Problem p, NondominatedPopulation referenceSet) {
         this.indicators = Arrays.asList(
-                new Hypervolume(p, referenceSet),
-                new AdditiveEpsilonIndicator(p, referenceSet),
-                new GenerationalDistance(p, referenceSet)
+            new Hypervolume(p, referenceSet),
+            new AdditiveEpsilonIndicator(p, referenceSet),
+            new GenerationalDistance(p, referenceSet)
         );
     }
 
