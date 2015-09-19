@@ -61,6 +61,7 @@ public class CourseBasedMutation implements Variation {
     }
 
     private TimetableWithRooms mutation(TimetableWithRooms original) {
+        System.err.println("Start mutation");
 
         int attempts = ATTEMPTS_AFTER_FAIL;
         while (attempts-- >= 0) {
@@ -77,7 +78,10 @@ public class CourseBasedMutation implements Variation {
             }
 
             if (exchange(offspring, exchangeMeetings)) {
+                System.err.println("Successful mutation");
                 return roomAssigner.assignRooms(offspring);
+            } else {
+                System.err.println("Failed mutation");
             }
 
         }

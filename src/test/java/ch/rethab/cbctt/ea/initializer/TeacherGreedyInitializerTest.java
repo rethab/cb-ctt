@@ -2,6 +2,8 @@ package ch.rethab.cbctt.ea.initializer;
 
 import ch.rethab.cbctt.domain.*;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.Meeting;
+import ch.rethab.cbctt.ea.phenotype.Timetable;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
@@ -108,6 +110,22 @@ public class TeacherGreedyInitializerTest {
                 assertEquals(constraint.name() + " has violations", 0, constraint.violations(timetable));
             }
 
+        }
+    }
+
+    @Test
+    public void shouldBeAbleToReproduceItelself() throws IOException {
+        String filename = "comp01.ectt";
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+        Initializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec));
+        for (TimetableWithRooms timetable : teacherGreedyInitializer.initialize(100)) {
+            Timetable offspring = timetable.newChild();
+            for (Meeting offspringMeeting : offspring.getMeetings()) {
+                assertNotNull(timetable.getMeeting(offspringMeeting.getCourse(), offspringMeeting.getDay(), offspringMeeting.getPeriod()));
+            }
         }
     }
 
