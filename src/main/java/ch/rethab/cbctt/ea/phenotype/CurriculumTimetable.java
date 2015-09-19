@@ -21,6 +21,17 @@ public final class CurriculumTimetable implements Serializable {
         this.meetings = new Meeting[this.spec.getNumberOfDaysPerWeek() * this.spec.getPeriodsPerDay()];
     }
 
+    private CurriculumTimetable(Specification spec, Meeting[] meetings) {
+        this.spec = spec;
+        this.meetings = meetings;
+    }
+
+    public static CurriculumTimetable fromWithRooms(Specification spec, CurriculumTimetableWithRooms cttwr) {
+        Meeting[] meetings = new Meeting[spec.getPeriodsPerDay() * spec.getNumberOfDaysPerWeek()];
+        cttwr.getAll().forEach(mwr -> meetings[toSlotIdx(spec, mwr.getDay(), mwr.getPeriod())] = mwr.withoutRoom());
+        return new CurriculumTimetable(spec, meetings);
+    }
+
     public void setMeeting(Meeting m) {
 
         // all slots are organized linearly in one list
@@ -37,11 +48,16 @@ public final class CurriculumTimetable implements Serializable {
     }
 
     private int toSlotIdx(int day, int period) {
+        return toSlotIdx(spec, day, period);
+    }
+
+    private static int toSlotIdx(Specification spec, int day, int period) {
         return day * spec.getPeriodsPerDay() + period;
     }
 
     public Meeting get(int day, int period) {
-        return meetings[toSlotIdx(day, period)];
+        int slotIdx = toSlotIdx(day, period);
+        return slotIdx >= meetings.length ? null : meetings[slotIdx];
     }
 
     public Set<Meeting> getMeetingsByCourse(Course c) {
@@ -55,6 +71,7 @@ public final class CurriculumTimetable implements Serializable {
     public void unsetMeeting(int day, int period) {
         meetings[toSlotIdx(day, period)] = null;
     }
+
 }
 
 

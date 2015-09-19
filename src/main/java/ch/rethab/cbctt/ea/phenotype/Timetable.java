@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class Timetable implements Serializable {
 
     /** the curriculum timetables */
-    private final Map<String, CurriculumTimetable> curriculumTimetables = new HashMap<>();
+    private final Map<String, CurriculumTimetable> curriculumTimetables;
 
     private final PeriodRoomAssignments[] periodRoomAssignmentses;
 
@@ -24,12 +24,38 @@ public class Timetable implements Serializable {
 
     public Timetable(Specification spec) {
         this.spec = spec;
-
+        this.curriculumTimetables = new HashMap<>();
         spec.getCurricula().forEach(c -> curriculumTimetables.put(c.getId(), new CurriculumTimetable(spec)));
         periodRoomAssignmentses = new PeriodRoomAssignments[spec.getNumberOfDaysPerWeek() * spec.getPeriodsPerDay()];
         for (int period = 0; period < periodRoomAssignmentses.length; period++) {
             periodRoomAssignmentses[period] = new PeriodRoomAssignments(spec);
         }
+    }
+
+    private Timetable(Specification spec, Map<String, CurriculumTimetable> curriculumTimetables, PeriodRoomAssignments[] periodRoomAssignmentses) {
+        this.spec = spec;
+        this.curriculumTimetables = curriculumTimetables;
+        this.periodRoomAssignmentses = periodRoomAssignmentses;
+    }
+
+    /** Allows fast construction, since it can avoid feasibility checks */
+    public static Timetable fromWithRooms(Specification spec, TimetableWithRooms tt) {
+        int totalSlots = spec.getPeriodsPerDay()*spec.getNumberOfDaysPerWeek();
+        Map<String, CurriculumTimetable> curriculumTimetables = new HashMap<>(spec.getCurricula().size());
+        PeriodRoomAssignments[] periodRoomAssignmentses = new PeriodRoomAssignments[totalSlots];
+
+        tt.getCurriculumTimetables().entrySet().stream().forEach(kv ->
+            curriculumTimetables.put(kv.getKey(), CurriculumTimetable.fromWithRooms(spec, kv.getValue()))
+        );
+
+        for (int slotIdx = 0; slotIdx < periodRoomAssignmentses.length; slotIdx++) {
+            int day = Math.floorDiv(slotIdx, spec.getPeriodsPerDay());
+            int period = slotIdx % spec.getPeriodsPerDay();
+            Set<MeetingWithRoom> slotMeetings = tt.getMeetingsByPeriod(day, period);
+            periodRoomAssignmentses[slotIdx] = PeriodRoomAssignments.unsafePerformConstruction(spec, slotMeetings);
+        }
+
+        return new Timetable(spec, curriculumTimetables, periodRoomAssignmentses);
     }
 
     public boolean addMeeting(Meeting m) {

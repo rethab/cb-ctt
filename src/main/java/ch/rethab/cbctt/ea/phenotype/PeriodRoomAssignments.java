@@ -22,7 +22,7 @@ public class PeriodRoomAssignments {
     private final RoomViolations[][] roomAssignments;
 
     /* everything is an array, so we need to know at which index each room is stored */
-    private final Map<String, Integer> courseIdxMap = new HashMap<>();
+    private final Map<String, Integer> courseIdxMap;
 
     /* the course array is built gradually. this is the index where the next is to be
      * scheduled. Note that while checking if a course is suitable to be scheduled
@@ -56,8 +56,31 @@ public class PeriodRoomAssignments {
 
     public PeriodRoomAssignments(Specification spec) {
         this.spec = spec;
+        this.courseIdxMap = new HashMap<>();
         Set<String> roomIds = spec.getRooms().stream().map(Room::getId).collect(Collectors.toSet());
         roomAssignments = new RoomViolations[roomIds.size()][roomIds.size()];
+    }
+
+    /**
+     * Creates this class with a list of predefined assignments.
+     * Attention: This method performs no feasibility checks and
+     *            therefore relies on the feasibility of the
+     *            specified meetings.
+     *            --> Use at own risk / don't try at home
+     */
+    static PeriodRoomAssignments unsafePerformConstruction(Specification spec, Set<MeetingWithRoom> meetings) {
+
+        PeriodRoomAssignments pra = new PeriodRoomAssignments(spec);
+
+        pra.nextCourseIdx = 0;
+
+        meetings.forEach(m -> {
+            pra.roomAssignments[pra.nextCourseIdx] = pra.fillRooms(m.getCourse());
+            pra.courseIdxMap.put(m.getCourse().getId(), pra.nextCourseIdx);
+            pra.nextCourseIdx++;
+        });
+
+        return pra;
     }
 
     public List<CourseWithRoom> assignRooms() {

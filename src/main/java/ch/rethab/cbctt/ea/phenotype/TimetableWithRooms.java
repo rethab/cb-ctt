@@ -7,6 +7,7 @@ import ch.rethab.cbctt.domain.Specification;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class TimetableWithRooms {
 
     private final Specification spec;
@@ -47,13 +48,15 @@ public class TimetableWithRooms {
     }
 
     public Timetable newChild() {
-        Timetable t = new Timetable(spec);
-        for (MeetingWithRoom m : getMeetings()) {
-            if (!t.addMeeting(m.withoutRoom())) {
-                throw new IllegalStateException("Cannot recreate timetable");
-            }
-        }
-        return t;
+        return Timetable.fromWithRooms(spec, this);
+    }
+
+    public Set<MeetingWithRoom> getMeetingsByPeriod(int day, int period) {
+        return curriculumTimetables.values().stream()
+                .map(ctt -> ctt.get(day, period))
+                .filter(m -> m != null)
+                // must be set, because course exists multiple times across curricula
+                .collect(Collectors.toSet());
     }
 
     public static class Builder {
