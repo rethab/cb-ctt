@@ -111,7 +111,6 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
 
         Set<Period> preferredPeriods = unscheduleLessons(t, meetings);
         List<Course> leftovers = scheduleAtSpecifiedPeriods(t, meetings);
-        System.err.printf("Leftovers=%d\n", leftovers.size());
         scheduleGreedy(t, preferredPeriods, leftovers);
     }
 
@@ -132,7 +131,6 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
             // it later
             if (t.getMeeting(meeting.getCourse(), meeting.getDay(), meeting.getPeriod()) != null) {
                 toBeRemoved.add(meeting);
-                System.err.printf("Schedule %s @ %d/%d to be removed\n", meeting.getCourse().getId(), meeting.getDay(), meeting.getPeriod());
                 continue;
             }
 
@@ -150,7 +148,6 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
             int removeIdx = nMeetings == 1 ? 0 : rand.nextInt(nMeetings);
 
             Meeting m = meetingsByCourse.toArray(new Meeting[nMeetings])[removeIdx];
-            System.err.printf("Removing %s @ %d/%d from timetable\n", meeting.getCourse().getId(), meeting.getDay(), meeting.getPeriod());
             t.removeMeeting(m);
 
             preferredPeriods.add(new Period(m.getDay(), m.getPeriod()));
@@ -165,7 +162,6 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
         List<Course> leftovers = new LinkedList<>();
 
         meetings.forEach(m -> {
-            System.err.printf("Scheduling meeting %s @ %d/%d\n", m.getCourse().getId(), m.getDay(), m.getPeriod());
             // check if this course has already scheduled a lecture here
             Meeting existing = t.getMeeting(m.getCourse(), m.getDay(), m.getPeriod());
 
@@ -189,8 +185,6 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
                         // m is now where old was
                         leftovers.add(old.getCourse());
                     }
-                } else {
-                    System.err.printf("Scheduled %s @ %d/%d\n", m.getCourse().getId(), m.getDay(), m.getPeriod());
                 }
             } else {
                 leftovers.add(m.getCourse());

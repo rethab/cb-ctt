@@ -37,10 +37,6 @@ public class ConflictsConstraint implements Constraint {
     public int violations(TimetableWithRooms t) {
         int currVio = lecturesByCurriculaViolations(t);
         int teachVio = teacherViolations(t);
-        int sum = currVio + teachVio;
-        if (sum != 0) {
-            System.err.printf("Curr=%d, Teach=%d\n", currVio, teachVio);
-        }
         return currVio + teachVio;
     }
 
