@@ -88,7 +88,6 @@ public class SectorBasedCrossoverTest {
             boolean curr1Moved = kid1.getMeeting(c1, 1, 2) != null && kid1.getMeeting(c1, 2, 2) != null;
             boolean curr2Moved = kid1.getMeeting(c2, 1, 1) != null && kid1.getMeeting(c2, 2, 2) != null;
             boolean curr3Moved = kid1.getMeeting(c3, 2, 0) != null && kid1.getMeeting(c3, 2, 1) != null;
-            System.err.printf("Moved %b/%b/%b\n\n", curr1Moved, curr2Moved, curr3Moved);
             // one should have moved..
             assertTrue(curr1Moved || curr2Moved || curr3Moved);
             // ..but not both

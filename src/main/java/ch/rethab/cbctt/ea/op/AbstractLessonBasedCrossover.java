@@ -9,6 +9,7 @@ import org.moeaframework.core.Variation;
 
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -136,6 +137,7 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
 
             // take a random lesson of the course and remove it
             Set<Meeting> meetingsByCourse = t.getMeetingsByCourse(meeting.getCourse());
+            meetingsByCourse.removeAll(toBeRemoved.stream().map(MeetingWithRoom::withoutRoom).collect(Collectors.toSet()));
             int nMeetings = meetingsByCourse.size();
 
             if (nMeetings == 0) {
