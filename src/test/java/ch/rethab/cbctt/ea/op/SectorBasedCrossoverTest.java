@@ -63,7 +63,7 @@ public class SectorBasedCrossoverTest {
     @Test
     public void shouldMoveSpecifiedNumberOfLessons() {
         int sectorSize = 2; // two means the entire curriculum is moved
-        SectorBasedCrossover sectorBasedCrossover = new SectorBasedCrossover(solutionConverter, roomAssigner, spec, sectorSize);
+        SectorBasedCrossover sectorBasedCrossover = new SectorBasedCrossover(spec, solutionConverter, roomAssigner, sectorSize);
 
         Solution parent1 = solutionConverter.toSolution(TimetableWithRooms.Builder.newBuilder(spec)
                 .addMeeting(c1, r1, 0, 0).addMeeting(c1, r1, 0, 1)
@@ -99,7 +99,7 @@ public class SectorBasedCrossoverTest {
     @Test
     public void shouldNotScrewUpWithCourseInTwoCurricula() {
         int sectorSize = 2; // two means the entire curriculum is moved
-        SectorBasedCrossover sectorBasedCrossover = new SectorBasedCrossover(solutionConverter, roomAssigner, spec, sectorSize);
+        SectorBasedCrossover sectorBasedCrossover = new SectorBasedCrossover(spec, solutionConverter, roomAssigner, sectorSize);
 
         Solution parent1 = solutionConverter.toSolution(TimetableWithRooms.Builder.newBuilder(spec)
                 .addMeeting(c1, r1, 0, 0)
@@ -139,7 +139,7 @@ public class SectorBasedCrossoverTest {
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
-        AbstractLessonBasedCrossover crossover = new SectorBasedCrossover(solutionConverter, roomAssigner, spec, 7);
+        AbstractLessonBasedCrossover crossover = new SectorBasedCrossover(spec, solutionConverter, roomAssigner, 7);
         Solution kids[] = crossover.evolve(parents);
         TimetableWithRooms offspring1 = solutionConverter.fromSolution(kids[0]);
         TimetableWithRooms offspring2 = solutionConverter.fromSolution(kids[1]);
@@ -169,7 +169,7 @@ public class SectorBasedCrossoverTest {
         );
 
         for (int sectorSize = 0; sectorSize < 10; sectorSize++) {
-            new SectorBasedCrossover(solutionConverter, roomAssigner, spec, sectorSize)
+            new SectorBasedCrossover(spec, solutionConverter, roomAssigner, sectorSize)
                     .evolve(new Solution[]{parent1, parent2});
         }
     }

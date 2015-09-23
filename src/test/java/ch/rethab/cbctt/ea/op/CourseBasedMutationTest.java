@@ -60,7 +60,7 @@ public class CourseBasedMutationTest {
     SolutionConverter solutionConverter = new SolutionConverter(new UD1Formulation(spec));
 
     RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
-    CourseBasedMutation courseBasedMutation = new CourseBasedMutation(solutionConverter, roomAssigner, spec);
+    CourseBasedMutation courseBasedMutation = new CourseBasedMutation(spec, solutionConverter, roomAssigner, 1);
 
     @Test
     public void shouldExchangeTwoCourses() {
@@ -79,6 +79,28 @@ public class CourseBasedMutationTest {
 
         // total size should not have changed
         assertEquals(2, mutated.getMeetings().size());
+    }
+
+    @Test
+    public void shouldNotMutateWithProbabilityZero() {
+        TimetableWithRooms t = TimetableWithRooms.Builder
+                .newBuilder(spec)
+                .addMeeting(c1, r1, 0, 0)
+                .addMeeting(c2, r2, 0, 2)
+                .addMeeting(c4, r1, 0, 1)
+                .build();
+
+        CourseBasedMutation courseBasedMutation = new CourseBasedMutation(spec, solutionConverter, roomAssigner, 0);
+        Solution sol = courseBasedMutation.evolve(new Solution[] {solutionConverter.toSolution(t)})[0];
+        TimetableWithRooms mutated = solutionConverter.fromSolution(sol);
+
+        // nohting should have moved
+        assertNotNull(mutated.getMeeting(c1, 0, 0));
+        assertNotNull(mutated.getMeeting(c2, 0, 2));
+        assertNotNull(mutated.getMeeting(c4, 0, 1));
+
+        // total size should not have changed
+        assertEquals(3, mutated.getMeetings().size());
     }
 
     @Test
@@ -140,7 +162,7 @@ public class CourseBasedMutationTest {
         List<TimetableWithRooms> ts = new TeacherGreedyInitializer(spec, roomAssigner).initialize(2);
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
-        CourseBasedMutation mutation = new CourseBasedMutation(solutionConverter, roomAssigner, spec);
+        CourseBasedMutation mutation = new CourseBasedMutation(spec, solutionConverter, roomAssigner, 1);
 
         TimetableWithRooms tt = ts.get(0);
 
@@ -166,7 +188,7 @@ public class CourseBasedMutationTest {
         List<TimetableWithRooms> ts = new TeacherGreedyInitializer(spec, roomAssigner).initialize(1);
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
-        CourseBasedMutation mutation = new CourseBasedMutation(solutionConverter, roomAssigner, spec);
+        CourseBasedMutation mutation = new CourseBasedMutation(spec, solutionConverter, roomAssigner, 1);
 
         TimetableWithRooms tt = ts.get(0);
 

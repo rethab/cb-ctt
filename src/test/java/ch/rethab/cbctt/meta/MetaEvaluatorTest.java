@@ -1,6 +1,5 @@
 package ch.rethab.cbctt.meta;
 
-import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.CurriculumBasedTimetabling;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import org.junit.Test;
@@ -34,9 +33,7 @@ public class MetaEvaluatorTest {
             new Solution(new double[]{500, 100, 400})
         ));
 
-        double hypervolume = me.evaluate(0, nd);
-        double addivieEpsilon = me.evaluate(1, nd);
-        double generationalDistance = me.evaluate(2, nd);
+        double addivieEpsilon = me.evaluate(nd);
 
         // System.out.printf("Hypervolume=%2.2f, AdditiveEpsilon=%2.2f, GenerationalDistance=%2.2f\n",
         //                   hypervolume, addivieEpsilon, generationalDistance);

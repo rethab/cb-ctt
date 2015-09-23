@@ -32,8 +32,8 @@ public final class SectorBasedCrossover extends AbstractLessonBasedCrossover {
     /** number of lessons in one sector */
     private final int sectorSize;
 
-    public SectorBasedCrossover(SolutionConverter solutionConverter, RoomAssigner roomAssigner, Specification spec, int sectorSize) {
-        super(solutionConverter, spec, roomAssigner);
+    public SectorBasedCrossover(Specification spec, SolutionConverter solutionConverter, RoomAssigner roomAssigner, int sectorSize) {
+        super(spec, solutionConverter, roomAssigner);
         this.sectorSize = sectorSize;
     }
 

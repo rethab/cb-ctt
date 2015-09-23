@@ -1,12 +1,10 @@
 package ch.rethab.cbctt.meta;
 
-import ch.rethab.cbctt.StaticParameters;
+import ch.rethab.cbctt.ea.CbcttStaticParameters;
+import ch.rethab.cbctt.moea.VariationFactory;
 import org.junit.Test;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,27 +12,11 @@ import java.util.List;
  */
 public class ParametrizationPhenotypeTest {
 
-    Variation op1 = new DummyVariation();
-    Variation op2 = new DummyVariation();
-
     @Test
     public void shouldNotBlowUp() {
-        StaticParameters operators = new StaticParameters(Collections.singletonList(op1), Collections.singletonList(op2));
-        List<Variable> variables = ParametrizationPhenotype.newVariables(operators);
-        ParametrizationPhenotype.decode(operators, variables);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, new VariationFactory(null, null, null));
+        List<Variable> variables = ParametrizationPhenotype.newVariables(cbcttStaticParameters);
+        ParametrizationPhenotype.decode(cbcttStaticParameters, variables);
     }
 
-}
-
-class DummyVariation implements Variation {
-
-    @Override
-    public int getArity() {
-        return 0;
-    }
-
-    @Override
-    public Solution[] evolve(Solution[] parents) {
-        return new Solution[0];
-    }
 }

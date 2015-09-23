@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
  */
 public final class CurriculumBasedCrossover extends AbstractLessonBasedCrossover {
 
-    public CurriculumBasedCrossover(SolutionConverter solutionConverter, RoomAssigner roomAssigner, Specification spec) {
-        super(solutionConverter, spec, roomAssigner);
+    public CurriculumBasedCrossover(Specification spec, SolutionConverter solutionConverter, RoomAssigner roomAssigner) {
+        super(spec, solutionConverter, roomAssigner);
     }
 
     @Override

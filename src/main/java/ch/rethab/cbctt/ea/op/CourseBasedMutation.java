@@ -26,16 +26,20 @@ public class CourseBasedMutation implements Variation {
 
     private final SecureRandom rand = new SecureRandom();
 
+    private final Specification spec;
+
     private final SolutionConverter solutionConverter;
 
     private final RoomAssigner roomAssigner;
 
-    private final Specification spec;
+    private final double mutationProbability;
 
-    public CourseBasedMutation(SolutionConverter solutionConverter, RoomAssigner roomAssigner, Specification spec) {
+    public CourseBasedMutation(Specification spec, SolutionConverter solutionConverter, RoomAssigner roomAssigner,
+                               double mutationProbability) {
         this.solutionConverter = solutionConverter;
         this.roomAssigner = roomAssigner;
         this.spec = spec;
+        this.mutationProbability = mutationProbability;
     }
 
     @Override
@@ -45,6 +49,11 @@ public class CourseBasedMutation implements Variation {
 
     @Override
     public Solution[] evolve(Solution[] solutions) {
+
+        if (rand.nextDouble() > mutationProbability) {
+            return solutions;
+        }
+
         TimetableWithRooms original = solutionConverter.fromSolution(solutions[0]);
 
         TimetableWithRooms mutated;

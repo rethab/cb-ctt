@@ -1,7 +1,7 @@
 package ch.rethab.cbctt;
 
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.initializer.Initializer;
+import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.*;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
@@ -10,22 +10,17 @@ import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.meta.MetaCurriculumBasedTimetabling;
 import ch.rethab.cbctt.meta.MetaStaticParameters;
-import ch.rethab.cbctt.moea.InitializationFactory;
-import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
-import ch.rethab.cbctt.moea.SolutionConverter;
+import ch.rethab.cbctt.moea.*;
 import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -52,35 +47,28 @@ public class MetaMain {
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
-        // TODO SPEA2 parameters
-        // int populationSize = properties.getInt("populationSize", 100);
-        // int numberOfOffspring =  properties.getInt("numberOfOffspring", populationSize);
-        // int k = properties.getInt("kNearestNeighbour", 1);
+        int populationSize = 120;
+        int offspringSize =  120;
+        int k = 1;
 
-        List<Variation> crossovers = Arrays.asList(
-                new CourseBasedCrossover(solutionConverter, roomAssigner, spec),
-                new CurriculumBasedCrossover(solutionConverter, roomAssigner, spec),
-                // todo make sectorSize parameterizable, potentially use these operators with factories
-                new SectorBasedCrossover(solutionConverter, roomAssigner, spec, 10)
-        );
-        List<Variation> mutators = Collections.singletonList(
-                new CourseBasedMutation(solutionConverter, roomAssigner, spec)
-        );
+        Variation metaVariation = new SBX(0.006, 0.3); // todo undo
 
-        Initializer initializer = new TeacherGreedyInitializer(spec, roomAssigner);
-        InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer);
-        CompoundVariation variation = new CompoundVariation(mutators.get(0), crossovers.get(0), crossovers.get(1), crossovers.get(2));
-        AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(initializationFactory, variation, executorService);
+        TeacherGreedyInitializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, roomAssigner);
+        TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(formulation, teacherGreedyInitializer);
+        VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, cbcttInitializationFactory, variationFactory);
+        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
 
-        StaticParameters metaStaticParameters = new MetaStaticParameters(
-                crossovers, mutators, algorithmFactory, formulation, evaluator
-        );
+        AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(metaStaticParameters, metaVariation);
 
         NondominatedPopulation result = new Executor()
-                .withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters)
-                .withAlgorithm(MetaStaticParameters.META_ALGORITHM_NAME)
-                .withProperty("populationSize", 20)
-                .withMaxEvaluations(100000)
+                .withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, executorService)
+                .withAlgorithm(metaStaticParameters.algorithmName())
+                .usingAlgorithmFactory(algorithmFactory)
+                .withMaxEvaluations(metaStaticParameters.maxEvaluations())
+                .withProperty("populationSize", populationSize)
+                .withProperty("offspringSize", offspringSize)
+                .withProperty("k", k)
                 // .withInstrumenter(instrumenter)
                 .distributeWith(executorService)
                 .run();

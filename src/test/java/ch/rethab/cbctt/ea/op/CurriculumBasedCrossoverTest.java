@@ -59,7 +59,7 @@ public class CurriculumBasedCrossoverTest {
     SolutionConverter solutionConverter = new SolutionConverter(new UD1Formulation(spec));
 
     RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
-    CurriculumBasedCrossover curriculumBasedCrossover = new CurriculumBasedCrossover(solutionConverter, roomAssigner, spec);
+    CurriculumBasedCrossover curriculumBasedCrossover = new CurriculumBasedCrossover(spec, solutionConverter, roomAssigner);
 
     @Test
     public void shouldReplicateEntireCurriculum() {
@@ -136,7 +136,7 @@ public class CurriculumBasedCrossoverTest {
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
-        AbstractLessonBasedCrossover crossover = new CurriculumBasedCrossover(solutionConverter, roomAssigner, spec);
+        AbstractLessonBasedCrossover crossover = new CurriculumBasedCrossover(spec, solutionConverter, roomAssigner);
         Solution kids[] = crossover.evolve(parents);
         TimetableWithRooms offspring1 = solutionConverter.fromSolution(kids[0]);
         TimetableWithRooms offspring2 = solutionConverter.fromSolution(kids[1]);

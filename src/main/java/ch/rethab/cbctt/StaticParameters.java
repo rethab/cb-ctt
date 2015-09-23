@@ -1,23 +1,16 @@
 package ch.rethab.cbctt;
 
-import org.moeaframework.core.Variation;
-
-import java.util.Collections;
-import java.util.List;
+import ch.rethab.cbctt.moea.InitializationFactory;
+import org.moeaframework.core.Problem;
 
 /**
  * @author Reto Habluetzel, 2015
  */
-public class StaticParameters {
+public interface StaticParameters {
 
-    public static final int MAX_EVALUATIONS = 2000;
+    int maxEvaluations();
 
-    public final List<Variation> crossover;
+    String algorithmName();
 
-    public final List<Variation> mutation;
-
-    public StaticParameters(List<Variation> crossover, List<Variation> mutation) {
-        this.crossover = Collections.unmodifiableList(crossover);
-        this.mutation = Collections.unmodifiableList(mutation);
-    }
+    InitializationFactory getInitializationFactory(Problem problem);
 }

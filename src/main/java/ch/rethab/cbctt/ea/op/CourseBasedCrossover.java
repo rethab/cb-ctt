@@ -21,8 +21,8 @@ import java.util.Set;
  */
 public final class CourseBasedCrossover extends AbstractLessonBasedCrossover {
 
-    public CourseBasedCrossover(SolutionConverter solutionConverter, RoomAssigner roomAssigner, Specification spec) {
-        super(solutionConverter, spec, roomAssigner);
+    public CourseBasedCrossover( Specification spec, SolutionConverter solutionConverter, RoomAssigner roomAssigner) {
+        super(spec, solutionConverter, roomAssigner);
     }
 
     @Override

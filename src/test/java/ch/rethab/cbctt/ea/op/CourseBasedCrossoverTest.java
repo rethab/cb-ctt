@@ -62,7 +62,7 @@ public class CourseBasedCrossoverTest {
     SolutionConverter solutionConverter = new SolutionConverter(new UD1Formulation(spec));
 
     RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
-    CourseBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
+    CourseBasedCrossover courseBasedCrossover = new CourseBasedCrossover(spec, solutionConverter, roomAssigner);
 
     @Before
     public void init() {
@@ -272,7 +272,7 @@ public class CourseBasedCrossoverTest {
 
         SolutionConverter solutionConverter = new SolutionConverter(v);
         Solution parents[] = new Solution[]{solutionConverter.toSolution(ts.get(0)), solutionConverter.toSolution(ts.get(1))};
-        AbstractLessonBasedCrossover courseBasedCrossover = new CourseBasedCrossover(solutionConverter, roomAssigner, spec);
+        AbstractLessonBasedCrossover courseBasedCrossover = new CourseBasedCrossover(spec, solutionConverter, roomAssigner);
 
         int runs = 160; // repeated, because crossover involves randomness
         while (runs-- >= 0) {

@@ -19,14 +19,15 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
     // if a crossover fails, it is restarted this many times
     private static final int ATTEMPTS_AFTER_FAIL = 100;
 
-    protected final SolutionConverter solutionConverter;
-    protected final RoomAssigner roomAssigner;
-    protected final Specification spec;
     protected final SecureRandom rand = new SecureRandom();
 
-    public AbstractLessonBasedCrossover(SolutionConverter solutionConverter, Specification spec, RoomAssigner roomAssigner) {
-        this.solutionConverter = solutionConverter;
+    protected final SolutionConverter solutionConverter;
+    protected final Specification spec;
+    protected final RoomAssigner roomAssigner;
+
+    public AbstractLessonBasedCrossover(Specification spec, SolutionConverter solutionConverter, RoomAssigner roomAssigner) {
         this.spec = spec;
+        this.solutionConverter = solutionConverter;
         this.roomAssigner = roomAssigner;
     }
 

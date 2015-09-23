@@ -11,13 +11,11 @@ import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
-import ch.rethab.cbctt.moea.InitializationFactory;
-import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
+import ch.rethab.cbctt.moea.TimetableInitializationFactory;
 import ch.rethab.cbctt.moea.SolutionConverter;
+import ch.rethab.cbctt.moea.VariationFactory;
 import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.operator.CompoundVariation;
-import org.moeaframework.core.spi.AlgorithmFactory;
 
 import java.io.*;
 import java.util.*;
@@ -35,10 +33,11 @@ public class Main {
         }
         String filename = args[0];
 
-        double crossoverProbability = 0.5;
         double mutationProbability = 0.2;
+        int sectorSize = 3;
         int populationSize = 100;
         int archiveSize = 30;
+        int k = 1;
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         // JPPFClient jppfClient = new JPPFClient();
@@ -52,31 +51,16 @@ public class Main {
         Formulation formulation = new UD1Formulation(spec);
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
+        VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
 
-        List<Variation> crossovers = Arrays.asList(
-            new CourseBasedCrossover(solutionConverter, roomAssigner, spec),
-            new CurriculumBasedCrossover(solutionConverter, roomAssigner, spec),
-            new SectorBasedCrossover(solutionConverter, roomAssigner, spec, 10)
-        );
-        List<Variation> mutators = Collections.singletonList(
-            new CourseBasedMutation(solutionConverter, roomAssigner, spec)
-        );
-
-        ParametrizationPhenotype params = new ParametrizationPhenotype(
-                crossovers, crossoverProbability,
-                mutators, mutationProbability,
-                populationSize, archiveSize);
-
+        List<Variation> crossovers = Arrays.asList(variationFactory.getCrossoverOperator(0, sectorSize), variationFactory.getCrossoverOperator(1, sectorSize), variationFactory.getCrossoverOperator(2, sectorSize));
+        List<Variation> mutators = Collections.singletonList(variationFactory.getMutationOperator(0, mutationProbability));
+        ParametrizationPhenotype params = new ParametrizationPhenotype(crossovers, mutators, populationSize, archiveSize, k);
         Initializer initializer = new TeacherGreedyInitializer(spec, roomAssigner);
-        InitializationFactory initializationFactory = new InitializationFactory(formulation, initializer);
-        // crossover operators must be applied first, only then the mutation is applied to the offsprings
-        // individually. see documentation of CompoundVariation
-        CompoundVariation variation = new CompoundVariation(/*crossovers.get(0), crossovers.get(1), crossovers.get(2),*/ mutators.get(0));
-        AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(initializationFactory, variation, executorService);
+        TimetableInitializationFactory timetableInitializationFactory = new TimetableInitializationFactory(formulation, initializer);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, timetableInitializationFactory, variationFactory);
 
-        CbcttStaticParameters staticParameters = new CbcttStaticParameters(crossovers, mutators, algorithmFactory, formulation, evaluator);
-
-        CbcttRunner cbcttRunner = new CbcttRunner(executorService, staticParameters, params);
+        CbcttRunner cbcttRunner = new CbcttRunner(executorService, cbcttStaticParameters, params);
         try {
             cbcttRunner.run();
         } finally {
