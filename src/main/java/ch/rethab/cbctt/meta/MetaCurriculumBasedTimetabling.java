@@ -2,7 +2,10 @@ package ch.rethab.cbctt.meta;
 
 import ch.rethab.cbctt.ea.CbcttRunner;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
-import org.moeaframework.core.*;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variable;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
