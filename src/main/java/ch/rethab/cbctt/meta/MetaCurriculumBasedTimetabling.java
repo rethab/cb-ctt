@@ -21,11 +21,11 @@ public class MetaCurriculumBasedTimetabling implements Problem {
 
     private final MetaStaticParameters metaStaticParameters;
 
-    private final ExecutorService executorService;
+    private final ExecutorService cbcttExecutorService;
 
-    public MetaCurriculumBasedTimetabling(MetaStaticParameters metaStaticParameters, ExecutorService executorService) {
+    public MetaCurriculumBasedTimetabling(MetaStaticParameters metaStaticParameters, ExecutorService cbcttExecutorService) {
         this.metaStaticParameters = metaStaticParameters;
-        this.executorService = executorService;
+        this.cbcttExecutorService = cbcttExecutorService;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MetaCurriculumBasedTimetabling implements Problem {
 
         CbcttStaticParameters cbcttStaticParameters = metaStaticParameters.getCbcttStaticParameters();
         ParametrizationPhenotype params = ParametrizationPhenotype.decode(cbcttStaticParameters, variables);
-        CbcttRunner cbcttRunner = new CbcttRunner(executorService, cbcttStaticParameters, params);
+        CbcttRunner cbcttRunner = new CbcttRunner(cbcttExecutorService, cbcttStaticParameters, params);
         MetaEvaluator evaluator = new MetaEvaluator(this, metaStaticParameters.referenceSet);
         NondominatedPopulation result = cbcttRunner.run();
         solution.setObjective(0, evaluator.evaluate(result));

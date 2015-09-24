@@ -3,6 +3,7 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.CbcttRunner;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
+import ch.rethab.cbctt.ea.op.CbcttVariation;
 import ch.rethab.cbctt.ea.op.Evaluator;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
@@ -13,7 +14,6 @@ import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.moea.TimetableInitializationFactory;
 import ch.rethab.cbctt.moea.VariationFactory;
 import ch.rethab.cbctt.parser.ECTTParser;
-import org.moeaframework.core.Variation;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -56,8 +56,8 @@ public class Main {
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
 
-        List<Variation> crossovers = Arrays.asList(variationFactory.getCrossoverOperator(0, sectorSize), variationFactory.getCrossoverOperator(1, sectorSize), variationFactory.getCrossoverOperator(2, sectorSize));
-        List<Variation> mutators = Collections.singletonList(variationFactory.getMutationOperator(0, mutationProbability));
+        List<CbcttVariation> crossovers = Arrays.asList(variationFactory.getCrossoverOperator(0, sectorSize), variationFactory.getCrossoverOperator(1, sectorSize), variationFactory.getCrossoverOperator(2, sectorSize));
+        List<CbcttVariation> mutators = Collections.singletonList(variationFactory.getMutationOperator(0, mutationProbability));
         ParametrizationPhenotype params = new ParametrizationPhenotype(crossovers, mutators, populationSize, archiveSize, k);
         TimetableInitializationFactory timetableInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, timetableInitializationFactory, variationFactory);

@@ -2,11 +2,11 @@ package ch.rethab.cbctt.meta;
 
 import ch.rethab.cbctt.StaticParameters;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
+import ch.rethab.cbctt.moea.CbcttInitializationFactory;
 import ch.rethab.cbctt.moea.InitializationFactory;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.RandomInitialization;
 
 import java.util.Collections;
 
@@ -36,7 +36,7 @@ public final class MetaStaticParameters implements StaticParameters {
     }
 
     public InitializationFactory getInitializationFactory(Problem problem) {
-        return populationSize -> new RandomInitialization(problem, populationSize);
+        return new CbcttInitializationFactory(problem);
     }
 
     public CbcttStaticParameters getCbcttStaticParameters() {

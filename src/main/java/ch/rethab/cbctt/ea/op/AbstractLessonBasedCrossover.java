@@ -1,11 +1,11 @@
 package ch.rethab.cbctt.ea.op;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.phenotype.*;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * @author Reto Habluetzel, 2015
  */
-public abstract class AbstractLessonBasedCrossover implements Variation {
+public abstract class AbstractLessonBasedCrossover implements CbcttVariation {
 
     // if a crossover fails, it is restarted this many times
     private static final int ATTEMPTS_AFTER_FAIL = 100;
@@ -40,12 +40,17 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
 
     @Override
     public final Solution[] evolve(Solution[] solutions) {
+        Logger.trace("Entry");
+
         TimetableWithRooms parent1 = solutionConverter.fromSolution(solutions[0]);
         TimetableWithRooms parent2 = solutionConverter.fromSolution(solutions[1]);
 
         TimetableWithRooms[] kids = crossover(parent1, parent2);
 
-        return new Solution[]{solutionConverter.toSolution(kids[0]), solutionConverter.toSolution(kids[1])};
+        Solution[] offspring = new Solution[]{solutionConverter.toSolution(kids[0]), solutionConverter.toSolution(kids[1])};
+
+        Logger.trace("Exit");
+        return offspring;
     }
 
     private TimetableWithRooms[] crossover(TimetableWithRooms parent1, TimetableWithRooms parent2) {
@@ -63,7 +68,11 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
                 child1 = roomAssigner.assignRooms(tmpChild1);
                 break;
             } catch (CrossoverFailedException cfe) {
-                System.err.println("Crossover failed ("+i+"). Restarting..");
+                if (i > 3) {
+                    Logger.info("Crossover failed (" + i + "). Restarting..");
+                } else {
+                    Logger.trace("Crossover failed (" + i + "). Restarting..");
+                }
             }
         }
 
@@ -83,7 +92,11 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
                 child2 = roomAssigner.assignRooms(tmpChild2);
                 break;
             } catch (CrossoverFailedException cfe) {
-                System.err.println("Crossover failed ("+i+"). Restarting..");
+                if (i > 3) {
+                    Logger.info("Crossover failed (" + i + "). Restarting..");
+                } else {
+                    Logger.trace("Crossover failed (" + i + "). Restarting..");
+                }
             }
         }
 
@@ -110,9 +123,11 @@ public abstract class AbstractLessonBasedCrossover implements Variation {
          * 2. Greedy insert all from to_be_scheduled
          */
 
-
+        Logger.trace("Meetings: " + meetings.size());
         Set<Period> preferredPeriods = unscheduleLessons(t, meetings);
         List<Course> leftovers = scheduleAtSpecifiedPeriods(t, meetings);
+
+        Logger.trace("Leftovers: " + meetings.size());
         scheduleGreedy(t, preferredPeriods, leftovers);
     }
 

@@ -38,6 +38,11 @@ public final class SectorBasedCrossover extends AbstractLessonBasedCrossover {
     }
 
     @Override
+    public String name() {
+        return String.format("SectorBasedCrossover(sectorSize=%d)", sectorSize);
+    }
+
+    @Override
     protected Set<MeetingWithRoom> getMeetingsFromParent(TimetableWithRooms parent) {
         List<MeetingWithRoom> meetings = getSortedMeetings(parent);
         int maxStartIdx = meetings.size() - sectorSize;

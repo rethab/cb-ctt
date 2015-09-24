@@ -26,6 +26,11 @@ public final class CourseBasedCrossover extends AbstractLessonBasedCrossover {
     }
 
     @Override
+    public String name() {
+        return "CourseBasedCrossover";
+    }
+
+    @Override
     protected Set<MeetingWithRoom> getMeetingsFromParent(TimetableWithRooms parent) {
         Course course = getRandomCourse(parent);
         return parent.getMeetingsByCourse(course);

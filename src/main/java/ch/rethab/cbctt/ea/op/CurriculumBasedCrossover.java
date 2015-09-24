@@ -27,6 +27,11 @@ public final class CurriculumBasedCrossover extends AbstractLessonBasedCrossover
     }
 
     @Override
+    public String name() {
+        return "curriculumBasedCrossover";
+    }
+
+    @Override
     protected Set<MeetingWithRoom> getMeetingsFromParent(TimetableWithRooms parent) {
         String randomCurriculum = getRandomCurriculum();
         return parent.getCurriculumTimetables().get(randomCurriculum).getAll().collect(Collectors.toSet());

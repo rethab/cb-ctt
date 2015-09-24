@@ -1,10 +1,7 @@
 package ch.rethab.cbctt.moea;
 
 import ch.rethab.cbctt.domain.Specification;
-import ch.rethab.cbctt.ea.op.CourseBasedCrossover;
-import ch.rethab.cbctt.ea.op.CourseBasedMutation;
-import ch.rethab.cbctt.ea.op.CurriculumBasedCrossover;
-import ch.rethab.cbctt.ea.op.SectorBasedCrossover;
+import ch.rethab.cbctt.ea.op.*;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import org.moeaframework.core.Variation;
 
@@ -29,7 +26,7 @@ public class VariationFactory {
         return 1;
     }
 
-    public Variation getMutationOperator(int idx, double mutationProbability) {
+    public CbcttVariation getMutationOperator(int idx, double mutationProbability) {
         if (idx == 0) {
             return new CourseBasedMutation(spec, solutionConverter, roomAssigner, mutationProbability);
         } else {
@@ -41,7 +38,7 @@ public class VariationFactory {
         return 3;
     }
 
-    public Variation getCrossoverOperator(int i, int sectorSize) {
+    public CbcttVariation getCrossoverOperator(int i, int sectorSize) {
         if (i == 0){
             return new CourseBasedCrossover(spec, solutionConverter, roomAssigner);
         } else if (i == 1) {

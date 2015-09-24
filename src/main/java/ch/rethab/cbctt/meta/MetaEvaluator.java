@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.meta;
 
+import ch.rethab.cbctt.Logger;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -21,8 +22,13 @@ public class MetaEvaluator {
         this.referenceSet = referenceSet;
     }
 
-    public double evaluate(NondominatedPopulation result) {
+    public double evaluate(NondominatedPopulation pop) {
+        Logger.trace("Entry");
+
         Indicator indicator = new AdditiveEpsilonIndicator(problem, referenceSet);
-        return indicator.evaluate(result);
+        double result = indicator.evaluate(pop);
+
+        Logger.trace("Exit");
+        return result;
     }
 }

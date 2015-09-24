@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.ea.op;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.constraint.Constraint;
@@ -20,6 +21,8 @@ public class Evaluator implements Serializable {
     }
 
     public void evaluate(Solution s) {
+        Logger.trace("Entry");
+
         TimetableWithRooms t = solutionConverter.fromSolution(s);
 
         for (int i = 0; i < this.formulation.getConstraints().length; i++) {
@@ -34,5 +37,7 @@ public class Evaluator implements Serializable {
             int objective = c.violations(t) * penalty;
             s.setObjective(i, objective);
         }
+
+        Logger.trace("Exit");
     }
 }

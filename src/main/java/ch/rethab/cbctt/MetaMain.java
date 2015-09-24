@@ -36,7 +36,10 @@ public class MetaMain {
         }
         String filename = args[0];
 
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        Logger.verbose = false;
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(3);
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
         // jppfExecutorService.setBatchSize(100);
@@ -62,7 +65,7 @@ public class MetaMain {
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(metaStaticParameters, metaVariation);
 
         Executor exec = new Executor();
-        exec.withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, executorService);
+        exec.withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, cbcttExecutorService);
         exec.withAlgorithm(metaStaticParameters.algorithmName());
         exec.usingAlgorithmFactory(algorithmFactory);
         exec.withMaxEvaluations(metaStaticParameters.maxEvaluations());

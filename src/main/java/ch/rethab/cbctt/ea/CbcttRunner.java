@@ -1,11 +1,14 @@
 package ch.rethab.cbctt.ea;
 
+import ch.rethab.cbctt.Logger;
+import ch.rethab.cbctt.ea.op.CbcttVariation;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -38,7 +41,24 @@ public class CbcttRunner {
         exec.withProperty("k", params.getK());
         exec.withMaxEvaluations(cbcttStaticParameters.maxEvaluations());
         exec.distributeWith(executorService);
+
+        Logger.info(String.format("Run parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
+                params.getPopulationSize(), params.getOffspringSize(), params.getK(),
+                formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators())));
+
         return exec.run();
+    }
+
+    private static String formatOperators(List<CbcttVariation> ops) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (CbcttVariation op : ops) {
+            if (!first) sb.append(", ");
+            else        first = false;
+
+            sb.append(op.name());
+        }
+        return sb.toString();
     }
 
 }

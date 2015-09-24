@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * @author Reto Habluetzel, 2015
  */
-public class CourseBasedMutation implements Variation {
+public class CourseBasedMutation implements CbcttVariation {
 
     // if a mutation fails, it is restarted this many times
     private static final int ATTEMPTS_AFTER_FAIL = 100;
@@ -43,6 +43,11 @@ public class CourseBasedMutation implements Variation {
         this.roomAssigner = roomAssigner;
         this.spec = spec;
         this.mutationProbability = mutationProbability;
+    }
+
+    @Override
+    public String name() {
+        return String.format("CourseBasedMutation(prob=%2.3f)", mutationProbability);
     }
 
     @Override

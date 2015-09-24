@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.ea.initializer;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Specification;
@@ -63,11 +64,15 @@ public class TeacherGreedyInitializer implements Initializer {
 
     @Override
     public List<TimetableWithRooms> initialize(int size) {
+        Logger.info("Size="+size);
+
         this.hardness = new HashMap<>();
         List<TimetableWithRooms> result = IntStream.range(0, size)
                 .mapToObj(i -> createTimetable())
                 .map(roomAssigner::assignRooms)
                 .collect(Collectors.toList());
+
+        Logger.trace("Exit");
         return result;
     }
 
@@ -99,6 +104,8 @@ public class TeacherGreedyInitializer implements Initializer {
     }
 
     private Timetable createTimetable() {
+        Logger.trace("Entry");
+
         List<Lecture> lectures = initLectures();
 
         for (int i = 0; i < 300; i++) {
