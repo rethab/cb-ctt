@@ -34,7 +34,7 @@ public class CbcttRunner {
         exec.withProblemClass(CurriculumBasedTimetabling.class, cbcttStaticParameters.formulation, cbcttStaticParameters.evaluator);
         exec.withAlgorithm(cbcttStaticParameters.algorithmName());
         exec.withProperty("populationSize", params.getPopulationSize());
-        exec.withProperty("offspringSize", params.getOffspringSize());
+        exec.withProperty("numberOfOffspring", params.getOffspringSize());
         exec.withProperty("k", params.getK());
         exec.withMaxEvaluations(cbcttStaticParameters.maxEvaluations());
         exec.distributeWith(executorService);

@@ -67,7 +67,7 @@ public class MetaMain {
                 .usingAlgorithmFactory(algorithmFactory)
                 .withMaxEvaluations(metaStaticParameters.maxEvaluations())
                 .withProperty("populationSize", populationSize)
-                .withProperty("offspringSize", offspringSize)
+                .withProperty("numberOfOffspring", offspringSize)
                 .withProperty("k", k)
                 // .withInstrumenter(instrumenter)
                 .distributeWith(executorService)
