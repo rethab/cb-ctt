@@ -3,8 +3,6 @@ package ch.rethab.cbctt;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.CbcttRunner;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
-import ch.rethab.cbctt.ea.initializer.Initializer;
-import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
 import ch.rethab.cbctt.ea.op.*;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
@@ -56,8 +54,7 @@ public class Main {
         List<Variation> crossovers = Arrays.asList(variationFactory.getCrossoverOperator(0, sectorSize), variationFactory.getCrossoverOperator(1, sectorSize), variationFactory.getCrossoverOperator(2, sectorSize));
         List<Variation> mutators = Collections.singletonList(variationFactory.getMutationOperator(0, mutationProbability));
         ParametrizationPhenotype params = new ParametrizationPhenotype(crossovers, mutators, populationSize, archiveSize, k);
-        Initializer initializer = new TeacherGreedyInitializer(spec, roomAssigner);
-        TimetableInitializationFactory timetableInitializationFactory = new TimetableInitializationFactory(formulation, initializer);
+        TimetableInitializationFactory timetableInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, timetableInitializationFactory, variationFactory);
 
         CbcttRunner cbcttRunner = new CbcttRunner(executorService, cbcttStaticParameters, params);

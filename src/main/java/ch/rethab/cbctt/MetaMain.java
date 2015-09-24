@@ -53,27 +53,29 @@ public class MetaMain {
 
         Variation metaVariation = new SBX(0.006, 0.3); // todo undo
 
-        TeacherGreedyInitializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, roomAssigner);
-        TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(formulation, teacherGreedyInitializer);
+        TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, cbcttInitializationFactory, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
 
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(metaStaticParameters, metaVariation);
 
-        NondominatedPopulation result = new Executor()
-                .withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, executorService)
-                .withAlgorithm(metaStaticParameters.algorithmName())
-                .usingAlgorithmFactory(algorithmFactory)
-                .withMaxEvaluations(metaStaticParameters.maxEvaluations())
-                .withProperty("populationSize", populationSize)
-                .withProperty("numberOfOffspring", offspringSize)
-                .withProperty("k", k)
-                // .withInstrumenter(instrumenter)
-                .distributeWith(executorService)
-                .run();
+        Executor exec = new Executor();
+        exec.withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, executorService);
+        exec.withAlgorithm(metaStaticParameters.algorithmName());
+        exec.usingAlgorithmFactory(algorithmFactory);
+        exec.withMaxEvaluations(metaStaticParameters.maxEvaluations());
+        exec.withProperty("populationSize", populationSize);
+        exec.withProperty("numberOfOffspring", offspringSize);
+        exec.withProperty("k", k);
+        exec.distributeWith(executorService);
 
-        executorService.shutdown();
+        try {
+            exec.run();
+        } finally {
+            executorService.shutdown();
+        }
+
         // jppfExecutorService.shutdown();
         // jppfClient.close();
     }

@@ -1,6 +1,8 @@
 package ch.rethab.cbctt.moea;
 
-import ch.rethab.cbctt.ea.initializer.Initializer;
+import ch.rethab.cbctt.domain.Specification;
+import ch.rethab.cbctt.ea.initializer.TeacherGreedyInitializer;
+import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.formulation.Formulation;
 import org.moeaframework.core.Initialization;
@@ -18,19 +20,23 @@ import java.util.stream.Collectors;
  */
 public final class TimetableInitializationFactory implements InitializationFactory{
 
-    private final Initializer initializer;
+    private final Specification spec;
+
+    private final RoomAssigner roomAssigner;
 
     private final SolutionConverter solutionConverter;
 
-    public TimetableInitializationFactory(Formulation formulation, Initializer initializer) {
-        this.initializer = initializer;
+    public TimetableInitializationFactory(Specification spec, Formulation formulation, RoomAssigner roomAssigner) {
+        this.spec = spec;
+        this.roomAssigner = roomAssigner;
         this.solutionConverter = new SolutionConverter(formulation);
     }
 
     @Override
     public Initialization create(int populationSize) {
         return () -> {
-            List<TimetableWithRooms> timetables = initializer.initialize(populationSize);
+            TeacherGreedyInitializer teacherGreedyInitializer = new TeacherGreedyInitializer(spec, roomAssigner);
+            List<TimetableWithRooms> timetables = teacherGreedyInitializer.initialize(populationSize);
             List<Solution> solutions = timetables.stream().map(solutionConverter::toSolution).collect(Collectors.toList());
             return solutions.toArray(new Solution[populationSize]);
         };

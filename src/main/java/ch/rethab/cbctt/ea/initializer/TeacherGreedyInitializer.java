@@ -64,10 +64,11 @@ public class TeacherGreedyInitializer implements Initializer {
     @Override
     public List<TimetableWithRooms> initialize(int size) {
         this.hardness = new HashMap<>();
-        return IntStream.range(0, size)
+        List<TimetableWithRooms> result = IntStream.range(0, size)
                 .mapToObj(i -> createTimetable())
                 .map(roomAssigner::assignRooms)
                 .collect(Collectors.toList());
+        return result;
     }
 
     private class LectureIterator {
