@@ -253,8 +253,7 @@ public class TeacherGreedyInitializer implements Initializer {
 
         private List<Lecture>[] lectures;
 
-        // this is also the seed we are reusing
-        private static int x = 0;
+        private int x;
 
         public FlatTimetable(Specification spec) {
             this.spec = spec;
@@ -262,8 +261,8 @@ public class TeacherGreedyInitializer implements Initializer {
 
             this.lectures = initLectures(nslots);
 
-            // new x every time
-            x = getNextX(x);
+            // initialize with random
+            this.x = getNextX(new Random().nextInt(lectures.length));
         }
 
         private List<Lecture>[] initLectures(int nslots) {
