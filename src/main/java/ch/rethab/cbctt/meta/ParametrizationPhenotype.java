@@ -2,6 +2,7 @@ package ch.rethab.cbctt.meta;
 
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.op.CbcttVariation;
+import ch.rethab.cbctt.ea.op.Noop;
 import ch.rethab.cbctt.moea.VariationFactory;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
@@ -115,10 +116,14 @@ public final class ParametrizationPhenotype {
     }
 
     public Variation getVariation() {
-        CompoundVariation variation = new CompoundVariation();
-        this.crossoverOperators.forEach(variation::appendOperator);
-        this.mutationOperators.forEach(variation::appendOperator);
-        return variation;
+        if (crossoverOperators.isEmpty() && mutationOperators.isEmpty()) {
+            return new Noop();
+        } else {
+            CompoundVariation variation = new CompoundVariation();
+            crossoverOperators.forEach(variation::appendOperator);
+            mutationOperators.forEach(variation::appendOperator);
+            return variation;
+        }
     }
 
     public int getPopulationSize() {
@@ -138,7 +143,7 @@ public final class ParametrizationPhenotype {
     }
 
     public List<CbcttVariation> getMutationOperators() {
-        return crossoverOperators;
+        return mutationOperators;
     }
 }
 

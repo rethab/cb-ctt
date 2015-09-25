@@ -20,7 +20,7 @@ public class CbcttInitializationFactoryTest {
     public void shouldNotExceedPopulationSizeWithArchiveSizeAndK() {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, variationFactory);
-        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
+        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(-1, cbcttStaticParameters);
         MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
 

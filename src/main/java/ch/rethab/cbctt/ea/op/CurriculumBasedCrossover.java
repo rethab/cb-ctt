@@ -28,7 +28,7 @@ public final class CurriculumBasedCrossover extends AbstractLessonBasedCrossover
 
     @Override
     public String name() {
-        return "curriculumBasedCrossover";
+        return "CurriculumBasedCrossover";
     }
 
     @Override

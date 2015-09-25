@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.*;
 
@@ -37,6 +39,66 @@ public class TeacherGreedyInitializerTest {
                 assertEquals(0, c.violations(t));
             }
         }
+    }
+
+    @Test
+    public void shouldNotBlowUpDuringInitializationInMultiThreadedEnvironment() throws Exception {
+        String filename = "comp01.ectt";
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+
+        List<Callable<List<TimetableWithRooms>>> tasks = new LinkedList<>();
+        for (int i = 0; i < 100; i++) {
+            tasks.add(() -> new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec)).initialize(30));
+        }
+
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        try {
+            executorService.invokeAll(tasks).forEach(f -> {
+                try {
+                    // get is required to make them blow up
+                    f.get(10, TimeUnit.SECONDS);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        } finally {
+            executorService.shutdownNow();
+        }
+    }
+
+    @Test
+    public void shouldPorduceFeasbibleTimetablesInMultiThreadedEnvironment() throws Exception {
+        String filename = "comp01.ectt";
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        ECTTParser parser = new ECTTParser(br);
+        Specification spec = parser.parse();
+        Formulation formulation = new UD1Formulation(spec);
+
+        List<Callable<List<TimetableWithRooms>>> tasks = new LinkedList<>();
+        for (int i = 0; i < 100; i++) {
+            tasks.add(() -> new TeacherGreedyInitializer(spec, new GreedyRoomAssigner(spec)).initialize(1));
+        }
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        List<Future<List<TimetableWithRooms>>> tts;
+        try {
+            tts = executorService.invokeAll(tasks);
+        } finally {
+            executorService.shutdownNow();
+        }
+        for (Future<List<TimetableWithRooms>> tt : tts) {
+            List<TimetableWithRooms> ttwrs = tt.get(1, TimeUnit.MINUTES);
+            for (TimetableWithRooms ttwr : ttwrs) {
+                for (Constraint constraint : formulation.getConstraints()) {
+                    assertEquals("Violates constraint " + constraint.name(), 0, constraint.violations(ttwr));
+                }
+            }
+        }
+
     }
 
     @Test

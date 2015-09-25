@@ -38,7 +38,7 @@ public class MetaMain {
 
         Logger.verbose = false;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(3);
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
@@ -51,8 +51,9 @@ public class MetaMain {
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
-        int populationSize = 120;
-        int offspringSize =  120;
+        int maxEvaluations = 10;
+        int populationSize = 10;
+        int offspringSize =  2;
         int k = 1;
 
         Variation metaVariation = new SBX(0.006, 0.3); // todo undo
@@ -60,7 +61,7 @@ public class MetaMain {
         TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, cbcttInitializationFactory, variationFactory);
-        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
+        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(maxEvaluations, cbcttStaticParameters);
 
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(metaStaticParameters, metaVariation);
 

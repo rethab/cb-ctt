@@ -178,7 +178,10 @@ public class TeacherGreedyInitializer implements Initializer {
         for (int day = 0; day < spec.getNumberOfDaysPerWeek(); day++) {
             for (int period = 0; period < spec.getPeriodsPerDay(); period++) {
                 for (Lecture l : timetable.getLectures(day, period)) {
-                    t.addMeeting(new Meeting(l.c, day, period));
+                    if (!t.addMeeting(new Meeting(l.c, day, period))) {
+                        String msg = String.format("Failed to add meeting %s @ %d/%d", l.c.getId(), day, period);
+                        throw new IllegalStateException(msg);
+                    }
                 }
             }
         }
