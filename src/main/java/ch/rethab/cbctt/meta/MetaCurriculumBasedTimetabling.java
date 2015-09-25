@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.meta;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.ea.CbcttRunner;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import org.moeaframework.core.NondominatedPopulation;

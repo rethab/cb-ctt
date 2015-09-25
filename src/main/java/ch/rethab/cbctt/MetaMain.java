@@ -39,7 +39,7 @@ public class MetaMain {
         Logger.verbose = false;
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
-        ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(3);
+        ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(2);
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
         // jppfExecutorService.setBatchSize(100);
@@ -51,17 +51,27 @@ public class MetaMain {
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
-        int maxEvaluations = 10;
-        int populationSize = 10;
-        int offspringSize =  2;
+        int maxEvaluations = 10000;
+        int populationSize = 100;
+        int offspringSize =  100;
         int k = 1;
 
-        Variation metaVariation = new SBX(0.006, 0.3); // todo undo
+        // values from moea framework
+        double huxProbability = 1;
+        double sbxProbability = 1;
+        double sbxDistributionIndex = 15;
+        double pmProbability = 0.16;
+        double pmDistributionIndex = 20;
+        double bfProbability = 0.01;
 
         TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, cbcttInitializationFactory, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(maxEvaluations, cbcttStaticParameters);
+
+        HuxSbx crossover = new HuxSbx(huxProbability, sbxProbability, sbxDistributionIndex);
+        PmBf mutation = new PmBf(pmProbability, pmDistributionIndex, bfProbability);
+        Variation metaVariation = new CompoundVariation(crossover, mutation);
 
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(metaStaticParameters, metaVariation);
 

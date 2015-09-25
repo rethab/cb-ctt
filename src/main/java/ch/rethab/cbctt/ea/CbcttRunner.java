@@ -42,11 +42,14 @@ public class CbcttRunner {
         exec.withMaxEvaluations(cbcttStaticParameters.maxEvaluations());
         exec.distributeWith(executorService);
 
-        Logger.info(String.format("Run parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
+        Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
                 params.getPopulationSize(), params.getOffspringSize(), params.getK(),
                 formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators())));
 
-        return exec.run();
+        NondominatedPopulation result = exec.run();
+
+        Logger.trace("EXIT (" + result.size() + ")");
+        return result;
     }
 
     private static String formatOperators(List<CbcttVariation> ops) {
