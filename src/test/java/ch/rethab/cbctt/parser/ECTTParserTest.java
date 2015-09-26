@@ -5,6 +5,7 @@ import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
 import org.junit.Test;
+import static org.hamcrest.Matchers.*;
 
 import java.io.*;
 import java.util.Arrays;
@@ -19,12 +20,22 @@ public class ECTTParserTest {
 
     @Test
     public void shouldProduceFeasibleTimetablesForCompTests() throws IOException {
-        for (int i = 1; i <= 21; i++) {
+        for (int i = 0; i <= 21; i++) {
             String filename = String.format("comp%02d.ectt", i);
             InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             ECTTParser parser = new ECTTParser(br);
-            parser.parse();
+            Specification spec = parser.parse();
+
+            assertThat(spec.getCourses(), is(not(empty())));
+            assertThat(spec.getCurricula(), is(not(empty())));
+            assertThat(spec.getTeachers(), is(not(empty())));
+            assertThat(spec.getRooms(), is(not(empty())));
+
+            for (Course course : spec.getCourses()) {
+                assertThat(spec.getByCourse(course), is(not(empty())));
+            }
+
         }
     }
 

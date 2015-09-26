@@ -156,7 +156,7 @@ public final class ECTTParser {
                 String coursesString = matcher.group(3);
                 List<Course> curriculumCurses = getCourses(coursesString, courses);
                 if (curriculumCurses.size() != nCurses) {
-                    throw new IOException("Expected " + ncourses + " but got " + curriculumCurses.size());
+                    throw new IOException("Expected " + ncourses + " courses but got " + curriculumCurses.size());
                 }
                 Curriculum c = new Curriculum(id, curriculumCurses);
 
