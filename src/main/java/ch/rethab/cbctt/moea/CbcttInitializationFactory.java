@@ -59,9 +59,16 @@ class CbcttInitializer extends RandomInitialization {
          * the upper bound of the archive size as well as k. */
         if (i == ParametrizationPhenotype.POPULATION_SIZE_IDX) {
             initialize(variable);
-            cbcttPopulationSize = (int) ((RealVariable)variable).getValue();
+            cbcttPopulationSize = (int) ((RealVariable) variable).getValue();
             return variable;
-        } else if (i == ParametrizationPhenotype.SECTOR_SIZE_IDX || i == ParametrizationPhenotype.ARCHIVE_SIZE_IDX || i == ParametrizationPhenotype.K_IDX) {
+        } else if (i == ParametrizationPhenotype.K_IDX) {
+            if (cbcttPopulationSize == -1) throw new IllegalStateException("Something is fishy here");
+            // k must be at most the population size, but also not exceed the k upper bound
+            RealVariable rv = (RealVariable) variable;
+            RealVariable copy = EncodingUtils.newInt((int) rv.getLowerBound(), Math.min(cbcttPopulationSize, ParametrizationPhenotype.K_MEANS_UPPER_BOUND));
+            initialize(copy);
+            return copy;
+        } else if (i == ParametrizationPhenotype.SECTOR_SIZE_IDX || i == ParametrizationPhenotype.ARCHIVE_SIZE_IDX) {
             if (cbcttPopulationSize == -1) throw new IllegalStateException("Something is fishy here");
             RealVariable rv = (RealVariable) variable;
             // create a new variable so we can set the upper bound

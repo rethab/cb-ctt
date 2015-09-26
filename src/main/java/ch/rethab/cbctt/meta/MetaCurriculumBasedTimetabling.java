@@ -1,6 +1,5 @@
 package ch.rethab.cbctt.meta;
 
-import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.ea.CbcttRunner;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import org.moeaframework.core.NondominatedPopulation;
@@ -60,7 +59,7 @@ public class MetaCurriculumBasedTimetabling implements Problem {
         ParametrizationPhenotype params = ParametrizationPhenotype.decode(cbcttStaticParameters, variables);
         CbcttRunner cbcttRunner = new CbcttRunner(cbcttExecutorService, cbcttStaticParameters, params);
         MetaEvaluator evaluator = new MetaEvaluator(this, metaStaticParameters.referenceSet);
-        NondominatedPopulation result = cbcttRunner.run();
+        NondominatedPopulation result = cbcttRunner.run(null);
         solution.setObjective(0, evaluator.evaluate(result));
     }
 

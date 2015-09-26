@@ -1,14 +1,14 @@
 package ch.rethab.cbctt.ea;
 
 import ch.rethab.cbctt.Logger;
-import ch.rethab.cbctt.ea.op.CbcttVariation;
+import static ch.rethab.cbctt.meta.ParametrizationPhenotype.*;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
 import org.moeaframework.Executor;
+import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -31,7 +31,7 @@ public class CbcttRunner {
         this.params = params;
     }
 
-    public NondominatedPopulation run() {
+    public NondominatedPopulation run(Instrumenter instrumenter) {
         Executor exec = new Executor();
         exec.usingAlgorithmFactory(algorithmFactory);
         exec.withProblemClass(CurriculumBasedTimetabling.class, cbcttStaticParameters.formulation, cbcttStaticParameters.evaluator);
@@ -39,8 +39,15 @@ public class CbcttRunner {
         exec.withProperty("populationSize", params.getPopulationSize());
         exec.withProperty("numberOfOffspring", params.getOffspringSize());
         exec.withProperty("k", params.getK());
-        exec.withMaxEvaluations(cbcttStaticParameters.maxEvaluations());
+
+        // max evaluations should be 20 * n generations, so we need to multiply by the population size
+        int maxEvaluations = params.getPopulationSize() * ParametrizationPhenotype.NVARIABLES * 20;
+        exec.withMaxEvaluations(maxEvaluations);
         exec.distributeWith(executorService);
+
+        if (instrumenter != null) {
+            exec.withInstrumenter(instrumenter);
+        }
 
         Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
                 params.getPopulationSize(), params.getOffspringSize(), params.getK(),
@@ -50,18 +57,6 @@ public class CbcttRunner {
 
         Logger.trace("EXIT (" + result.size() + ")");
         return result;
-    }
-
-    private static String formatOperators(List<CbcttVariation> ops) {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (CbcttVariation op : ops) {
-            if (!first) sb.append(", ");
-            else        first = false;
-
-            sb.append(op.name());
-        }
-        return sb.toString();
     }
 
 }

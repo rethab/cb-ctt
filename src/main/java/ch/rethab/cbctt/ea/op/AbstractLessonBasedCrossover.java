@@ -68,7 +68,7 @@ public abstract class AbstractLessonBasedCrossover implements CbcttVariation {
                 child1 = roomAssigner.assignRooms(tmpChild1);
                 break;
             } catch (CrossoverFailedException cfe) {
-                if (i > 5) {
+                if (i > 10) {
                     Logger.info("Crossover failed (" + i + "). Restarting..");
                 } else {
                     Logger.trace("Crossover failed (" + i + "). Restarting..");
@@ -92,7 +92,7 @@ public abstract class AbstractLessonBasedCrossover implements CbcttVariation {
                 child2 = roomAssigner.assignRooms(tmpChild2);
                 break;
             } catch (CrossoverFailedException cfe) {
-                if (i > 5) {
+                if (i > 10) {
                     Logger.info("Crossover failed (" + i + "). Restarting..");
                 } else {
                     Logger.trace("Crossover failed (" + i + "). Restarting..");

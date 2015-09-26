@@ -12,8 +12,6 @@ import org.moeaframework.core.Problem;
  */
 public class CbcttStaticParameters implements StaticParameters {
 
-    private static final int MAX_EVALUATIONS = 1000;
-
     private static final String ALGO_NAME = "SPEA2";
 
     public final Formulation formulation;
@@ -34,11 +32,6 @@ public class CbcttStaticParameters implements StaticParameters {
 
     public VariationFactory getVariationFactory() {
         return variationFactory;
-    }
-
-    @Override
-    public int maxEvaluations() {
-        return MAX_EVALUATIONS;
     }
 
     @Override

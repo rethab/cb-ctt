@@ -23,7 +23,7 @@ public class MetaEvaluator {
     }
 
     public double evaluate(NondominatedPopulation pop) {
-        Logger.info("ENTRY (" + pop.size() + ")");
+        Logger.trace("ENTRY (" + pop.size() + ")");
 
         Indicator indicator = new AdditiveEpsilonIndicator(problem, referenceSet);
         double result = indicator.evaluate(pop);

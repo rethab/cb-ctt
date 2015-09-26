@@ -4,6 +4,7 @@ import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.op.CbcttVariation;
 import ch.rethab.cbctt.ea.op.Noop;
 import ch.rethab.cbctt.moea.VariationFactory;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
@@ -33,6 +34,9 @@ public final class ParametrizationPhenotype {
     public static final int SECTOR_SIZE_UPPER_BOUND = POPULATION_UPPER_BOUND;
     public static final int ARCHIVE_SIZE_LOWER_BOUND = 1;
     public static final int K_MEANS_LOWER_BOUND = 1;
+    // rather arbitrary, but laumanns  et al suggest 1 one for performance reasons in the
+    // pisa implementation of spea2 and it shouldn't get too big
+    public static final int K_MEANS_UPPER_BOUND = 20;
 
     public static final int POPULATION_SIZE_IDX = 0;
     public static final int SECTOR_SIZE_IDX = 1;
@@ -80,7 +84,7 @@ public final class ParametrizationPhenotype {
 
         if (variables.size() != K_IDX) { throw new IllegalStateException("Update k idx"); }
         // the upper bound is rather arbitrary and will be reset later
-        variables.add(EncodingUtils.newInt(K_MEANS_LOWER_BOUND, POPULATION_UPPER_BOUND));
+        variables.add(EncodingUtils.newInt(K_MEANS_LOWER_BOUND, K_MEANS_UPPER_BOUND));
         return variables;
     }
 
@@ -90,9 +94,9 @@ public final class ParametrizationPhenotype {
             throw new IllegalArgumentException(String.format(msg, variables.size(), NVARIABLES));
         }
 
-        int populationSize = (int) ((RealVariable) variables.get(0)).getValue();
+        int populationSize = (int) ((RealVariable) variables.get(POPULATION_SIZE_IDX)).getValue();
 
-        int sectorSize = (int) ((RealVariable) variables.get(1)).getValue();
+        int sectorSize = (int) ((RealVariable) variables.get(SECTOR_SIZE_IDX)).getValue();
 
         BinaryVariable crossoverOpsVar = (BinaryVariable) variables.get(2);
         List<CbcttVariation> crossoverOps = new LinkedList<>();
@@ -108,11 +112,19 @@ public final class ParametrizationPhenotype {
                 .filter(mutationOpsVar::get)
                 .forEach(i -> mutationOps.add(cbcttStaticParameters.getVariationFactory().getMutationOperator(i, mutationProb)));
 
-        int archiveSize = (int) ((RealVariable) variables.get(5)).getValue();
+        int archiveSize = (int) ((RealVariable) variables.get(ARCHIVE_SIZE_IDX)).getValue();
 
-        int k = (int) ((RealVariable) variables.get(6)).getValue();
+        int k = (int) ((RealVariable) variables.get(K_IDX)).getValue();
 
         return new ParametrizationPhenotype(crossoverOps, mutationOps, populationSize, archiveSize, k);
+    }
+
+    public static ParametrizationPhenotype fromSolution(CbcttStaticParameters cbcttStaticParameters, Solution s) {
+        List<Variable> variables = new ArrayList<>(s.getNumberOfVariables());
+        for (int v = 0; v < s.getNumberOfVariables(); v++) {
+            variables.add(s.getVariable(v));
+        }
+        return ParametrizationPhenotype.decode(cbcttStaticParameters, variables);
     }
 
     public Variation getVariation() {
@@ -144,6 +156,18 @@ public final class ParametrizationPhenotype {
 
     public List<CbcttVariation> getMutationOperators() {
         return mutationOperators;
+    }
+
+    public static String formatOperators(List<CbcttVariation> ops) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (CbcttVariation op : ops) {
+            if (!first) sb.append(", ");
+            else        first = false;
+
+            sb.append(op.name());
+        }
+        return sb.toString();
     }
 }
 

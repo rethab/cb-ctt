@@ -42,6 +42,10 @@ public final class SectorBasedCrossover extends AbstractLessonBasedCrossover {
         return String.format("SectorBasedCrossover(sectorSize=%d)", sectorSize);
     }
 
+    public int getSectorSize() {
+        return sectorSize;
+    }
+
     @Override
     protected Set<MeetingWithRoom> getMeetingsFromParent(TimetableWithRooms parent) {
         List<MeetingWithRoom> meetings = getSortedMeetings(parent);
@@ -68,5 +72,4 @@ public final class SectorBasedCrossover extends AbstractLessonBasedCrossover {
     private int toSlotIdx(int day, int period) {
         return spec.getPeriodsPerDay() * day + period;
     }
-
 }

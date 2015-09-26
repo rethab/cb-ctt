@@ -24,18 +24,10 @@ public final class MetaStaticParameters implements StaticParameters {
             new Solution(new double[]{1, 0, 0})
     ));
 
-    private final int maxEvaluations;
-
     private final CbcttStaticParameters cbcttStaticParameters;
 
-    public MetaStaticParameters(int maxEvaluations, CbcttStaticParameters cbcttStaticParameters) {
-        this.maxEvaluations = maxEvaluations;
+    public MetaStaticParameters(CbcttStaticParameters cbcttStaticParameters) {
         this.cbcttStaticParameters = cbcttStaticParameters;
-    }
-
-    @Override
-    public int maxEvaluations() {
-        return maxEvaluations;
     }
 
     @Override

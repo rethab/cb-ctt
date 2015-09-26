@@ -8,8 +8,6 @@ import org.moeaframework.core.Problem;
  */
 public interface StaticParameters {
 
-    int maxEvaluations();
-
     String algorithmName();
 
     InitializationFactory getInitializationFactory(Problem problem);

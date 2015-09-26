@@ -45,6 +45,10 @@ public class CourseBasedMutation implements CbcttVariation {
         this.mutationProbability = mutationProbability;
     }
 
+    public double getProbability() {
+        return mutationProbability;
+    }
+
     @Override
     public String name() {
         return String.format("CourseBasedMutation(prob=%2.3f)", mutationProbability);
