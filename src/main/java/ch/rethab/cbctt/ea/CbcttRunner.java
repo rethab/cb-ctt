@@ -49,9 +49,10 @@ public class CbcttRunner {
             exec.withInstrumenter(instrumenter);
         }
 
-        Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
+        Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s], MaxEvaluations=%d",
                 params.getPopulationSize(), params.getOffspringSize(), params.getK(),
-                formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators())));
+                formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators()),
+                maxEvaluations));
 
         NondominatedPopulation result = exec.run();
 

@@ -42,43 +42,64 @@ class CbcttInitializer extends RandomInitialization {
     private final AtomicBoolean reuseProtection = new AtomicBoolean(false);
 
     /**
-     * This is the size of the cb ctt population (ie. the unverlying
+     * This is the size of vhe cb ctt population (ie. the underlying
      * problem). the other population size, that is passed in to
      * the constructor, is actually the population size of the
      * outer problem.
+     *
+     * We need this to restrict the archive size upper bound.
      */
     private int cbcttPopulationSize = -1;
+
+    /**
+     * We need this to restrict the k upper bound.
+     */
+    private int cbcttArchiveSize = -1;
 
     public CbcttInitializer(Problem problem, int populationSize) {
         super(problem, populationSize);
     }
 
-    private Variable indexInitialize(int i, Variable variable) {
-        /* assuming that the population size is first initialized,
-         * we store the actual value, in order to later reset
-         * the upper bound of the archive size as well as k. */
-        if (i == ParametrizationPhenotype.POPULATION_SIZE_IDX) {
-            initialize(variable);
-            cbcttPopulationSize = (int) ((RealVariable) variable).getValue();
-            return variable;
-        } else if (i == ParametrizationPhenotype.K_IDX) {
-            if (cbcttPopulationSize == -1) throw new IllegalStateException("Something is fishy here");
-            // k must be at most the population size, but also not exceed the k upper bound
-            RealVariable rv = (RealVariable) variable;
-            RealVariable copy = EncodingUtils.newInt((int) rv.getLowerBound(), Math.min(cbcttPopulationSize, ParametrizationPhenotype.K_MEANS_UPPER_BOUND));
-            initialize(copy);
-            return copy;
-        } else if (i == ParametrizationPhenotype.SECTOR_SIZE_IDX || i == ParametrizationPhenotype.ARCHIVE_SIZE_IDX) {
-            if (cbcttPopulationSize == -1) throw new IllegalStateException("Something is fishy here");
-            RealVariable rv = (RealVariable) variable;
-            // create a new variable so we can set the upper bound
-            RealVariable copy = EncodingUtils.newInt((int) rv.getLowerBound(), cbcttPopulationSize);
-            initialize(copy);
-            return copy;
-        } else {
-            initialize(variable);
-            return variable;
+    private Variable indexInitialize(int i, Variable v) {
+        // at least right now we have only real variables
+
+        switch (i) {
+            case ParametrizationPhenotype.POPULATION_SIZE_IDX:
+                initialize(v);
+                /* assuming that the population size is first initialized,
+                 * we store the actual value, in order to later reset
+                 * the upper bound of the archive size. */
+                cbcttPopulationSize = (int) ((RealVariable) v).getValue();
+                break;
+            case ParametrizationPhenotype.ARCHIVE_SIZE_IDX:
+                if (cbcttPopulationSize == -1)
+                    throw new IllegalStateException("population size should have been initialized before");
+                // create a new variable so we can set the upper bound
+                v = EncodingUtils.newInt((int) ((RealVariable) v).getLowerBound(), cbcttPopulationSize);
+                initialize(v);
+                cbcttArchiveSize = (int) ((RealVariable) v).getValue();
+                break;
+            case ParametrizationPhenotype.K_IDX:
+                if (cbcttArchiveSize == -1)
+                    throw new IllegalStateException("archive size should have been initialized before");
+                // k must be at most the population size, but also not exceed the k upper bound
+                int kUpperBound = Math.min(cbcttArchiveSize, ParametrizationPhenotype.K_MEANS_UPPER_BOUND);
+                v = EncodingUtils.newInt((int) ((RealVariable) v).getLowerBound(), kUpperBound);
+                initialize(v);
+                break;
+            case ParametrizationPhenotype.SECTOR_SIZE_IDX:
+                if (cbcttPopulationSize == -1)
+                    throw new IllegalStateException("populatin size should have been initialized before");
+                // create a new variable so we can set the upper bound
+                v = EncodingUtils.newInt((int) ((RealVariable) v).getLowerBound(), cbcttPopulationSize);
+                initialize(v);
+                break;
+            default:
+                initialize(v);
+                break;
         }
+
+            return v;
     }
 
     @Override
