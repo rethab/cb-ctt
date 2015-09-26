@@ -1,7 +1,6 @@
 package ch.rethab.cbctt.ea.op;
 
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
-import jmetal.encodings.variable.Real;
 import org.moeaframework.core.*;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -89,7 +88,6 @@ public class HuxSbx implements Variation {
                 // save the population upper bound so we can later re-use it for the archive size upper bound
                 if (i == ParametrizationPhenotype.POPULATION_SIZE_IDX) {
                     popSize = (int) Math.min(rv1.getValue(), rv2.getValue());
-                    System.out.println("Setting popSize="+popSize);
                 }
             } else {
                 throw new IllegalArgumentException("Unexpected variable type");
@@ -169,11 +167,9 @@ public class HuxSbx implements Variation {
                 throw new IllegalStateException("population upper bound should have been initialized before");
             }
             // give them both the higher upper bound to make sure they don't exceed them
-            v1 = EncodingUtils.newReal(v1.getLowerBound(), popSize);
-            v2 = EncodingUtils.newReal(v2.getLowerBound(), popSize);
+            v1 = new RealVariable(Math.min(v1.getValue(), popSize), v1.getLowerBound(), popSize);
+            v2 = new RealVariable(Math.min(v2.getValue(), popSize), v2.getLowerBound(), popSize);
         }
-
-        System.out.println("evolveSbx: Idx: " + idx);
 
         double x0 = v1.getValue();
         double x1 = v2.getValue();
@@ -256,5 +252,8 @@ public class HuxSbx implements Variation {
                 v2.setValue(ub);
             }
         }
+
+        return new Variable[] {v1, v2};
     }
+
 }

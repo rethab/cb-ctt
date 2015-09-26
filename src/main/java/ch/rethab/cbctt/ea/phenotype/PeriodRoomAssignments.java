@@ -94,7 +94,7 @@ public class PeriodRoomAssignments {
         try {
             return assignAll(roomAssignments, nextCourseIdx-1, true);
         } catch (InfeasibilityException e) {
-            throw new IllegalStateException("Dude, you code is fucked up");
+            throw new IllegalStateException("Iuuoohhhhhh", e);
         }
     }
 
