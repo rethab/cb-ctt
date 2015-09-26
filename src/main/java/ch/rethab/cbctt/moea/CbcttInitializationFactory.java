@@ -83,7 +83,7 @@ class CbcttInitializer extends RandomInitialization {
                     throw new IllegalStateException("archive size should have been initialized before");
                 // k must be at most the population size, but also not exceed the k upper bound
                 int kUpperBound = Math.min(cbcttArchiveSize, ParametrizationPhenotype.K_MEANS_UPPER_BOUND);
-                kUpperBound -= 1; // k should be strictly lower than the population size
+                kUpperBound -= 1; // k should be strictly lower than the archive size
                 v = EncodingUtils.newInt((int) ((RealVariable) v).getLowerBound(), kUpperBound);
                 initialize(v);
                 break;

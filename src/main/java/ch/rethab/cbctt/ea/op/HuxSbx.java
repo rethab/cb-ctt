@@ -1,7 +1,10 @@
 package ch.rethab.cbctt.ea.op;
 
+import ch.rethab.cbctt.meta.ParametrizationPhenotype;
+import jmetal.encodings.variable.Real;
 import org.moeaframework.core.*;
 import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -49,6 +52,22 @@ public class HuxSbx implements Variation {
         // sbx probability is outside the loop
         boolean doSbx = PRNG.nextDouble() <= sbxProbability;
 
+        /* The population size is stored, so we can dynamically adjust
+         * the upper bounds of the offspring and the sector size. this
+         * is required, as those exceeding the population size makes no
+         * sense.
+         *
+         * We use the minimum population size of the two, in order to
+         * make sure the bounds work for both offspring. Note that using
+         * the smaller value should not reduce the domain in the long
+         * term, because we set this in every mutation based on the
+         * current population. In other words: A concern may be that
+         * reducing an upper bound by a smaller value would in the
+         * long term make the upper bounds smaller and smaller and
+         * thereby reduce the range the values could take.
+         */
+        int popSize = -1;
+
         for (int i = 0; i < result1.getNumberOfVariables(); i++) {
             Variable variable1 = result1.getVariable(i);
             Variable variable2 = result2.getVariable(i);
@@ -58,8 +77,19 @@ public class HuxSbx implements Variation {
                     evolveHux((BinaryVariable) variable1, (BinaryVariable) variable2);
                 }
             } else if (variable1 instanceof RealVariable && variable2 instanceof RealVariable) {
+                RealVariable rv1 = (RealVariable) variable1;
+                RealVariable rv2 = (RealVariable) variable2;
+
                 if (doSbx && PRNG.nextBoolean()) {
-                    evolveSbx((RealVariable)variable1, (RealVariable)variable2, sbxDistributionIndex);
+                    Variable[] vars = evolveSbx(i, popSize, rv1, rv2, sbxDistributionIndex);
+                    result1.setVariable(i, vars[0]);
+                    result2.setVariable(i, vars[1]);
+                }
+
+                // save the population upper bound so we can later re-use it for the archive size upper bound
+                if (i == ParametrizationPhenotype.POPULATION_SIZE_IDX) {
+                    popSize = (int) Math.min(rv1.getValue(), rv2.getValue());
+                    System.out.println("Setting popSize="+popSize);
                 }
             } else {
                 throw new IllegalArgumentException("Unexpected variable type");
@@ -131,8 +161,20 @@ public class HuxSbx implements Variation {
      * @param v2 the second variable
      * @param distributionIndex the distribution index of this SBX operator
      */
-    public static void evolveSbx(RealVariable v1, RealVariable v2,
+    public static Variable[] evolveSbx(int idx, int popSize, RealVariable v1, RealVariable v2,
                               double distributionIndex) {
+
+        if (idx == ParametrizationPhenotype.ARCHIVE_SIZE_IDX || idx == ParametrizationPhenotype.SECTOR_SIZE_IDX) {
+            if (popSize == -1) {
+                throw new IllegalStateException("population upper bound should have been initialized before");
+            }
+            // give them both the higher upper bound to make sure they don't exceed them
+            v1 = EncodingUtils.newReal(v1.getLowerBound(), popSize);
+            v2 = EncodingUtils.newReal(v2.getLowerBound(), popSize);
+        }
+
+        System.out.println("evolveSbx: Idx: " + idx);
+
         double x0 = v1.getValue();
         double x1 = v2.getValue();
 
