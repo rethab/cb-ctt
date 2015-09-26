@@ -34,7 +34,7 @@ public class CbcttInitializationFactoryTest {
                 int kUpperBound = (int) ((RealVariable) solution.getVariable(ParametrizationPhenotype.K_IDX)).getUpperBound();
                 int sectorSizeUpperBound = (int) ((RealVariable) solution.getVariable(ParametrizationPhenotype.SECTOR_SIZE_IDX)).getUpperBound();
 
-                assertThat(kUpperBound, allOf(is(lessThanOrEqualTo(popSize)),
+                assertThat(kUpperBound, allOf(is(lessThan(popSize)),
                         is(lessThanOrEqualTo(ParametrizationPhenotype.K_MEANS_UPPER_BOUND))));
                 assertThat(archiveUpperBound, is(lessThanOrEqualTo(popSize)));
                 assertThat(sectorSizeUpperBound, is(lessThanOrEqualTo(popSize)));
