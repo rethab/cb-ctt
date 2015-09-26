@@ -1,27 +1,33 @@
 package ch.rethab.cbctt;
 
 import ch.rethab.cbctt.domain.Specification;
+import static ch.rethab.cbctt.meta.ParametrizationPhenotype.*;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.op.Evaluator;
+import ch.rethab.cbctt.ea.op.HuxSbx;
+import ch.rethab.cbctt.ea.op.PmBf;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.meta.MetaCurriculumBasedTimetabling;
 import ch.rethab.cbctt.meta.MetaStaticParameters;
-import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
-import ch.rethab.cbctt.moea.SolutionConverter;
-import ch.rethab.cbctt.moea.TimetableInitializationFactory;
-import ch.rethab.cbctt.moea.VariationFactory;
+import ch.rethab.cbctt.meta.ParametrizationPhenotype;
+import ch.rethab.cbctt.moea.*;
 import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.Executor;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.operator.real.SBX;
+import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,7 +44,7 @@ public class MetaMain {
 
         Logger.verbose = false;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(7);
         ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(2);
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
@@ -51,9 +57,9 @@ public class MetaMain {
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
-        int maxEvaluations = 10000;
-        int populationSize = 100;
-        int offspringSize =  100;
+        int maxEvaluations = 100;
+        int populationSize = 50;
+        int offspringSize =  40;
         int k = 1;
 
         // values from moea framework
@@ -67,7 +73,7 @@ public class MetaMain {
         TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, cbcttInitializationFactory, variationFactory);
-        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(maxEvaluations, cbcttStaticParameters);
+        MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
 
         HuxSbx crossover = new HuxSbx(huxProbability, sbxProbability, sbxDistributionIndex);
         PmBf mutation = new PmBf(pmProbability, pmDistributionIndex, bfProbability);
@@ -79,17 +85,27 @@ public class MetaMain {
         exec.withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, cbcttExecutorService);
         exec.withAlgorithm(metaStaticParameters.algorithmName());
         exec.usingAlgorithmFactory(algorithmFactory);
-        exec.withMaxEvaluations(metaStaticParameters.maxEvaluations());
+        exec.withMaxEvaluations(maxEvaluations);
         exec.withProperty("populationSize", populationSize);
         exec.withProperty("numberOfOffspring", offspringSize);
         exec.withProperty("k", k);
         exec.distributeWith(executorService);
 
+        NondominatedPopulation  result;
         try {
-            exec.run();
+            result = exec.run();
         } finally {
             executorService.shutdown();
         }
+
+        System.out.println("End Result Ready");
+        for (Solution s : result) {
+            ParametrizationPhenotype params = ParametrizationPhenotype.fromSolution(cbcttStaticParameters, s);
+            System.out.printf("Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
+                    params.getPopulationSize(), params.getOffspringSize(), params.getK(),
+                    formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators()));
+        }
+
 
         // jppfExecutorService.shutdown();
         // jppfClient.close();
