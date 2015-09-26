@@ -18,7 +18,6 @@ import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -40,7 +39,7 @@ public class MetaMain {
         }
         String filename = args[0];
 
-        Logger.verbose = false;
+        Logger.configuredLevel = Logger.Level.INFO;
 
         ExecutorService executorService = Executors.newFixedThreadPool(7);
         ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(2);
@@ -55,9 +54,9 @@ public class MetaMain {
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
-        int maxEvaluations = 100;
-        int populationSize = 50;
-        int offspringSize =  40;
+        int maxEvaluations = 200;
+        int populationSize = 20;
+        int offspringSize =  20;
         int k = 1;
 
         // values from moea framework
@@ -93,15 +92,15 @@ public class MetaMain {
         try {
             result = exec.run();
         } finally {
-            executorService.shutdown();
+            executorService.shutdownNow();
         }
 
         System.out.println("End Result Ready");
         for (Solution s : result) {
             ParametrizationPhenotype params = ParametrizationPhenotype.fromSolution(cbcttStaticParameters, s);
-            System.out.printf("Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s]",
+            System.out.printf("Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, Ops=[%s]",
                     params.getPopulationSize(), params.getOffspringSize(), params.getK(),
-                    formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators()));
+                    formatOperators(params.getOperators()));
         }
 
 

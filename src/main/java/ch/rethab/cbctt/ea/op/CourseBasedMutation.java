@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.ea.op;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.phenotype.Meeting;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
@@ -7,7 +8,6 @@ import ch.rethab.cbctt.ea.phenotype.Timetable;
 import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
 import ch.rethab.cbctt.moea.SolutionConverter;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class CourseBasedMutation implements CbcttVariation {
             }
         }
 
-        System.err.printf("Mutation failed after %d attempts\n", ATTEMPTS_AFTER_FAIL);
+        Logger.info(String.format("Mutation failed after %d attempts\n", ATTEMPTS_AFTER_FAIL));
         return new Solution[0];
     }
 
@@ -161,7 +161,7 @@ public class CourseBasedMutation implements CbcttVariation {
             }
         }
 
-        System.err.printf("Failed to find a distinct index after %d attempts\n", ATTEMPTS_AFTER_FAIL);
+        Logger.info(String.format("Failed to find a distinct index after %d attempts\n", ATTEMPTS_AFTER_FAIL));
         return null;
     }
 

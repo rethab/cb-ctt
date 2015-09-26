@@ -20,7 +20,6 @@ import org.moeaframework.analysis.collector.Accumulator;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,13 +37,13 @@ public class Main {
 
         double mutationProbability = 0.2;
         int sectorSize = 3;
-        int populationSize = 200;
-        int archiveSize = 100;
+        int populationSize = 50;
+        int archiveSize = 50; // if archive size is too small, we spend a lot of time truncating
         int k = 1;
 
-        Logger.verbose = false;
+        Logger.configuredLevel = Logger.Level.GIBBER;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService executorService = Executors.newFixedThreadPool(7);
         // JPPFClient jppfClient = new JPPFClient();
         // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
         // jppfExecutorService.setBatchSize(100);
@@ -87,9 +86,8 @@ public class Main {
         // jppfClient.close();
 
         Accumulator accumulator = instrumenter.getLastAccumulator();
-        System.out.println(accumulator.keySet());
         for (int i=0; i<accumulator.size("NFE"); i++) {
-            System.out.printf("%d: %s %s\n",  i, accumulator.get("AdditiveEpsilonIndicator", i));
+            System.out.printf("%d: %s\n", i, accumulator.get("AdditiveEpsilonIndicator", i));
         }
 
     }

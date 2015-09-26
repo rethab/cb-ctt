@@ -64,7 +64,7 @@ public class TeacherGreedyInitializer implements Initializer {
 
     @Override
     public List<TimetableWithRooms> initialize(int size) {
-        Logger.info("Size="+size);
+        Logger.trace("Size="+size);
 
         this.hardness = new HashMap<>();
         List<TimetableWithRooms> result = IntStream.range(0, size)

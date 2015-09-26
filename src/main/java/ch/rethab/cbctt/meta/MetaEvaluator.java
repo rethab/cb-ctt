@@ -28,7 +28,7 @@ public class MetaEvaluator {
         Indicator indicator = new AdditiveEpsilonIndicator(problem, referenceSet);
         double result = indicator.evaluate(pop);
 
-        Logger.info("EXIT (" + result + ")");
+        Logger.info("AdditiveEpsilonIndicator:  " + result);
         return result;
     }
 }

@@ -4,6 +4,7 @@ import ch.rethab.cbctt.Logger;
 import static ch.rethab.cbctt.meta.ParametrizationPhenotype.*;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
+import ch.rethab.cbctt.moea.LoggingProgressListener;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
@@ -44,19 +45,19 @@ public class CbcttRunner {
         int maxEvaluations = params.getPopulationSize() * ParametrizationPhenotype.NVARIABLES * 20;
         exec.withMaxEvaluations(maxEvaluations);
         exec.distributeWith(executorService);
+        exec.withProgressListener(new LoggingProgressListener());
 
         if (instrumenter != null) {
             exec.withInstrumenter(instrumenter);
         }
 
-        Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, CrossoverOps=[%s], MutationOps=[%s], MaxEvaluations=%d",
+        Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, Ops=[%s], MaxEvaluations=%d",
                 params.getPopulationSize(), params.getOffspringSize(), params.getK(),
-                formatOperators(params.getCrossoverOperators()), formatOperators(params.getMutationOperators()),
-                maxEvaluations));
+                formatOperators(params.getOperators()), maxEvaluations));
 
         NondominatedPopulation result = exec.run();
 
-        Logger.trace("EXIT (" + result.size() + ")");
+        Logger.info("After actual run");
         return result;
     }
 
