@@ -58,14 +58,14 @@ public class Main {
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
 
-        List<CbcttVariation> crossovers = Arrays.asList(
-                variationFactory.getCrossoverOperator(0, sectorSize),
-                variationFactory.getCrossoverOperator(1, sectorSize),
-                variationFactory.getCrossoverOperator(2, sectorSize)
+        List<CbcttVariation> variators = Arrays.asList(
+                //variationFactory.getCrossoverOperator(0, sectorSize),
+                //variationFactory.getCrossoverOperator(1, sectorSize),
+                variationFactory.getCrossoverOperator(2, sectorSize),
+                variationFactory.getMutationOperator(0, mutationProbability)
         );
 
-        List<CbcttVariation> mutators = Collections.singletonList(variationFactory.getMutationOperator(0, mutationProbability));
-        ParametrizationPhenotype params = new ParametrizationPhenotype(crossovers, mutators, populationSize, archiveSize, k);
+        ParametrizationPhenotype params = new ParametrizationPhenotype(variators, populationSize, archiveSize, k);
         TimetableInitializationFactory timetableInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, timetableInitializationFactory, variationFactory);
 

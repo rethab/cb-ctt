@@ -3,7 +3,6 @@ package ch.rethab.cbctt.moea;
 import ch.rethab.cbctt.StaticParameters;
 import org.moeaframework.algorithm.SPEA2;
 import org.moeaframework.core.*;
-import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 

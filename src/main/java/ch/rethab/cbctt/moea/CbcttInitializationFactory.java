@@ -6,6 +6,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -61,8 +62,6 @@ class CbcttInitializer extends RandomInitialization {
     }
 
     private Variable indexInitialize(int i, Variable v) {
-        // at least right now we have only real variables
-
         switch (i) {
             case ParametrizationPhenotype.POPULATION_SIZE_IDX:
                 initialize(v);
@@ -89,17 +88,22 @@ class CbcttInitializer extends RandomInitialization {
                 break;
             case ParametrizationPhenotype.SECTOR_SIZE_IDX:
                 if (cbcttPopulationSize == -1)
-                    throw new IllegalStateException("populatin size should have been initialized before");
+                    throw new IllegalStateException("population size should have been initialized before");
                 // create a new variable so we can set the upper bound
                 v = EncodingUtils.newInt((int) ((RealVariable) v).getLowerBound(), cbcttPopulationSize);
                 initialize(v);
+                break;
+            case ParametrizationPhenotype.VARIATOR_IDX:
+                do {
+                    initialize(v);
+                } while (allZeroes(v));
                 break;
             default:
                 initialize(v);
                 break;
         }
 
-            return v;
+        return v;
     }
 
     @Override
@@ -125,5 +129,9 @@ class CbcttInitializer extends RandomInitialization {
         }
 
         return initialPopulation;
+    }
+
+    private boolean allZeroes(Variable v) {
+        return ((BinaryVariable) v).getBitSet().nextSetBit(0) == -1;
     }
 }

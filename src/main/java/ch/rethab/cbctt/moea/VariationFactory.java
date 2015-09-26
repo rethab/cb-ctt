@@ -3,7 +3,6 @@ package ch.rethab.cbctt.moea;
 import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.op.*;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
-import org.moeaframework.core.Variation;
 
 /**
  * @author Reto Habluetzel, 2015
@@ -22,8 +21,8 @@ public class VariationFactory {
         this.roomAssigner = roomAssigner;
     }
 
-    public int getNumberOfMutationOperators() {
-        return 1;
+    public int getNumberOfOperators() {
+        return 4;
     }
 
     public CbcttVariation getMutationOperator(int idx, double mutationProbability) {
@@ -32,10 +31,6 @@ public class VariationFactory {
         } else {
             throw new IllegalArgumentException("There is only one mutation operator");
         }
-    }
-
-    public int getNumberOfCrossoverOperators() {
-        return 3;
     }
 
     public CbcttVariation getCrossoverOperator(int i, int sectorSize) {
