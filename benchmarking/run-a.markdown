@@ -39,6 +39,7 @@
 
 
 ### Plot
-X Axis: Number of Generations
-Y Axis: Number of Soft-Constraint Violations
+- X Axis: Number of Generations
+- Y Axis: Number of Soft-Constraint Violations
+
 ![Run A Plot](run-a.png)
