@@ -37,4 +37,4 @@
 |Crossover     |Sector(sectorSize=10)                        |
 |Mutation      |CourseBased(prob=0.100)                      |
 
-![Run A Plot](/run-a.png)
+![Run A Plot](run-a.png)
