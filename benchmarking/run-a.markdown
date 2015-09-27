@@ -37,4 +37,8 @@
 |Crossover     |Sector(sectorSize=10)                        |
 |Mutation      |CourseBased(prob=0.100)                      |
 
+
+### Plot
+X Axis: Number of Generations
+Y Axis: Number of Soft-Constraint Violations
 ![Run A Plot](run-a.png)
