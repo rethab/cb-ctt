@@ -1,0 +1,9 @@
+#!/usr/bin/gnuplot
+
+plot  "run-a-00.dat" with linespoints, \
+      "run-a-01.dat" with linespoints, \
+      "run-a-02.dat" with linespoints, \
+      "run-a-03.dat" with linespoints, \
+      "run-a-04.dat" with linespoints
+
+pause -1
