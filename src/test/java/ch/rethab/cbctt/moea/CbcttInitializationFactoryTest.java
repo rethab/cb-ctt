@@ -3,7 +3,6 @@ package ch.rethab.cbctt.moea;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.op.*;
 import ch.rethab.cbctt.meta.MetaCurriculumBasedTimetabling;
-import static org.hamcrest.Matchers.*;
 import ch.rethab.cbctt.meta.MetaStaticParameters;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**

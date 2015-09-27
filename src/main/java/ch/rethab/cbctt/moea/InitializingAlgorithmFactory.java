@@ -2,11 +2,14 @@ package ch.rethab.cbctt.moea;
 
 import ch.rethab.cbctt.StaticParameters;
 import org.moeaframework.algorithm.SPEA2;
-import org.moeaframework.core.*;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.Initialization;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 
-import java.util.*;
+import java.util.Properties;
 
 
 /**

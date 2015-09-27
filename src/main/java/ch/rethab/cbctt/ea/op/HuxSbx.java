@@ -3,7 +3,6 @@ package ch.rethab.cbctt.ea.op;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import org.moeaframework.core.*;
 import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**

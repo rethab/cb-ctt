@@ -8,8 +8,8 @@ import ch.rethab.cbctt.moea.CbcttInitializationFactory;
 import ch.rethab.cbctt.moea.VariationFactory;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
-import static org.hamcrest.Matchers.*;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**

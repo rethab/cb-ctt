@@ -1,7 +1,6 @@
 package ch.rethab.cbctt;
 
 import ch.rethab.cbctt.domain.Specification;
-import static ch.rethab.cbctt.meta.ParametrizationPhenotype.*;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.ea.op.Evaluator;
 import ch.rethab.cbctt.ea.op.HuxSbx;
@@ -13,7 +12,10 @@ import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.meta.MetaCurriculumBasedTimetabling;
 import ch.rethab.cbctt.meta.MetaStaticParameters;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
-import ch.rethab.cbctt.moea.*;
+import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
+import ch.rethab.cbctt.moea.SolutionConverter;
+import ch.rethab.cbctt.moea.TimetableInitializationFactory;
+import ch.rethab.cbctt.moea.VariationFactory;
 import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
@@ -27,6 +29,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static ch.rethab.cbctt.meta.ParametrizationPhenotype.formatOperators;
 
 /**
  * @author Reto Habluetzel, 2015

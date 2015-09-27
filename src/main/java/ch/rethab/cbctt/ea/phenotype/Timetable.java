@@ -1,6 +1,5 @@
 package ch.rethab.cbctt.ea.phenotype;
 
-import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Specification;
 

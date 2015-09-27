@@ -1,7 +1,6 @@
 package ch.rethab.cbctt.ea.phenotype;
 
 import blogspot.software_and_algorithms.stern_library.optimization.HungarianAlgorithm;
-import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;

@@ -5,12 +5,12 @@ import ch.rethab.cbctt.domain.Curriculum;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
 import org.junit.Test;
-import static org.hamcrest.Matchers.*;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**

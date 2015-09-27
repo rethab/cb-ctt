@@ -1,16 +1,16 @@
 package ch.rethab.cbctt.ea;
 
 import ch.rethab.cbctt.Logger;
-import static ch.rethab.cbctt.meta.ParametrizationPhenotype.*;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
-import ch.rethab.cbctt.moea.LoggingProgressListener;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
 import java.util.concurrent.ExecutorService;
+
+import static ch.rethab.cbctt.meta.ParametrizationPhenotype.formatOperators;
 
 /**
  * @author Reto Habluetzel, 2015
