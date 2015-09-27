@@ -71,28 +71,25 @@ public class CbcttInitializationFactoryTest {
                 assertThat(params.getOffspringSize(), allOf(is(lessThanOrEqualTo(params.getPopulationSize())),
                     is(greaterThanOrEqualTo(ParametrizationPhenotype.ARCHIVE_SIZE_LOWER_BOUND))));
 
-                if (!params.getOperators().isEmpty()) {
-                    assertThat(params.getOperators().size(), is(lessThanOrEqualTo(4)));
-                    for (CbcttVariation cbcttVariation : params.getOperators()) {
-                        if (cbcttVariation instanceof CourseBasedCrossover) {
-                            courseX = true;
-                        } else if (cbcttVariation instanceof CurriculumBasedCrossover) {
-                            currX = true;
-                        } else if (cbcttVariation instanceof SectorBasedCrossover) {
-                            secX = true;
-                            SectorBasedCrossover sectorBasedCrossover = (SectorBasedCrossover) cbcttVariation;
-                            assertThat(sectorBasedCrossover.getSectorSize(), allOf(is(lessThanOrEqualTo(params.getPopulationSize())),
-                                    is(greaterThanOrEqualTo(ParametrizationPhenotype.SECTOR_SIZE_LOWER_BOUND))));
-                        } else if (cbcttVariation instanceof CourseBasedMutation) {
-                            mutationFound = true;
-                            CourseBasedMutation mutation = (CourseBasedMutation) cbcttVariation;
-                            assertThat(mutation.getProbability(), allOf(is(lessThanOrEqualTo(ParametrizationPhenotype.PROBABILITY_UPPER_BOUND)),
-                                    is(greaterThanOrEqualTo(ParametrizationPhenotype.PROBABILITY_LOWER_BOUND))));
-                        } else {
-                            fail("Unknown Crossover");
-                        }
+                assertThat(params.getOperators().size(), allOf(is(greaterThan(0)), is(lessThanOrEqualTo(4))));
+                for (CbcttVariation cbcttVariation : params.getOperators()) {
+                    if (cbcttVariation instanceof CourseBasedCrossover) {
+                        courseX = true;
+                    } else if (cbcttVariation instanceof CurriculumBasedCrossover) {
+                        currX = true;
+                    } else if (cbcttVariation instanceof SectorBasedCrossover) {
+                        secX = true;
+                        SectorBasedCrossover sectorBasedCrossover = (SectorBasedCrossover) cbcttVariation;
+                        assertThat(sectorBasedCrossover.getSectorSize(), allOf(is(lessThanOrEqualTo(params.getPopulationSize())),
+                                is(greaterThanOrEqualTo(ParametrizationPhenotype.SECTOR_SIZE_LOWER_BOUND))));
+                    } else if (cbcttVariation instanceof CourseBasedMutation) {
+                        mutationFound = true;
+                        CourseBasedMutation mutation = (CourseBasedMutation) cbcttVariation;
+                        assertThat(mutation.getProbability(), allOf(is(lessThanOrEqualTo(ParametrizationPhenotype.PROBABILITY_UPPER_BOUND)),
+                                is(greaterThanOrEqualTo(ParametrizationPhenotype.PROBABILITY_LOWER_BOUND))));
+                    } else {
+                        fail("Unknown Crossover");
                     }
-
                 }
             }
         }

@@ -39,6 +39,9 @@ public class HuxSbxTest {
             ParametrizationPhenotype param1 = ParametrizationPhenotype.fromSolution(cbcttStaticParameters, offspring[0]);
             ParametrizationPhenotype param2 = ParametrizationPhenotype.fromSolution(cbcttStaticParameters, offspring[1]);
 
+            assertThat(param1.getOperators(), is(not(empty())));
+            assertThat(param2.getOperators(), is(not(empty())));
+
             // make sure we only compare when something actually was mutated
             if (parent1.getOffspringSize() != param1.getOffspringSize() && parent2.getOffspringSize() != param1.getOffspringSize()) {
                 assertThat(param1.getPopulationSize(), is(lessThanOrEqualTo(ParametrizationPhenotype.POPULATION_UPPER_BOUND)));
@@ -61,10 +64,9 @@ public class HuxSbxTest {
             }
         }
 
-        // meaning every third time something has happened. Should be more (~0.5),
-        // but we want to make sure the test always succeeds
-        assertThat(happenCounter, is(greaterThan((int)(1000*0.2))));
-        assertThat(happenCounter2, is(greaterThan((int)(1000*0.2))));
+        // meaning every now and then something has happened.
+        assertThat(happenCounter, is(greaterThan(100)));
+        assertThat(happenCounter2, is(greaterThan(100)));
     }
 
 }

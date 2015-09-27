@@ -72,7 +72,7 @@ public class HuxSbx implements Variation {
 
             if (variable1 instanceof BinaryVariable && variable2 instanceof BinaryVariable) {
                 if (PRNG.nextDouble() <= huxProbability) {
-                    evolveHux((BinaryVariable) variable1, (BinaryVariable) variable2);
+                    evolveHux(i, (BinaryVariable) variable1, (BinaryVariable) variable2);
                 }
             } else if (variable1 instanceof RealVariable && variable2 instanceof RealVariable) {
                 RealVariable rv1 = (RealVariable) variable1;
@@ -101,7 +101,7 @@ public class HuxSbx implements Variation {
      * @param v1 the first variable
      * @param v2 the second variable
      */
-    public static void evolveHux(BinaryVariable v1, BinaryVariable v2) {
+    public static void evolveHux(int idx, BinaryVariable v1, BinaryVariable v2) {
         if (v1.getNumberOfBits() != v2.getNumberOfBits()) {
             throw new FrameworkException("binary variables not same length");
         }
@@ -112,8 +112,18 @@ public class HuxSbx implements Variation {
             if ((value != v2.get(i)) && PRNG.nextBoolean()) {
                 v1.set(i, !value);
                 v2.set(i, value);
+
+                // make sure there is one variator by resetting if it turned into all zeroes
+                if (idx == ParametrizationPhenotype.VARIATOR_IDX) {
+                    if (allZeroes(v1)) v1.set(i, value);
+                    if (allZeroes(v2)) v2.set(i, !value);
+                }
             }
         }
+    }
+
+    private static boolean allZeroes(BinaryVariable v) {
+        return v.getBitSet().nextSetBit(0) == -1;
     }
 
 	/*

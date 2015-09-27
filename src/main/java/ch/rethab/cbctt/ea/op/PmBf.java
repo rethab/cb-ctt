@@ -1,5 +1,6 @@
 package ch.rethab.cbctt.ea.op;
 
+import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -48,15 +49,32 @@ public class PmBf implements Variation {
     public Solution[] evolve(Solution[] parents) {
         Solution result = parents[0].copy();
 
+        // if the population size changes, we reset the upper bound for the offspring size
+        int popSize = -1;
         for (int i = 0; i < result.getNumberOfVariables(); i++) {
             Variable variable = result.getVariable(i);
 
             if (variable instanceof RealVariable) {
-                if (PRNG.nextDouble() <= pmProbability) {
-                    evolveReal((RealVariable) variable, pmDistributionIndex);
+
+                RealVariable rv = (RealVariable) variable;
+                if (i == ParametrizationPhenotype.ARCHIVE_SIZE_IDX) {
+                    if (popSize == -1) throw new IllegalStateException("Population size should have been set before");
+                    double newVal = Math.min(rv.getValue(), popSize); // must be reduce if population size is reduced
+                    rv = new RealVariable(newVal, rv.getLowerBound(), popSize);
+                    result.setVariable(i, rv);
                 }
+
+                if (PRNG.nextDouble() <= pmProbability) {
+                    evolveReal(rv, pmDistributionIndex);
+                }
+
+                if (i == ParametrizationPhenotype.POPULATION_SIZE_IDX) {
+                    popSize = (int) rv.getValue();
+                }
+
             } else if (variable instanceof BinaryVariable) {
-                evolve((BinaryVariable)variable, bfProbability);
+
+                evolve(i, (BinaryVariable)variable, bfProbability);
             }
         }
 
@@ -68,12 +86,23 @@ public class PmBf implements Variation {
      *
      * @param variable the variable to be mutated
      */
-    public static void evolve(BinaryVariable variable, double probability) {
+    public static void evolve(int idx, BinaryVariable variable, double probability) {
         for (int i = 0; i < variable.getNumberOfBits(); i++) {
             if (PRNG.nextDouble() <= probability) {
                 variable.set(i, !variable.get(i));
+
+                // make sure there is always one variator by resetting
+                if (idx == ParametrizationPhenotype.VARIATOR_IDX) {
+                    if (allZeroes(variable)) {
+                        variable.set(i, !variable.get(i));
+                    }
+                }
             }
         }
+    }
+
+    private static boolean allZeroes(BinaryVariable v) {
+        return v.getBitSet().nextSetBit(0) == -1;
     }
 
 	/*
@@ -126,10 +155,15 @@ public class PmBf implements Variation {
         double dx = ub - lb;
         double delta;
 
+        if (lb == ub) {
+            v.setValue(lb);
+            return;
+        }
+
         if (u < 0.5) {
-            double bl = (x - lb) / dx;
+            double bu = (x - lb) / dx;
             double b = 2 * u + (1 - 2 * u)
-                    * (Math.pow(1 - bl, (distributionIndex + 1)));
+                    * (Math.pow(1 - bu, (distributionIndex + 1)));
             delta = Math.pow(b, (1.0 / (distributionIndex + 1))) - 1.0;
         } else {
             double bu = (ub - x) / dx;
