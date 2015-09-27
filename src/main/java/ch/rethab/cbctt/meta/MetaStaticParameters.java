@@ -1,12 +1,15 @@
 package ch.rethab.cbctt.meta;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.StaticParameters;
 import ch.rethab.cbctt.ea.CbcttStaticParameters;
 import ch.rethab.cbctt.moea.CbcttInitializationFactory;
 import ch.rethab.cbctt.moea.InitializationFactory;
+import ch.rethab.cbctt.moea.LoggingProgressListener;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.progress.ProgressListener;
 
 import java.util.Arrays;
 
@@ -37,6 +40,11 @@ public final class MetaStaticParameters implements StaticParameters {
 
     public InitializationFactory getInitializationFactory(Problem problem) {
         return new CbcttInitializationFactory(problem);
+    }
+
+    @Override
+    public ProgressListener getProgressListener() {
+        return new LoggingProgressListener(Logger.Level.GIBBER);
     }
 
     public CbcttStaticParameters getCbcttStaticParameters() {

@@ -9,11 +9,17 @@ import org.moeaframework.util.progress.ProgressListener;
  */
 public class LoggingProgressListener implements ProgressListener {
 
+    private final Logger.Level level;
+
+    public LoggingProgressListener(Logger.Level level) {
+        this.level = level;
+    }
+
     @Override
     public void progressUpdate(ProgressEvent event) {
-        Logger.gibber(String.format("Progress Update: NFE=%d, Seed=%d, ElapsedTime=%ds, PercentComplete=%2.3f%%",
+        Logger.log(level, String.format("Progress Update: NFE=%d, Seed=%d, ElapsedTime=%2.2fs, PercentComplete=%2.3f%%",
                 event.getCurrentNFE(), event.getCurrentSeed(),
-                (int) event.getElapsedTime(), event.getPercentComplete() ));
+                event.getElapsedTime(), event.getPercentComplete() ));
     }
 
 }

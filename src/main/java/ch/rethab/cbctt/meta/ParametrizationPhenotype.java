@@ -133,6 +133,10 @@ public final class ParametrizationPhenotype {
         return variation;
     }
 
+    public int getMaxEvaluations(CbcttStaticParameters cbcttStaticParameters) {
+        return populationSize * NVARIABLES * cbcttStaticParameters.getNumberOfGenerations();
+    }
+
     public int getPopulationSize() {
         return populationSize;
     }

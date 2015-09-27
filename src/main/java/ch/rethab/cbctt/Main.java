@@ -35,11 +35,13 @@ public class Main {
         }
         String filename = args[0];
 
-        double mutationProbability = 0.2;
+        double mutationProbability = 1;
         int sectorSize = 3;
-        int populationSize = 50;
-        int archiveSize = 50; // if archive size is too small, we spend a lot of time truncating
-        int k = 1;
+        int populationSize = 200;
+        int archiveSize = 200; // if archive size is too small, we spend a lot of time truncating
+        int k = 3;
+        int generations = 10;
+        Logger.Level progressListenerLevel = Logger.Level.TRACE;
 
         Logger.configuredLevel = Logger.Level.GIBBER;
 
@@ -57,20 +59,22 @@ public class Main {
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
 
+        CbcttVariation courseX = variationFactory.getCrossoverOperator(0, -1);
+        CbcttVariation currX = variationFactory.getCrossoverOperator(1, -1);
+        CbcttVariation sectorX = variationFactory.getCrossoverOperator(2, sectorSize);
+
         List<CbcttVariation> variators = Arrays.asList(
-                //variationFactory.getCrossoverOperator(0, sectorSize),
-                //variationFactory.getCrossoverOperator(1, sectorSize),
-                variationFactory.getCrossoverOperator(2, sectorSize),
-                variationFactory.getMutationOperator(0, mutationProbability)
+                courseX, currX, sectorX, variationFactory.getMutationOperator(0, mutationProbability)
         );
 
         ParametrizationPhenotype params = new ParametrizationPhenotype(variators, populationSize, archiveSize, k);
         TimetableInitializationFactory timetableInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(formulation, evaluator, timetableInitializationFactory, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(generations, progressListenerLevel,
+                formulation, evaluator, timetableInitializationFactory, variationFactory);
 
         Instrumenter instrumenter = new Instrumenter()
                 .withProblemClass(CurriculumBasedTimetabling.class, formulation, evaluator)
-                .withFrequency(100) // every 100 evaluations
+                .withFrequency(100)
                 .withReferenceSet(new File("src/test/resources/reference-set-comp01"))
                 .attachAll();
 

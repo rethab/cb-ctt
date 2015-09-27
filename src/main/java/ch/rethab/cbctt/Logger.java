@@ -36,18 +36,22 @@ public final class Logger {
     public static Level configuredLevel = Level.INFO;
 
     public static void info(String msg) {
-        log(Level.INFO, msg);
+        log0(Level.INFO, msg);
     }
 
     public static void gibber(String msg) {
-        log(Level.GIBBER, msg);
+        log0(Level.GIBBER, msg);
     }
 
     public static void trace(String msg) {
-        log(Level.TRACE, msg);
+        log0(Level.TRACE, msg);
     }
 
-    private static void log(Level level, String msg) {
+    public static void log(Level level, String msg) {
+        log0(level, msg);
+    }
+
+    private static void log0(Level level, String msg) {
         if (configuredLevel.level >= level.level) {
             System.out.printf("%s [%s / %s / %s]: %s\n", level.name(), Thread.currentThread().getName(), dateTime(), methodInfo(), msg);
         }

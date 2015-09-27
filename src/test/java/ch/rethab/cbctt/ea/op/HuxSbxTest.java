@@ -20,7 +20,7 @@ public class HuxSbxTest {
     @Test
     public void shouldNeverProduceOutOfBoundsValues() {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
         MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
         CbcttInitializationFactory cbcttInitializationFactory = new CbcttInitializationFactory(problem);

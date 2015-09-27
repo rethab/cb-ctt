@@ -14,7 +14,7 @@ public class ParametrizationPhenotypeTest {
 
     @Test
     public void shouldNotBlowUp() {
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, new VariationFactory(null, null, null));
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, new VariationFactory(null, null, null));
         List<Variable> variables = ParametrizationPhenotype.newVariables(cbcttStaticParameters);
         ParametrizationPhenotype.decode(cbcttStaticParameters, variables);
     }

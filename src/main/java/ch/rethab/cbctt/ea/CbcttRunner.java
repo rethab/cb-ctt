@@ -40,12 +40,9 @@ public class CbcttRunner {
         exec.withProperty("populationSize", params.getPopulationSize());
         exec.withProperty("numberOfOffspring", params.getOffspringSize());
         exec.withProperty("k", params.getK());
-
-        // max evaluations should be 20 * n generations, so we need to multiply by the population size
-        int maxEvaluations = params.getPopulationSize() * ParametrizationPhenotype.NVARIABLES * 20;
-        exec.withMaxEvaluations(maxEvaluations);
+        exec.withMaxEvaluations(params.getMaxEvaluations(cbcttStaticParameters));
         exec.distributeWith(executorService);
-        exec.withProgressListener(new LoggingProgressListener());
+        exec.withProgressListener(cbcttStaticParameters.getProgressListener());
 
         if (instrumenter != null) {
             exec.withInstrumenter(instrumenter);
@@ -53,7 +50,7 @@ public class CbcttRunner {
 
         Logger.info(String.format("Before actual run. Parameters: PopulationSize=%d, OffspringSize=%d, k=%d, Ops=[%s], MaxEvaluations=%d",
                 params.getPopulationSize(), params.getOffspringSize(), params.getK(),
-                formatOperators(params.getOperators()), maxEvaluations));
+                formatOperators(params.getOperators()), params.getMaxEvaluations(cbcttStaticParameters)));
 
         NondominatedPopulation result = exec.run();
 

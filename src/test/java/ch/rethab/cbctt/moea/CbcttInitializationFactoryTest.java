@@ -21,7 +21,7 @@ public class CbcttInitializationFactoryTest {
     @Test
     public void shouldNotExceedPopulationSizeWithArchiveSizeAndK() {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
         MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
@@ -46,7 +46,7 @@ public class CbcttInitializationFactoryTest {
     @Test
     public void shouldProduceValueWithinBounds() {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
         MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
@@ -113,7 +113,7 @@ public class CbcttInitializationFactoryTest {
         */
 
         VariationFactory variationFactory = new VariationFactory(null, null, null);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
         MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
@@ -131,7 +131,7 @@ public class CbcttInitializationFactoryTest {
     @Test
     public void shouldProduceSolutionWithoutOperatorOnce() {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(null, null, null, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
         MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
