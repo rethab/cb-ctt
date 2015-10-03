@@ -1,11 +1,11 @@
 package ch.rethab.cbctt.moea;
 
+import ch.rethab.cbctt.Logger;
 import ch.rethab.cbctt.StaticParameters;
+import ch.rethab.cbctt.ea.CbcttStaticParameters;
+import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import org.moeaframework.algorithm.SPEA2;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Initialization;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.*;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 
@@ -41,6 +41,31 @@ public class InitializingAlgorithmFactory extends AlgorithmFactory {
         int numberOfOffspring =  properties.getInt("numberOfOffspring", -1);
         int k = properties.getInt("k", -1);
         Initialization initialization = staticParameters.getInitializationFactory(problem).create(populationSize);
-        return new SPEA2(problem, initialization, variation, numberOfOffspring, k);
+        return new SPEA2WithLogging(problem, initialization, variation, numberOfOffspring, k);
+    }
+}
+
+class SPEA2WithLogging extends SPEA2 {
+
+    public SPEA2WithLogging(Problem problem, Initialization initialization, Variation variation, int numberOfOffspring, int k) {
+        super(problem, initialization, variation, numberOfOffspring, k);
+    }
+
+    @Override
+    protected void iterate() {
+        super.iterate();
+
+        // the moea framework doesn't use the archive for the archive for the best individuals, but always he population
+        for (Solution solution : population) {
+            // 1 means we are in meta. cb-ctt is multi-objective
+            if (solution.getNumberOfObjectives() == 1) {
+
+                CbcttStaticParameters mockParams = new CbcttStaticParameters(0, null, null, null, null, new VariationFactory(null, null, null));
+                ParametrizationPhenotype params = ParametrizationPhenotype.fromSolution(mockParams, solution);
+                int indicator = (int) solution.getObjective(0);
+                Logger.gibber(String.format("Parameters [%s] --> Objective: %d", params.toString(), indicator));
+            }
+        }
+
     }
 }

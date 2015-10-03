@@ -4,10 +4,12 @@ import ch.rethab.cbctt.domain.Specification;
 import ch.rethab.cbctt.ea.op.*;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 
+import java.io.Serializable;
+
 /**
  * @author Reto Habluetzel, 2015
  */
-public class VariationFactory {
+public class VariationFactory implements Serializable {
 
     private final Specification spec;
 

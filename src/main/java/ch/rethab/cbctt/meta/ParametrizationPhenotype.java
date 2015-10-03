@@ -153,6 +153,10 @@ public final class ParametrizationPhenotype {
         return variators;
     }
 
+    @Override
+    public String toString() {
+        return String.format("PopulationSize=%d, OffspringSize=%d, k=%d, Ops=[%s]", populationSize, offspringSize, k, formatOperators(getOperators()));
+    }
     public static String formatOperators(List<CbcttVariation> ops) {
         StringBuilder sb = new StringBuilder();
         boolean first = true;

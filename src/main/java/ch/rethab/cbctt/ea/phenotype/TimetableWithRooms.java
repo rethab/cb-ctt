@@ -4,11 +4,12 @@ import ch.rethab.cbctt.domain.Course;
 import ch.rethab.cbctt.domain.Room;
 import ch.rethab.cbctt.domain.Specification;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class TimetableWithRooms {
+public class TimetableWithRooms implements Serializable {
 
     private final Specification spec;
 

@@ -85,7 +85,7 @@ public class MetaMain {
         AlgorithmFactory algorithmFactory = new InitializingAlgorithmFactory(metaStaticParameters, metaVariation);
 
         Executor exec = new Executor();
-        exec.withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters, cbcttExecutorService);
+        exec.withProblemClass(MetaCurriculumBasedTimetabling.class, metaStaticParameters);
         exec.withAlgorithm(metaStaticParameters.algorithmName());
         exec.usingAlgorithmFactory(algorithmFactory);
         exec.withMaxEvaluations(maxEvaluations);

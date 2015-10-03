@@ -23,7 +23,7 @@ public class CbcttInitializationFactoryTest {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
-        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
+        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
 
         for (int i = 0; i < 100; i++) {
@@ -48,7 +48,7 @@ public class CbcttInitializationFactoryTest {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
-        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
+        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
 
         // we also want to make sure that all operators are found once
@@ -112,7 +112,7 @@ public class CbcttInitializationFactoryTest {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
-        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
+        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
 
         for (int i = 0; i < 200; i++) {
@@ -130,7 +130,7 @@ public class CbcttInitializationFactoryTest {
         VariationFactory variationFactory = new VariationFactory(null, null, null);
         CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(0, null, null, null, null, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
-        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters, null);
+        MetaCurriculumBasedTimetabling problem = new MetaCurriculumBasedTimetabling(metaStaticParameters);
         InitializationFactory initializationFactory = new CbcttInitializationFactory(problem);
 
         boolean missingMutator = false;
