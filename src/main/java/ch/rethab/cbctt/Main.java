@@ -78,7 +78,7 @@ public class Main {
                 .withReferenceSet(new File("src/test/resources/reference-set-comp01"))
                 .attachAll();
 
-        CbcttRunner cbcttRunner = new CbcttRunner(executorService, cbcttStaticParameters, params);
+        CbcttRunner cbcttRunner = new CbcttRunner(cbcttStaticParameters, params);
         try {
             cbcttRunner.run(instrumenter);
         } finally {
