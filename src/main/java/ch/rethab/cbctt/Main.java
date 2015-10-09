@@ -74,7 +74,8 @@ public class Main {
 
         Instrumenter instrumenter = new Instrumenter()
                 .withProblemClass(CurriculumBasedTimetabling.class, formulation, evaluator)
-                .withFrequency(100)
+                .withFrequency(populationSize)
+                .addAllowedPackage("ch.rethab.cbctt.moea")
                 .withReferenceSet(new File("src/test/resources/reference-set-comp01"))
                 .attachAll();
 
