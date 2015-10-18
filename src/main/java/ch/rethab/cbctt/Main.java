@@ -15,6 +15,8 @@ import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.moea.TimetableInitializationFactory;
 import ch.rethab.cbctt.moea.VariationFactory;
 import ch.rethab.cbctt.parser.ECTTParser;
+import org.jppf.client.JPPFClient;
+import org.jppf.client.concurrent.JPPFExecutorService;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
 
@@ -35,21 +37,16 @@ public class Main {
         }
         String filename = args[0];
 
-        double mutationProbability = 1;
-        int sectorSize = 3;
-        int populationSize = 200;
-        int archiveSize = 200; // if archive size is too small, we spend a lot of time truncating
-        int k = 3;
-        int generations = 10;
+        double mutationProbability = 0.995;
+        int populationSize = 250;
+        int archiveSize = 100;
+        int k = 4;
+        int generations = 120;
         Logger.Level progressListenerLevel = Logger.Level.TRACE;
 
         Logger.configuredLevel = Logger.Level.GIBBER;
 
         ExecutorService executorService = Executors.newFixedThreadPool(7);
-        // JPPFClient jppfClient = new JPPFClient();
-        // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
-        // jppfExecutorService.setBatchSize(100);
-        // jppfExecutorService.setBatchTimeout(100);
 
 
         Specification spec = new ECTTParser(new BufferedReader(new FileReader(filename))).parse();
@@ -60,11 +57,9 @@ public class Main {
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
 
         CbcttVariation courseX = variationFactory.getCrossoverOperator(0, -1);
-        CbcttVariation currX = variationFactory.getCrossoverOperator(1, -1);
-        CbcttVariation sectorX = variationFactory.getCrossoverOperator(2, sectorSize);
 
         List<CbcttVariation> variators = Arrays.asList(
-                courseX, currX, sectorX, variationFactory.getMutationOperator(0, mutationProbability)
+                 courseX, variationFactory.getMutationOperator(0, mutationProbability)
         );
 
         ParametrizationPhenotype params = new ParametrizationPhenotype(variators, populationSize, archiveSize, k);
@@ -79,18 +74,15 @@ public class Main {
                 .withReferenceSet(new File("src/test/resources/reference-set-comp01"))
                 .attachAll();
 
-        CbcttRunner cbcttRunner = new CbcttRunner(executorService, cbcttStaticParameters, params);
+        CbcttRunner cbcttRunner = new CbcttRunner(cbcttStaticParameters, params);
         try {
             cbcttRunner.run(instrumenter);
         } finally {
             executorService.shutdown();
         }
 
-
-        // jppfExecutorService.shutdown();
-        // jppfClient.close();
-
         Accumulator accumulator = instrumenter.getLastAccumulator();
+        System.out.println(accumulator.keySet());
         for (int i=0; i<accumulator.size("NFE"); i++) {
             System.out.printf("%d: %s\n", i, accumulator.get("AdditiveEpsilonIndicator", i));
         }

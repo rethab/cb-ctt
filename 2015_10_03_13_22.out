@@ -1,0 +1,789 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for ch.rethab:cb-ctt:jar:1.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.apache.commons:commons-math3:jar -> duplicate declaration of version 3.5 @ line 101, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 13, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building cb-ctt 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:java (default-cli) @ cb-ctt ---
+client process id: 4517, uuid: F5813813-CD32-0F00-27BB-28302477DEB4
+Starting new Computation with: MetaPopulationSize=30, MetaOffspringSize=30, MetaK=1, MaxEvaluations=1000, CbcttGenerations=75, CbcttMaxPopulationSize=400, CbcttRuns=3
+[client: driver1-1 - ClassServer] Attempting connection to the class server at localhost:11111
+[client: driver1-1 - ClassServer] Reconnected to the class server
+[client: driver1-1 - TasksServer] Attempting connection to the task server at localhost:11111
+[client: driver1-1 - TasksServer] Reconnected to the JPPF task server
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.962)]] --> Objective: 108
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=270, OffspringSize=82, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114)]] --> Objective: 166
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=43, OffspringSize=39, k=2, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.395)]] --> Objective: 144
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=19, OffspringSize=13, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover]] --> Objective: 249
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=88, OffspringSize=82, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=51)]] --> Objective: 212
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=71, OffspringSize=25, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=70)]] --> Objective: 172
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=124, OffspringSize=83, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.123)]] --> Objective: 135
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=68, OffspringSize=16, k=2, Ops=[CourseBasedCrossover, CurriculumBasedCrossover]] --> Objective: 213
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 100
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=34, OffspringSize=15, k=1, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 148
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=44, OffspringSize=15, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=8), CourseBasedMutation(prob=0.161)]] --> Objective: 174
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=309, OffspringSize=75, k=4, Ops=[SectorBasedCrossover(sectorSize=50), CourseBasedMutation(prob=0.944)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=392, OffspringSize=285, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=10), CourseBasedMutation(prob=0.262)]] --> Objective: 121
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=271, OffspringSize=235, k=3, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.070)]] --> Objective: 134
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=235, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.399)]] --> Objective: 119
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=52, OffspringSize=21, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover]] --> Objective: 207
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=326, OffspringSize=163, k=3, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=16), CourseBasedMutation(prob=0.090)]] --> Objective: 133
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=197, OffspringSize=118, k=1, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.174)]] --> Objective: 133
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=33, OffspringSize=25, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=32), CourseBasedMutation(prob=0.675)]] --> Objective: 174
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=251, OffspringSize=175, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=144), CourseBasedMutation(prob=0.673)]] --> Objective: 141
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=226, OffspringSize=213, k=2, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=212)]] --> Objective: 167
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=116, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=2)]] --> Objective: 149
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=395, OffspringSize=310, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=35), CourseBasedMutation(prob=0.006)]] --> Objective: 132
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=373, OffspringSize=87, k=1, Ops=[CourseBasedCrossover]] --> Objective: 193
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=37, OffspringSize=21, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=30), CourseBasedMutation(prob=0.170)]] --> Objective: 170
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=200, OffspringSize=24, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.397)]] --> Objective: 109
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=215, OffspringSize=18, k=1, Ops=[SectorBasedCrossover(sectorSize=28), CourseBasedMutation(prob=0.229)]] --> Objective: 139
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=318, OffspringSize=227, k=2, Ops=[SectorBasedCrossover(sectorSize=200), CourseBasedMutation(prob=0.169)]] --> Objective: 141
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.569)]] --> Objective: 111
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 18:14:00 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=30, Seed=0, ElapsedTime=1443888840.34s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 100
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=210, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.391)]] --> Objective: 102
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=309, OffspringSize=75, k=4, Ops=[SectorBasedCrossover(sectorSize=50), CourseBasedMutation(prob=0.944)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=116, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=6), CourseBasedMutation(prob=0.386)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=146, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=45), CourseBasedMutation(prob=0.902)]] --> Objective: 108
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.962)]] --> Objective: 108
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.903)]] --> Objective: 109
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=200, OffspringSize=24, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.397)]] --> Objective: 109
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=226, OffspringSize=57, k=4, Ops=[SectorBasedCrossover(sectorSize=212), CourseBasedMutation(prob=0.869)]] --> Objective: 110
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.898)]] --> Objective: 111
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.569)]] --> Objective: 111
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=117, k=1, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.386)]] --> Objective: 116
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=214, OffspringSize=15, k=2, Ops=[SectorBasedCrossover(sectorSize=210), CourseBasedMutation(prob=0.577)]] --> Objective: 116
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=326, OffspringSize=163, k=3, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=16), CourseBasedMutation(prob=0.229)]] --> Objective: 116
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=269, OffspringSize=82, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.671)]] --> Objective: 116
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=226, OffspringSize=22, k=2, Ops=[SectorBasedCrossover(sectorSize=196), CourseBasedMutation(prob=0.169)]] --> Objective: 117
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=235, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.399)]] --> Objective: 119
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=216, OffspringSize=5, k=2, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.569)]] --> Objective: 120
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=392, OffspringSize=285, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=10), CourseBasedMutation(prob=0.262)]] --> Objective: 121
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=392, OffspringSize=285, k=2, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=10), CourseBasedMutation(prob=0.273)]] --> Objective: 122
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=326, OffspringSize=163, k=1, Ops=[SectorBasedCrossover(sectorSize=16), CourseBasedMutation(prob=0.090)]] --> Objective: 125
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=200, OffspringSize=32, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.346)]] --> Objective: 131
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=395, OffspringSize=310, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=35), CourseBasedMutation(prob=0.006)]] --> Objective: 132
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=326, OffspringSize=163, k=3, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=16), CourseBasedMutation(prob=0.090)]] --> Objective: 133
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=197, OffspringSize=118, k=1, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.174)]] --> Objective: 133
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=271, OffspringSize=235, k=3, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.070)]] --> Objective: 134
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 20:06:27 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=60, Seed=0, ElapsedTime=1443895587.58s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=181, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.898)]] --> Objective: 93
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 98
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 100
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=216, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.884)]] --> Objective: 101
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=210, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.391)]] --> Objective: 102
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=210, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.391)]] --> Objective: 102
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=204, OffspringSize=204, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.345)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=309, OffspringSize=75, k=4, Ops=[SectorBasedCrossover(sectorSize=50), CourseBasedMutation(prob=0.944)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=200, OffspringSize=197, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.346)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=116, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=6), CourseBasedMutation(prob=0.386)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=125, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.898)]] --> Objective: 107
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=146, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=45), CourseBasedMutation(prob=0.902)]] --> Objective: 108
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.962)]] --> Objective: 108
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=223, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=212), CourseBasedMutation(prob=0.869)]] --> Objective: 109
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.903)]] --> Objective: 109
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=200, OffspringSize=24, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.397)]] --> Objective: 109
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=313, OffspringSize=73, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.944)]] --> Objective: 110
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=280, OffspringSize=29, k=3, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.392)]] --> Objective: 110
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=226, OffspringSize=57, k=4, Ops=[SectorBasedCrossover(sectorSize=212), CourseBasedMutation(prob=0.869)]] --> Objective: 110
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.898)]] --> Objective: 111
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.569)]] --> Objective: 111
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=165, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 112
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=326, OffspringSize=163, k=3, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.274)]] --> Objective: 115
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=117, k=1, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=2), CourseBasedMutation(prob=0.386)]] --> Objective: 116
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/03/2015 21:22:29 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=90, Seed=0, ElapsedTime=1443900149.33s, PercentComplete=Infinity%
+[WARNING] 
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.codehaus.mojo.exec.ExecJavaMojo$1.run(ExecJavaMojo.java:293)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.moeaframework.core.FrameworkException: java.util.concurrent.ExecutionException: java.lang.NoClassDefFoundError: Solution
+	at org.moeaframework.util.distributed.FutureSolution.update(FutureSolution.java:85)
+	at org.moeaframework.util.distributed.FutureSolution.getObjective(FutureSolution.java:110)
+	at org.moeaframework.core.comparator.ParetoObjectiveComparator.compare(ParetoObjectiveComparator.java:48)
+	at org.moeaframework.core.comparator.ChainedComparator.compare(ChainedComparator.java:69)
+	at org.moeaframework.algorithm.SPEA2$StrengthFitnessEvaluator.evaluate(SPEA2.java:370)
+	at org.moeaframework.algorithm.SPEA2.iterate(SPEA2.java:138)
+	at ch.rethab.cbctt.moea.SPEA2WithLogging.iterate(InitializingAlgorithmFactory.java:56)
+	at org.moeaframework.algorithm.AbstractAlgorithm.step(AbstractAlgorithm.java:161)
+	at org.moeaframework.algorithm.PeriodicAction.step(PeriodicAction.java:108)
+	at org.moeaframework.Executor.runSingleSeed(Executor.java:700)
+	at org.moeaframework.Executor.run(Executor.java:629)
+	at ch.rethab.cbctt.MetaMain.main(MetaMain.java:112)
+	... 6 more
+Caused by: java.util.concurrent.ExecutionException: java.lang.NoClassDefFoundError: Solution
+	at org.jppf.client.concurrent.JPPFTaskFuture.get(JPPFTaskFuture.java:107)
+	at org.jppf.client.concurrent.JPPFTaskFuture.get(JPPFTaskFuture.java:84)
+	at org.moeaframework.util.distributed.FutureSolution.update(FutureSolution.java:80)
+	... 17 more
+Caused by: java.lang.NoClassDefFoundError: Solution
+	at java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
+	at java.lang.Class.getDeclaredMethod(Class.java:2128)
+	at java.io.ObjectStreamClass.getPrivateMethod(ObjectStreamClass.java:1431)
+	at java.io.ObjectStreamClass.access$1700(ObjectStreamClass.java:72)
+	at java.io.ObjectStreamClass$2.run(ObjectStreamClass.java:494)
+	at java.io.ObjectStreamClass$2.run(ObjectStreamClass.java:468)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.io.ObjectStreamClass.<init>(ObjectStreamClass.java:468)
+	at java.io.ObjectStreamClass.lookup(ObjectStreamClass.java:365)
+	at java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:602)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1623)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1774)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2000)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1924)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1801)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
+	at org.jppf.serialization.DefaultJavaSerialization.deserialize(DefaultJavaSerialization.java:45)
+	at org.jppf.utils.ObjectSerializerImpl.deserialize(ObjectSerializerImpl.java:137)
+	at org.jppf.utils.ObjectSerializerImpl.deserialize(ObjectSerializerImpl.java:125)
+	at org.jppf.io.IOHelper.unwrappedData(IOHelper.java:239)
+	at org.jppf.server.node.JPPFContainer$ObjectDeserializationTask.call(JPPFContainer.java:203)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	... 1 more
+Caused by: java.lang.ClassNotFoundException: Could not load class 'Solution'
+	at org.jppf.classloader.AbstractJPPFClassLoader.findClass(AbstractJPPFClassLoader.java:155)
+	at org.jppf.classloader.AbstractJPPFClassLoader.findClass(AbstractJPPFClassLoader.java:109)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at org.jppf.classloader.AbstractJPPFClassLoader.loadClass(AbstractJPPFClassLoader.java:333)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 37 more
+[WARNING] thread Thread[TaskQueueChecker,5,JPPF Client thread group] was interrupted but is still alive after waiting at least 15000msecs
+[WARNING] thread Thread[TaskQueueChecker,5,JPPF Client thread group] will linger despite being asked to die via interruption
+[WARNING] thread Thread[driver1-1 - ClassServer,5,JPPF Client thread group] will linger despite being asked to die via interruption
+[WARNING] thread Thread[ChannelsExecutor-0001,5,ChannelsExecutor thread group] will linger despite being asked to die via interruption
+[WARNING] thread Thread[RemoteChannelWrapper-driver1-1-0001,5,RemoteChannelWrapper-driver1-1 thread group] will linger despite being asked to die via interruption
+[WARNING] thread Thread[JobExecutor_0001,5,JobExecutor thread group] will linger despite being asked to die via interruption
+[WARNING] NOTE: 5 thread(s) did not finish despite being asked to  via interruption. This is not a problem with exec:java, it is a problem with the running code. Although not serious, it should be remedied.
+[WARNING] Couldn't destroy threadgroup org.codehaus.mojo.exec.ExecJavaMojo$IsolatedThreadGroup[name=ch.rethab.cbctt.MetaMain,maxpri=10]
+java.lang.IllegalThreadStateException
+	at java.lang.ThreadGroup.destroy(ThreadGroup.java:778)
+	at java.lang.ThreadGroup.destroy(ThreadGroup.java:795)
+	at org.codehaus.mojo.exec.ExecJavaMojo.execute(ExecJavaMojo.java:328)
+	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:134)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:208)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:153)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:145)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:116)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:80)
+	at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build(SingleThreadedBuilder.java:51)
+	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:128)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:307)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:193)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:106)
+	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:862)
+	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:286)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:197)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:289)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:229)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:415)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:356)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 08:45 h
+[INFO] Finished at: 2015-10-04T00:02:52+02:00
+[INFO] Final Memory: 9M/158M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.codehaus.mojo:exec-maven-plugin:1.4.0:java (default-cli) on project cb-ctt: An exception occured while executing the Java class. null: InvocationTargetException: java.util.concurrent.ExecutionException: java.lang.NoClassDefFoundError: Solution: Could not load class 'Solution' -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for ch.rethab:cb-ctt:jar:1.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.apache.commons:commons-math3:jar -> duplicate declaration of version 3.5 @ line 101, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 13, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building cb-ctt 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:java (default-cli) @ cb-ctt ---
+[WARNING] 
+java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.codehaus.mojo.exec.ExecJavaMojo$1.run(ExecJavaMojo.java:293)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	JPPFClient cannot be resolved to a type
+	JPPFClient cannot be resolved to a type
+	JPPFExecutorService cannot be resolved to a type
+	JPPFExecutorService cannot be resolved to a type
+	Variation cannot be resolved to a type
+	CompoundVariation cannot be resolved to a type
+	AlgorithmFactory cannot be resolved to a type
+	Executor cannot be resolved to a type
+	Executor cannot be resolved to a type
+	The method getProgressListener() from the type MetaStaticParameters refers to the missing type ProgressListener
+	NondominatedPopulation cannot be resolved to a type
+	Solution cannot be resolved to a type
+
+	at ch.rethab.cbctt.MetaMain.main(MetaMain.java:65)
+	... 6 more
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.044 s
+[INFO] Finished at: 2015-10-04T07:39:15+02:00
+[INFO] Final Memory: 9M/147M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.codehaus.mojo:exec-maven-plugin:1.4.0:java (default-cli) on project cb-ctt: An exception occured while executing the Java class. null: InvocationTargetException: Unresolved compilation problems:
+[ERROR] JPPFClient cannot be resolved to a type
+[ERROR] JPPFClient cannot be resolved to a type
+[ERROR] JPPFExecutorService cannot be resolved to a type
+[ERROR] JPPFExecutorService cannot be resolved to a type
+[ERROR] Variation cannot be resolved to a type
+[ERROR] CompoundVariation cannot be resolved to a type
+[ERROR] AlgorithmFactory cannot be resolved to a type
+[ERROR] Executor cannot be resolved to a type
+[ERROR] Executor cannot be resolved to a type
+[ERROR] The method getProgressListener() from the type MetaStaticParameters refers to the missing type ProgressListener
+[ERROR] NondominatedPopulation cannot be resolved to a type
+[ERROR] Solution cannot be resolved to a type
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for ch.rethab:cb-ctt:jar:1.0-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.apache.commons:commons-math3:jar -> duplicate declaration of version 3.5 @ line 101, column 21
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 13, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building cb-ctt 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- exec-maven-plugin:1.4.0:java (default-cli) @ cb-ctt ---
+client process id: 9177, uuid: 550D9444-3D07-D982-0AE5-58AB8F0E4F66
+Starting new Computation with: MetaPopulationSize=30, MetaOffspringSize=30, MetaK=1, MaxEvaluations=1000, CbcttGenerations=75, CbcttMaxPopulationSize=400, CbcttRuns=3
+[client: driver1-1 - ClassServer] Attempting connection to the class server at localhost:11111
+[client: driver1-1 - ClassServer] Reconnected to the class server
+[client: driver1-1 - TasksServer] Attempting connection to the task server at localhost:11111
+[client: driver1-1 - TasksServer] Reconnected to the JPPF task server
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=172, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.976)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=118, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=113), CourseBasedMutation(prob=0.341)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=181, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.898)]] --> Objective: 93
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=158, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=32), CourseBasedMutation(prob=0.898)]] --> Objective: 95
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=178, k=1, Ops=[SectorBasedCrossover(sectorSize=145), CourseBasedMutation(prob=0.907)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 98
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 100
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=266, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 101
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=216, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.884)]] --> Objective: 101
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=73, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=78), CourseBasedMutation(prob=0.944)]] --> Objective: 102
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=210, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.391)]] --> Objective: 102
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=210, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.391)]] --> Objective: 102
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=40, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=218), CourseBasedMutation(prob=0.898)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=29), CourseBasedMutation(prob=0.902)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=204, OffspringSize=204, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.345)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=309, OffspringSize=75, k=4, Ops=[SectorBasedCrossover(sectorSize=50), CourseBasedMutation(prob=0.944)]] --> Objective: 103
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=210, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.447)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=213, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=200, OffspringSize=197, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.346)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=116, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=6), CourseBasedMutation(prob=0.386)]] --> Objective: 104
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 09:08:23 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=120, Seed=0, ElapsedTime=1443942503.13s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=172, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.898)]] --> Objective: 87
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.976)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=118, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=113), CourseBasedMutation(prob=0.341)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.789)]] --> Objective: 90
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=181, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.898)]] --> Objective: 93
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=7, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=127), CourseBasedMutation(prob=0.902)]] --> Objective: 95
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=158, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=32), CourseBasedMutation(prob=0.898)]] --> Objective: 95
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=264, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=26), CourseBasedMutation(prob=0.893)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=32), CourseBasedMutation(prob=0.902)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=178, k=1, Ops=[SectorBasedCrossover(sectorSize=145), CourseBasedMutation(prob=0.907)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=130, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.866)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 98
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=128, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 100
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.569)]] --> Objective: 101
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=8, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.899)]] --> Objective: 101
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=124, k=4, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.900)]] --> Objective: 101
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 10:37:18 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=150, Seed=0, ElapsedTime=1443947838.60s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=172, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=124, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=29), CourseBasedMutation(prob=0.905)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.960)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=312, OffspringSize=60, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.898)]] --> Objective: 87
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=247, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.908)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.976)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=42), CourseBasedMutation(prob=0.962)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=118, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=113), CourseBasedMutation(prob=0.341)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.789)]] --> Objective: 90
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=181, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=114), CourseBasedMutation(prob=0.898)]] --> Objective: 93
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=7, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=127), CourseBasedMutation(prob=0.902)]] --> Objective: 95
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=158, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=32), CourseBasedMutation(prob=0.898)]] --> Objective: 95
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=264, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=51, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=216), CourseBasedMutation(prob=0.560)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=5, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 96
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=26), CourseBasedMutation(prob=0.893)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=32), CourseBasedMutation(prob=0.902)]] --> Objective: 97
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 11:44:09 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=180, Seed=0, ElapsedTime=1443951849.72s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=75, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=172, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=124, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=29), CourseBasedMutation(prob=0.905)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.960)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=50, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=46), CourseBasedMutation(prob=0.949)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=312, OffspringSize=60, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=208), CourseBasedMutation(prob=0.903)]] --> Objective: 87
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 87
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=36), CourseBasedMutation(prob=0.898)]] --> Objective: 87
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=63, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.898)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=247, k=4, Ops=[CurriculumBasedCrossover, CourseBasedMutation(prob=0.908)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.976)]] --> Objective: 88
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=42), CourseBasedMutation(prob=0.962)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=160, OffspringSize=118, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=113), CourseBasedMutation(prob=0.341)]] --> Objective: 89
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 12:54:11 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=210, Seed=0, ElapsedTime=1443956051.99s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=75, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.965)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=172, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=124, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=29), CourseBasedMutation(prob=0.905)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.960)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=175, k=1, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=168), CourseBasedMutation(prob=0.898)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=221, OffspringSize=113, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=50, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=46), CourseBasedMutation(prob=0.949)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=312, OffspringSize=60, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.902)]] --> Objective: 86
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=55, k=2, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=208), CourseBasedMutation(prob=0.903)]] --> Objective: 87
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 14:17:46 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=240, Seed=0, ElapsedTime=1443961066.37s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.914)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=75, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.965)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=172, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=310, OffspringSize=171, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=140), CourseBasedMutation(prob=0.583)]] --> Objective: 82
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.924)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=38), CourseBasedMutation(prob=0.967)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=124, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=29), CourseBasedMutation(prob=0.905)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=273), CourseBasedMutation(prob=0.960)]] --> Objective: 83
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=306, OffspringSize=175, k=1, Ops=[SectorBasedCrossover(sectorSize=146), CourseBasedMutation(prob=0.898)]] --> Objective: 85
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 15:37:12 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=270, Seed=0, ElapsedTime=1443965832.08s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.559)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.914)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.935)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=290, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.905)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=296, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=75, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=282, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 16:52:57 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=300, Seed=0, ElapsedTime=1443970377.52s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=250, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.951)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.559)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.914)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.935)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=290, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.905)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=296, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 18:34:11 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=330, Seed=0, ElapsedTime=1443976451.08s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=250, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.951)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.559)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=61, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=303, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, CourseBasedMutation(prob=0.914)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 80
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 81
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 20:04:17 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=360, Seed=0, ElapsedTime=1443981857.07s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=83, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=250, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.951)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.949)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.559)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=57, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.970)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=220, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 77
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=61, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=314, OffspringSize=124, k=1, Ops=[SectorBasedCrossover(sectorSize=133), CourseBasedMutation(prob=0.902)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=316, OffspringSize=54, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=287), CourseBasedMutation(prob=0.905)]] --> Objective: 79
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 21:26:12 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=390, Seed=0, ElapsedTime=1443986772.68s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 53
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=140, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 68
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=121, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=83, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=250, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.951)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.949)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.559)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=55, k=1, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.924)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=57, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.970)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=55, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.569)]] --> Objective: 75
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/04/2015 22:56:24 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=420, Seed=0, ElapsedTime=1443992184.91s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 53
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=290, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=140, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.981)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 68
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=121, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=3, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.976)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=83, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=250, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.951)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.972)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.949)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=295, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, SectorBasedCrossover(sectorSize=3), CourseBasedMutation(prob=0.559)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.991)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 00:17:29 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=450, Seed=0, ElapsedTime=1443997049.49s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 53
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=290, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=140, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.981)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 68
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=121, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=195, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.968)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=3, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.976)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=83, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=250, OffspringSize=122, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.951)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=305, OffspringSize=174, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.969)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.972)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=208, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 74
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 01:33:43 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=480, Seed=0, ElapsedTime=1444001623.74s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 53
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 59
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.986)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=290, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=140, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.981)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 68
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=121, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.976)]] --> Objective: 71
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=70, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.947)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=195, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.968)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=3, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.976)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=83, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 03:14:17 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=510, Seed=0, ElapsedTime=1444007657.92s, PercentComplete=Infinity%
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 52
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 53
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 58
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.948)]] --> Objective: 59
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.986)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=218, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.979)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.899)]] --> Objective: 65
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=290, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=140, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=182, k=4, Ops=[CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=117), CourseBasedMutation(prob=0.898)]] --> Objective: 66
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=69, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.981)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 67
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 68
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=121, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=53, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.983)]] --> Objective: 69
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=60, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.949)]] --> Objective: 70
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.976)]] --> Objective: 71
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=49, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.949)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=70, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.947)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.895)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=67, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.962)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=289, OffspringSize=54, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.974)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=307, OffspringSize=124, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.862)]] --> Objective: 72
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=195, OffspringSize=87, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.968)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=126, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.896)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=302, OffspringSize=10, k=4, Ops=[CourseBasedCrossover, CurriculumBasedCrossover, SectorBasedCrossover(sectorSize=139), CourseBasedMutation(prob=0.902)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / SPEA2WithLogging.printPopulation]: Parameters [PopulationSize=249, OffspringSize=125, k=4, Ops=[CourseBasedCrossover, CourseBasedMutation(prob=0.967)]] --> Objective: 73
+GIBBER [ch.rethab.cbctt.MetaMain.main() / 10/05/2015 04:35:54 / LoggingProgressListener.progressUpdate]: Progress Update: NFE=540, Seed=0, ElapsedTime=1444012554.04s, PercentComplete=Infinity%

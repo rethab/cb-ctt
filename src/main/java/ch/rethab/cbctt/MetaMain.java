@@ -10,6 +10,7 @@ import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.meta.MetaCurriculumBasedTimetabling;
+import ch.rethab.cbctt.meta.MetaEvaluator;
 import ch.rethab.cbctt.meta.MetaStaticParameters;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
 import ch.rethab.cbctt.moea.InitializingAlgorithmFactory;
@@ -17,6 +18,8 @@ import ch.rethab.cbctt.moea.SolutionConverter;
 import ch.rethab.cbctt.moea.TimetableInitializationFactory;
 import ch.rethab.cbctt.moea.VariationFactory;
 import ch.rethab.cbctt.parser.ECTTParser;
+import org.jppf.client.JPPFClient;
+import org.jppf.client.concurrent.JPPFExecutorService;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -25,10 +28,10 @@ import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static ch.rethab.cbctt.meta.ParametrizationPhenotype.formatOperators;
 
@@ -45,13 +48,6 @@ public class MetaMain {
 
         Logger.configuredLevel = Logger.Level.GIBBER;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(7);
-        ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(5);
-        // JPPFClient jppfClient = new JPPFClient();
-        // JPPFExecutorService jppfExecutorService = new JPPFExecutorService(jppfClient);
-        // jppfExecutorService.setBatchSize(100);
-        // jppfExecutorService.setBatchTimeout(100);
-
         Specification spec = new ECTTParser(new BufferedReader(new FileReader(filename))).parse();
         RoomAssigner roomAssigner = new GreedyRoomAssigner(spec);
         Formulation formulation = new UD1Formulation(spec);
@@ -59,9 +55,17 @@ public class MetaMain {
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
         int maxEvaluations = 1000;
-        int populationSize = 50;
-        int offspringSize =  50;
+        int populationSize = 30;
+        int offspringSize =  30;
         int k = 1;
+        String cpFilename = "max-10000-pop-30-off-30-k-1-cbbgen-75-maxpop-400";
+
+        // ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+        JPPFClient jppfClient = new JPPFClient();
+        JPPFExecutorService executorService = new JPPFExecutorService(jppfClient);
+        executorService.setBatchSize(populationSize);
+        executorService.setBatchTimeout(100);
 
         // values from moea framework
         double huxProbability = 1;
@@ -71,7 +75,12 @@ public class MetaMain {
         double pmDistributionIndex = 20;
         double bfProbability = 0.01;
 
-        int cbcttGenerations = 20;
+        int cbcttGenerations = 75;
+
+        System.out.printf("Starting new Computation with: MetaPopulationSize=%d, MetaOffspringSize=%d, MetaK=%d, " +
+                "MaxEvaluations=%d, CbcttGenerations=%d, CbcttMaxPopulationSize=%d, CbcttRuns=%d\n",
+                populationSize, offspringSize, k, maxEvaluations, cbcttGenerations,
+                ParametrizationPhenotype.POPULATION_UPPER_BOUND, MetaCurriculumBasedTimetabling.RUNS);
 
         TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
@@ -94,6 +103,9 @@ public class MetaMain {
         exec.withProperty("k", k);
         exec.distributeWith(executorService);
         exec.withProgressListener(metaStaticParameters.getProgressListener());
+        exec.withCheckpointFile(new File(cpFilename));
+        exec.withCheckpointFrequency(populationSize);
+
 
         NondominatedPopulation  result;
         try {
@@ -101,6 +113,8 @@ public class MetaMain {
         } finally {
             executorService.shutdownNow();
         }
+
+        jppfClient.close();
 
         System.out.println("End Result Ready");
         for (Solution s : result) {

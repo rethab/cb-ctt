@@ -55,6 +55,19 @@ class SPEA2WithLogging extends SPEA2 {
     protected void iterate() {
         super.iterate();
 
+        printPopulation();
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+
+        // initialize also performs a step, so we need to intercept
+        // this as well if want the individuals after all steps
+        printPopulation();
+    }
+
+    private void printPopulation() {
         // the moea framework doesn't use the archive for the archive for the best individuals, but always he population
         for (Solution solution : population) {
             // 1 means we are in meta. cb-ctt is multi-objective
@@ -66,6 +79,5 @@ class SPEA2WithLogging extends SPEA2 {
                 Logger.gibber(String.format("Parameters [%s] --> Objective: %d", params.toString(), indicator));
             }
         }
-
     }
 }
