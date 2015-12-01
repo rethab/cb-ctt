@@ -28,7 +28,7 @@ public final class ParametrizationPhenotype {
     public static final double PROBABILITY_LOWER_BOUND = 0;
     public static final double PROBABILITY_UPPER_BOUND = 1;
     public static final int POPULATION_LOWER_BOUND = 5;
-    public static final int POPULATION_UPPER_BOUND = 100;
+    public static final int POPULATION_UPPER_BOUND = 25;
     public static final int SECTOR_SIZE_LOWER_BOUND = 1;
     public static final int SECTOR_SIZE_UPPER_BOUND = POPULATION_UPPER_BOUND;
     public static final int ARCHIVE_SIZE_LOWER_BOUND = POPULATION_LOWER_BOUND;

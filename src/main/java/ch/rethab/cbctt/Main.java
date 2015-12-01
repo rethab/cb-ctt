@@ -8,6 +8,8 @@ import ch.rethab.cbctt.ea.op.CbcttVariation;
 import ch.rethab.cbctt.ea.op.Evaluator;
 import ch.rethab.cbctt.ea.phenotype.GreedyRoomAssigner;
 import ch.rethab.cbctt.ea.phenotype.RoomAssigner;
+import ch.rethab.cbctt.ea.phenotype.TimetableWithRooms;
+import ch.rethab.cbctt.ea.printer.PrettyTextPrinter;
 import ch.rethab.cbctt.formulation.Formulation;
 import ch.rethab.cbctt.formulation.UD1Formulation;
 import ch.rethab.cbctt.meta.ParametrizationPhenotype;
@@ -17,6 +19,7 @@ import ch.rethab.cbctt.moea.VariationFactory;
 import ch.rethab.cbctt.parser.ECTTParser;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.core.NondominatedPopulation;
 
 import java.io.*;
 import java.util.Arrays;
@@ -35,10 +38,10 @@ public class Main {
         }
         String filename = args[0];
 
-        double mutationProbability = 1;
-        int sectorSize = 3;
-        int populationSize = 200;
-        int archiveSize = 200; // if archive size is too small, we spend a lot of time truncating
+        double mutationProbability = 0.95;
+        // int sectorSize = 3;
+        int populationSize = 30;
+        int archiveSize = 30; // if archive size is too small, we spend a lot of time truncating
         int k = 3;
         int generations = 10;
         Logger.Level progressListenerLevel = Logger.Level.TRACE;
@@ -60,11 +63,11 @@ public class Main {
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
 
         CbcttVariation courseX = variationFactory.getCrossoverOperator(0, -1);
-        CbcttVariation currX = variationFactory.getCrossoverOperator(1, -1);
-        CbcttVariation sectorX = variationFactory.getCrossoverOperator(2, sectorSize);
+        // CbcttVariation currX = variationFactory.getCrossoverOperator(1, -1);
+        // CbcttVariation sectorX = variationFactory.getCrossoverOperator(2, sectorSize);
 
         List<CbcttVariation> variators = Arrays.asList(
-                courseX, currX, sectorX, variationFactory.getMutationOperator(0, mutationProbability)
+                courseX, /* currX, sectorX, */ variationFactory.getMutationOperator(0, mutationProbability)
         );
 
         ParametrizationPhenotype params = new ParametrizationPhenotype(variators, populationSize, archiveSize, k);
@@ -80,20 +83,19 @@ public class Main {
                 .attachAll();
 
         CbcttRunner cbcttRunner = new CbcttRunner(cbcttStaticParameters, params);
+        NondominatedPopulation run = null;
         try {
-            cbcttRunner.run(instrumenter);
+            run = cbcttRunner.run(instrumenter);
         } finally {
             executorService.shutdown();
         }
 
+        PrettyTextPrinter printer = new PrettyTextPrinter(spec);
+        run.forEach(sol -> printer.print(solutionConverter.fromSolution(sol)));
 
         // jppfExecutorService.shutdown();
         // jppfClient.close();
 
-        Accumulator accumulator = instrumenter.getLastAccumulator();
-        for (int i=0; i<accumulator.size("NFE"); i++) {
-            System.out.printf("%d: %s\n", i, accumulator.get("AdditiveEpsilonIndicator", i));
-        }
 
     }
 }

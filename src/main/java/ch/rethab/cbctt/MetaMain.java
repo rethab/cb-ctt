@@ -43,7 +43,7 @@ public class MetaMain {
         }
         String filename = args[0];
 
-        Logger.configuredLevel = Logger.Level.GIBBER;
+        Logger.configuredLevel = Logger.Level.INFO;
 
         ExecutorService executorService = Executors.newFixedThreadPool(7);
         ExecutorService cbcttExecutorService = Executors.newFixedThreadPool(5);
@@ -58,9 +58,9 @@ public class MetaMain {
         SolutionConverter solutionConverter = new SolutionConverter(formulation);
         Evaluator evaluator = new Evaluator(formulation, solutionConverter);
 
-        int maxEvaluations = 1000;
-        int populationSize = 50;
-        int offspringSize =  50;
+        int maxEvaluations = 14;
+        int populationSize = 7;
+        int offspringSize =  7;
         int k = 1;
 
         // values from moea framework
@@ -71,11 +71,11 @@ public class MetaMain {
         double pmDistributionIndex = 20;
         double bfProbability = 0.01;
 
-        int cbcttGenerations = 20;
+        int cbcttGenerations = 10;
 
         TimetableInitializationFactory cbcttInitializationFactory = new TimetableInitializationFactory(spec, formulation, roomAssigner);
         VariationFactory variationFactory = new VariationFactory(spec, solutionConverter, roomAssigner);
-        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(cbcttGenerations, Logger.Level.TRACE, formulation, evaluator, cbcttInitializationFactory, variationFactory);
+        CbcttStaticParameters cbcttStaticParameters = new CbcttStaticParameters(cbcttGenerations, Logger.Level.GIBBER, formulation, evaluator, cbcttInitializationFactory, variationFactory);
         MetaStaticParameters metaStaticParameters = new MetaStaticParameters(cbcttStaticParameters);
 
         HuxSbx crossover = new HuxSbx(huxProbability, sbxProbability, sbxDistributionIndex);
